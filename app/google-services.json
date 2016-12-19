@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "823359178186",
+    "firebase_url": "https://student-life-9daeb.firebaseio.com",
+    "project_id": "student-life-9daeb",
+    "storage_bucket": "student-life-9daeb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823359178186:android:9d8eb1e0b8dde41d",
+        "android_client_info": {
+          "package_name": "com.minimalart.studentlife"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "823359178186-c2djfc7mvg0itandb19dof5kgqqebm5d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3cZZBdUufTWxB8D7OThKcR9OO-OrZ60A"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

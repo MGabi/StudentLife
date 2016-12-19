@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/card_frag_search"
+    card:cardElevation="@dimen/card_elevation"
+    card:cardCornerRadius="@dimen/card_radius"
+    android:layout_marginTop="@dimen/standard_padding"
+    android:layout_marginLeft="@dimen/standard_padding"
+    android:layout_marginRight="@dimen/standard_padding">
+
+    <com.balysv.materialripple.MaterialRippleLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/standard_padding">
+
+            <LinearLayout
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:id="@+id/card_search_rent_title"
+                    android:text="Titlu"
+                    android:maxLines="1"
+                    android:lines="1"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:id="@+id/card_search_rent_rooms"
+                    android:text="Nr. camere: "
+                    android:maxLines="1"
+                    android:lines="1"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:id="@+id/card_search_rent_price"
+                    android:text="Pret: "
+                    android:maxLines="1"
+                    android:lines="1"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:id="@+id/card_search_rent_location"
+                    android:text="Locatie: "
+                    android:maxLines="1"
+                    android:lines="1"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/apartment_inside"
+                android:id="@+id/card_search_rent_image"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                android:layout_alignParentRight="true"/>
+
+        </RelativeLayout>
+
+    </com.balysv.materialripple.MaterialRippleLayout>
+
+</android.support.v7.widget.CardView>

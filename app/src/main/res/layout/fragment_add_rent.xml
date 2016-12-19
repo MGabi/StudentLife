@@ -1,0 +1,167 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.minimalart.studentlife.fragments.navdrawer.AddRentFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context="com.minimalart.studentlife.activities.LoginActivity"
+        android:id="@+id/add_rent_linearLayout">
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/add_rent_scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/alert_rent_form"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="top|center"
+                android:layout_marginTop="@dimen/standard_padding"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="@dimen/standard_padding"
+                android:padding="5dp">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp">
+
+                    <EditText
+                        android:id="@+id/rent_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/add_rent_title"
+                        android:inputType="textMultiLine"
+                        android:ems="3"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp">
+
+                    <EditText
+                        android:id="@+id/rent_rooms"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/add_rent_rooms"
+                        android:maxLines="1"
+                        android:inputType="number" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp">
+
+                    <EditText
+                        android:id="@+id/rent_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/add_rent_price"
+                        android:maxLines="1"
+                        android:inputType="number" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp">
+
+                    <EditText
+                        android:id="@+id/rent_location"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/add_rent_location"
+                        android:maxLines="3"
+                        android:inputType="text" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp">
+
+                    <EditText
+                        android:id="@+id/rent_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/add_rent_description"
+                        android:inputType="textMultiLine"
+                        android:ems="10" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <com.balysv.materialripple.MaterialRippleLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="25dp">
+
+                    <Button
+                        android:id="@+id/rent_add_img"
+                        android:background="#00fafafa"
+                        android:layout_height="wrap_content"
+                        android:text="@string/food_alert_btn_img"
+                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:textColor="#616161"
+                        android:paddingLeft="@dimen/standard_padding"
+                        android:paddingRight="@dimen/standard_padding">
+
+                    </Button>
+
+                </com.balysv.materialripple.MaterialRippleLayout>
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:id="@+id/rent_discount_cb"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/standard_padding"
+                    android:textColor="#616161"
+                    android:text="@string/add_rent_discount"
+                    android:layout_gravity="center"/>
+
+                <com.balysv.materialripple.MaterialRippleLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ripple_add_rent"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center">
+
+                    <Button
+                        android:id="@+id/add_rent_button"
+                        android:background="#00fafafa"
+                        android:layout_height="wrap_content"
+                        android:text="@string/food_alert_post_alert"
+                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:textColor="#616161"
+                        android:paddingLeft="@dimen/standard_padding"
+                        android:paddingRight="@dimen/standard_padding"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp">
+                    </Button>
+
+                </com.balysv.materialripple.MaterialRippleLayout>
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+    </LinearLayout>
+
+</FrameLayout>
