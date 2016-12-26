@@ -42,12 +42,10 @@ public class RentAnnounceAdapter extends RecyclerView.Adapter<RentAnnounceViewHo
 
             }
         });
-
     }
 
     public void loadNewData(ArrayList<CardRentAnnounce> list){
         cardRentAnnounceArrayList = list;
-        notifyDataSetChanged();
     }
 
     @Override

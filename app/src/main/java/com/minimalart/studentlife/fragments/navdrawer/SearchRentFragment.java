@@ -24,6 +24,7 @@ public class SearchRentFragment extends Fragment {
     private ImageButton searchBtn;
     private EditText searchTextField;
     private RecyclerView rentRecyclerView;
+    private RentAnnounceAdapter rentAnnounceAdapter;
 
     public SearchRentFragment() {
     }
@@ -55,10 +56,21 @@ public class SearchRentFragment extends Fragment {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         rentRecyclerView.setLayoutManager(llm);
 
-        RentAnnounceAdapter rentAnnounceAdapter = new RentAnnounceAdapter(new ArrayList<CardRentAnnounce>());
+        rentAnnounceAdapter = new RentAnnounceAdapter(new ArrayList<CardRentAnnounce>());
         rentRecyclerView.setAdapter(rentAnnounceAdapter);
         rentAnnounceAdapter.loadNewData(DataService.getInstance().getRentAnnounces());
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        DataService.getInstance().registerCallbackAdapter(rentAnnounceAdapter);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        DataService.getInstance().unregisterCallbackAdapter();
+    }
 }
