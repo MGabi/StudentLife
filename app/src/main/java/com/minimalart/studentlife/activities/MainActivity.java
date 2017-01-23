@@ -27,6 +27,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.minimalart.studentlife.R;
+import com.minimalart.studentlife.fragments.OpenRentAnnounceFragment;
 import com.minimalart.studentlife.fragments.navdrawer.AboutFragment;
 import com.minimalart.studentlife.fragments.navdrawer.AddRentFragment;
 import com.minimalart.studentlife.fragments.navdrawer.ContactFragment;
@@ -34,13 +35,13 @@ import com.minimalart.studentlife.fragments.navdrawer.FoodAlertFragment;
 import com.minimalart.studentlife.fragments.navdrawer.FoodZoneFragment;
 import com.minimalart.studentlife.fragments.navdrawer.HomeFragment;
 import com.minimalart.studentlife.fragments.navdrawer.SearchRentFragment;
-import com.minimalart.studentlife.interfaces.CardLinks;
+import com.minimalart.studentlife.interfaces.HelperInterface;
 import com.minimalart.studentlife.models.CardFoodZone;
 import com.minimalart.studentlife.models.CardRentAnnounce;
 import com.minimalart.studentlife.models.User;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, CardLinks {
+        implements NavigationView.OnNavigationItemSelectedListener, HelperInterface {
 
     private static final String REF_RENT = "rent-announces";
     private static final String REF_FOOD = "food-announces";
@@ -116,9 +117,12 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        } else if(fragmentManager.getBackStackEntryCount() != 0){
+            //fragmentManager.popBackStack();
+            toolbar.setVisibility(View.VISIBLE);
             super.onBackPressed();
-            /*finish();*/
+        }
+        else {
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra("EXIT", true);
@@ -132,42 +136,37 @@ public class MainActivity extends AppCompatActivity
      */
     public void loadNavMenuFragments(int ID){
         Fragment fragment;
+        boolean needToolbar = true;
         int t = 0;
-        int visibility;
         switch(ID){
             case R.id.nav_home:
                 fragment = HomeFragment.newInstance();
-                visibility = View.VISIBLE;
                 t=0;
                 break;
             case R.id.nav_search_rent:
                 fragment = SearchRentFragment.newInstance();
-                visibility = View.VISIBLE;
                 t=1;
                 break;
             case R.id.nav_add_rent:
                 fragment = AddRentFragment.newInstance();
-                visibility = View.GONE;
+                needToolbar = false;
                 t=2;
                 break;
             case R.id.nav_search_food:
                 fragment = FoodZoneFragment.newInstance();
-                visibility = View.VISIBLE;
                 t=3;
                 break;
             case R.id.nav_add_food:
                 fragment = FoodAlertFragment.newInstance();
-                visibility = View.GONE;
+                needToolbar = false;
                 t=4;
                 break;
             case R.id.nav_about:
                 fragment = AboutFragment.newInstance();
-                visibility = View.VISIBLE;
                 t=5;
                 break;
             case R.id.nav_contact:
                 fragment = ContactFragment.newInstance();
-                visibility = View.VISIBLE;
                 t=6;
                 break;
             case R.id.nav_logout:
@@ -180,12 +179,21 @@ public class MainActivity extends AppCompatActivity
                 startActivity(i);
             default:
                 fragment = HomeFragment.newInstance();
-                visibility = View.VISIBLE;
                 t=0;
         }
         toolbar.setTitle(TITLES[t]);
-        toolbar.setVisibility(visibility);
-        fragmentManager.beginTransaction().replace(R.id.content_main, fragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
+        if(needToolbar)
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_main, fragment)
+                    .addToBackStack(null)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                    .commit();
+        else//TODO: modify to open in proper way fragment in no-toolbar frame layout
+            fragmentManager.beginTransaction()
+                    .add(R.id.content_main_without_toolbar, fragment)
+                    .addToBackStack(null)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                    .commit();
     }
 
     /**
@@ -269,5 +277,12 @@ public class MainActivity extends AppCompatActivity
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(GPLAY_URL));
         Intent chooser = Intent.createChooser(browserIntent, null);
         startActivity(chooser);
+    }
+
+    @Override
+    public void openRentAnnounceFragment() {
+        OpenRentAnnounceFragment fragment = OpenRentAnnounceFragment.newInstance();
+        fragmentManager.beginTransaction().replace(R.id.content_main_without_toolbar, fragment).addToBackStack(null).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
+        //toolbar.setVisibility(View.GONE);
     }
 }

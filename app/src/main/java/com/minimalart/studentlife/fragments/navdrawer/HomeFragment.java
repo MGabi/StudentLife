@@ -111,6 +111,17 @@ public class HomeFragment extends Fragment {
         cardFood = (CardView) view.findViewById(R.id.card_show_food);
         cardRent = (CardView) view.findViewById(R.id.card_show_rents);
 
+        swipe.setColorSchemeResources(R.color.colorAccent ,R.color.colorPrimary, R.color.colorPrimaryDark);
+
+        swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                setUserAnnounces();
+                setUserFood();
+                swipe.setRefreshing(false);
+            }
+        });
+
         homeUserAnnouncesRecyclerView = (RecyclerView) view.findViewById(R.id.home_my_rents_recyclerview);
         foodRecyclerView = (RecyclerView) view.findViewById(R.id.home_my_food_recyclerview);
 
@@ -244,11 +255,11 @@ class SpaceHorizontalItemDecoration extends RecyclerView.ItemDecoration {
         int position = parent.getChildLayoutPosition(view);
 
         outRect.top = space;
-        outRect.bottom = space;
-        outRect.right = space;
+        outRect.bottom = space + 5;
+        outRect.right = space + 5;
 
         if (position == 0){
-            outRect.left = space;
+            outRect.left = space + 5;
         } else{
             outRect.left = 0;
         }

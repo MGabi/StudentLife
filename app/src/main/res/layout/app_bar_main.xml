@@ -1,32 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="false"
-    tools:context="com.minimalart.studentlife.activities.MainActivity">
+    android:id="@+id/content_main_without_toolbar">
 
-    <android.support.design.widget.AppBarLayout
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#00FAFAFA"
-        app:elevation="0dp">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="false"
+        tools:context="com.minimalart.studentlife.activities.MainActivity">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:theme="@style/AppTheme.PopupOverlay"
-            app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:title="title"
-            app:titleTextColor="#757575">
+            <android.support.design.widget.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#00FAFAFA"
+                app:elevation="0dp">
 
-        </android.support.v7.widget.Toolbar>
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:theme="@style/AppTheme.PopupOverlay"
+                    app:layout_scrollFlags="scroll|enterAlways|snap"
+                    app:title="title"
+                    app:titleTextColor="#757575">
 
-    </android.support.design.widget.AppBarLayout>
+                </android.support.v7.widget.Toolbar>
 
-    <include layout="@layout/content_main" />
+            </android.support.design.widget.AppBarLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+            <include layout="@layout/content_main" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</FrameLayout>

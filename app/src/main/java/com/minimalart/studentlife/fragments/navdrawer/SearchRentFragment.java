@@ -67,6 +67,8 @@ public class SearchRentFragment extends Fragment {
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.card_grid_spacing);
         rentRecyclerView.addItemDecoration(new SpaceVerticalItemDecoration(spacingInPixels));
 
+        swipe.setColorSchemeResources(R.color.colorAccent ,R.color.colorPrimary, R.color.colorPrimaryDark);
+
         swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
