@@ -35,6 +35,7 @@
                     <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:id="@+id/card_show_rents"
                         card:cardElevation="@dimen/card_elevation"
                         card:cardCornerRadius="@dimen/card_elevation"
                         android:layout_marginLeft="@dimen/card_margin_left"
@@ -66,39 +67,35 @@
 
                     <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
-                        android:layout_height="150dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/card_show_food"
                         card:cardElevation="@dimen/card_elevation"
                         card:cardCornerRadius="@dimen/card_elevation"
-                        android:layout_marginTop="@dimen/card_margin_bottom"
                         android:layout_marginLeft="@dimen/card_margin_left"
                         android:layout_marginRight="@dimen/card_margin_right"
                         android:layout_marginBottom="@dimen/card_margin_bottom">
 
-                        <com.balysv.materialripple.MaterialRippleLayout
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
 
-                            <LinearLayout
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="16sp"
+                                android:padding="10dp"
+                                android:text="Alertele tale de masa"/>
+
+                            <android.support.v7.widget.RecyclerView
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                                android:layout_height="match_parent"
+                                android:id="@+id/home_my_food_recyclerview">
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textSize="16sp"
-                                    android:padding="10dp"
-                                    android:text="Ofertele tale"/>
+                            </android.support.v7.widget.RecyclerView>
 
-                                <android.support.v7.widget.RecyclerView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:id="@+id/home_food_recyclerview">
+                        </LinearLayout>
 
-                                </android.support.v7.widget.RecyclerView>
-
-                            </LinearLayout>
-
-                        </com.balysv.materialripple.MaterialRippleLayout>
                     </android.support.v7.widget.CardView>
 
                 </LinearLayout>

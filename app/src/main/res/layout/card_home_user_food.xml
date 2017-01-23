@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card="http://schemas.android.com/apk/res-auto"
+    android:layout_width="100dp"
+    android:layout_height="match_parent"
+    android:id="@+id/card_home_user_food"
+    card:cardElevation="@dimen/card_elevation"
+    card:cardCornerRadius="@dimen/card_radius">
+
+    <com.balysv.materialripple.MaterialRippleLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/food_home_ripple">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:src="@drawable/food_pic"
+                android:id="@+id/card_home_user_food_image"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:ellipsize="marquee"
+                android:id="@+id/card_home_user_food_title"
+                android:text="Title"
+                android:maxLines="1"
+                android:lines="1"
+                android:textStyle="normal"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+    </com.balysv.materialripple.MaterialRippleLayout>
+
+</android.support.v7.widget.CardView>
