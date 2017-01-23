@@ -1,10 +1,12 @@
 package com.minimalart.studentlife.fragments.navdrawer;
 
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,14 +39,41 @@ public class ContactFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view  = inflater.inflate(R.layout.fragment_contact, container, false);
 
-        RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.frag_contact_recyclerview);
+        RecyclerView contactRecyclerView = (RecyclerView)view.findViewById(R.id.frag_contact_recyclerview);
 
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(llm);
-        ContactAdapter adapter = new ContactAdapter(DataService.getInstance().getContactFragItems());
-        recyclerView.setAdapter(adapter);
+        contactRecyclerView.setLayoutManager(llm);
+        ContactAdapter contactAdapter = new ContactAdapter(DataService.getInstance().getContactFragItems(), getContext());
+        contactRecyclerView.setAdapter(contactAdapter);
+        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.card_grid_spacing);
+        contactRecyclerView.addItemDecoration(new SpaceVerticalItemDecoration(spacingInPixels));
         return view;
     }
 
+}
+
+class SpaceVerticalItemDecoration extends RecyclerView.ItemDecoration {
+    private int space;
+
+    public SpaceVerticalItemDecoration(int space) {
+        this.space = space;
+    }
+
+    @Override
+    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+        super.getItemOffsets(outRect, view, parent, state);
+
+        int position = parent.getChildLayoutPosition(view);
+
+        outRect.left = space;
+        outRect.right = space;
+        outRect.bottom = space;
+
+        if (position == 0){
+            outRect.top = space;
+        } else{
+            outRect.top = 0;
+        }
+    }
 }

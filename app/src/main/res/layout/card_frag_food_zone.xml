@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/card_frag_food_zone"
+    card:cardElevation="@dimen/card_elevation"
+    card:cardCornerRadius="@dimen/card_radius"
+    card:cardUseCompatPadding="true">
+
+    <com.balysv.materialripple.MaterialRippleLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/food_ripple">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxHeight="160dp"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                android:id="@+id/card_food_img"
+                android:src="@drawable/food_pic"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/standard_padding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:text="Title"
+                    android:id="@+id/card_food_title"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:ellipsize="marquee"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:id="@+id/card_food_price"
+                    android:text="Price: 20 lei"
+                    android:textSize="16sp"
+                    android:ellipsize="marquee"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/card_food_description"
+                    android:text="Descriere maginifica"
+                    android:textSize="15sp"
+                    android:ellipsize="marquee"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.balysv.materialripple.MaterialRippleLayout>
+
+</android.support.v7.widget.CardView>

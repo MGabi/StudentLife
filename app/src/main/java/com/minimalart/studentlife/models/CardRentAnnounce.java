@@ -12,6 +12,7 @@ public class CardRentAnnounce {
     private String location;
     private String description;
     private boolean checked;
+    private String announceID;
 
     public CardRentAnnounce(){
 
@@ -53,5 +54,13 @@ public class CardRentAnnounce {
 
     public boolean isChecked() {
         return checked;
+    }
+
+    public String getAnnounceID() {
+        return announceID;
+    }
+
+    public void setAnnounceID(String announceID) {
+        this.announceID = announceID;
     }
 }

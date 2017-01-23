@@ -8,32 +8,36 @@
             android:title="@string/nav_action_home"/>
         <item
             android:id="@+id/nav_search_rent"
-            android:icon="@drawable/ic_nav_home"
+            android:icon="@drawable/ic_search"
             android:title="@string/nav_action_search_rent"/>
         <item
-            android:id="@+id/nav_add_rent"
-            android:icon="@drawable/ic_nav_home"
-            android:title="@string/nav_action_add_rent" />
-        <item
             android:id="@+id/nav_search_food"
-            android:icon="@drawable/ic_nav_home"
+            android:icon="@drawable/ic_eating"
             android:title="@string/nav_action_search_food"/>
         <item
+            android:id="@+id/nav_add_rent"
+            android:icon="@drawable/ic_rent"
+            android:title="@string/nav_action_add_rent" />
+        <item
             android:id="@+id/nav_add_food"
-            android:icon="@drawable/ic_nav_home"
+            android:icon="@drawable/ic_alert"
             android:title="@string/nav_action_add_food"/>
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Contact">
         <menu>
             <item
                 android:id="@+id/nav_about"
-                android:icon="@drawable/ic_nav_home"
+                android:icon="@drawable/ic_help"
                 android:title="@string/nav_item_about" />
             <item
                 android:id="@+id/nav_contact"
-                android:icon="@drawable/ic_nav_home"
+                android:icon="@drawable/ic_account"
                 android:title="@string/nav_item_contact" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_account"
+                android:title="@string/nav_item_logout"/>
         </menu>
     </item>
 

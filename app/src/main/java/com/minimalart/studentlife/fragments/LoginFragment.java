@@ -3,7 +3,6 @@ package com.minimalart.studentlife.fragments;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,26 +12,24 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.activities.LoginActivity;
-import com.minimalart.studentlife.activities.MainActivity;
 
 
 public class LoginFragment extends Fragment{
 
     //Global static variables
-    private static final int REQUEST_INTERNET_CONN = 111;
+    private static final int REQUEST_PERMISSIONS = 111;
     private static boolean PERMISSION_MODE = true;
 
     // UI references
@@ -215,10 +212,19 @@ public class LoginFragment extends Fragment{
      * if permissions are not granted, ask for them
      */
     public void checkForPermissions(){
-        if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED)
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.INTERNET}, REQUEST_INTERNET_CONN);
+        if((ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) ||
+                (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) ||
+                (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)) {
+
+            ActivityCompat.requestPermissions(getActivity(), new String[]{
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.CAMERA}, REQUEST_PERMISSIONS);
+            Toast.makeText(getContext(), "req perm", Toast.LENGTH_SHORT).show();
+        }
         else{
             PERMISSION_MODE = true;
+            Toast.makeText(getContext(), "au deja permisiune", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -229,7 +235,7 @@ public class LoginFragment extends Fragment{
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch(requestCode){
-            case REQUEST_INTERNET_CONN:
+            case REQUEST_PERMISSIONS:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     PERMISSION_MODE = true;
                 } else

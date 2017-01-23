@@ -6,14 +6,12 @@
     android:layout_height="wrap_content"
     android:id="@+id/card_frag_contact"
     card:cardElevation="@dimen/card_elevation"
-    card:cardCornerRadius="@dimen/card_radius"
-    android:layout_marginTop="@dimen/standard_padding"
-    android:layout_marginLeft="@dimen/standard_padding"
-    android:layout_marginRight="@dimen/standard_padding">
+    card:cardCornerRadius="@dimen/card_radius">
 
     <com.balysv.materialripple.MaterialRippleLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/contact_ripple">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -30,7 +28,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/frag_contact_name"
-                    android:textSize="30sp"
+                    android:textSize="24sp"
                     android:id="@+id/card_frag_contact_title" />
 
                 <TextView
@@ -38,15 +36,15 @@
                     android:layout_height="wrap_content"
                     android:text="@string/dev_name"
                     android:layout_marginTop="5dp"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:id="@+id/card_frag_contact_desc"
                     android:maxEms="9"/>
 
             </LinearLayout>
 
             <ImageView
-                android:layout_width="96dp"
-                android:layout_height="96dp"
+                android:layout_width="76dp"
+                android:layout_height="76dp"
                 android:src="@drawable/profile_pic"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"

@@ -1,22 +1,44 @@
 package com.minimalart.studentlife.fragments.navdrawer;
 
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.activities.MainActivity;
 import com.minimalart.studentlife.models.CardRentAnnounce;
+import com.minimalart.studentlife.services.DataService;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 
 public class AddRentFragment extends Fragment {
+
+    private static final int PICK_IMAGE = 191;
 
     private EditText title;
     private EditText rooms;
@@ -26,7 +48,8 @@ public class AddRentFragment extends Fragment {
     private Button addImageBtn;
     private CheckBox discountCB;
     private Button postOffertBtn;
-
+    private ImageButton exitBtn;
+    private byte[] finalIMGByte;
     public AddRentFragment() {
         // Required empty public constructor
     }
@@ -57,11 +80,14 @@ public class AddRentFragment extends Fragment {
         addImageBtn = (Button)view.findViewById(R.id.rent_add_img);
         discountCB = (CheckBox)view.findViewById(R.id.rent_discount_cb);
         postOffertBtn = (Button)view.findViewById(R.id.add_rent_button);
+        exitBtn = (ImageButton)view.findViewById(R.id.add_rent_exit_btn);
+        finalIMGByte = null;
 
         postOffertBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkFields()){
+                boolean networkState = DataService.getInstance().isConnectedToNetwork(getContext());
+                if(checkFields() && networkState && isImageAdded()){
                     boolean check = discountCB.isChecked();
                     ((MainActivity)getActivity())
                             .addNewRentAnnounce(new CardRentAnnounce(
@@ -71,15 +97,89 @@ public class AddRentFragment extends Fragment {
                                     price.getText().toString(),
                                     location.getText().toString(),
                                     description.getText().toString(),
-                                    check));
-                }else{
-
+                                    check), finalIMGByte);
+                    Toast.makeText(getContext(), R.string.rent_added_success, Toast.LENGTH_LONG).show();
+                }else {
+                    if(!networkState)
+                        Toast.makeText(getContext(), R.string.error_no_network_connection, Toast.LENGTH_LONG).show();
+                    if(!isImageAdded()){
+                        Toast.makeText(getContext(), R.string.error_no_image, Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });
 
+        addImageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openImageChooser();
+            }
+        });
+
+        exitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getFragmentManager().popBackStack();
+                Fragment fragment = HomeFragment.newInstance();
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_main, fragment)
+                        .setTransition(android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .commit();
+                android.support.v7.app.ActionBar ab = ((MainActivity)getActivity()).getSupportActionBar();
+                ab.setTitle("Acasă");
+                ab.show();
+            }
+        });
 
         return view;
+    }
+
+    public void openImageChooser(){
+        Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        getIntent.setType("image/*");
+
+        Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        pickIntent.setType("image/*");
+
+        Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
+
+        startActivityForResult(chooserIntent, PICK_IMAGE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        final int RESULT_OK = -1;
+        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+
+            Uri uri = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+
+                final int standardWIDTH = 1080;
+                float reduceBy;
+
+                reduceBy = Float.valueOf(String.valueOf(standardWIDTH + ".0f")) / Float.valueOf(String.valueOf(bitmap.getWidth() + ".0f"));
+                if(reduceBy > 1)
+                    reduceBy = 1;
+                int finalWidth = (int)(bitmap.getWidth() * reduceBy);
+                int finalHeight = (int)(bitmap.getHeight() * reduceBy);
+
+                Bitmap finalBitmap = Bitmap.createScaledBitmap(bitmap, finalWidth, finalHeight, true);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                finalIMGByte = baos.toByteArray();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public Boolean isImageAdded(){
+        return finalIMGByte != null;
     }
 
     public boolean checkFields(){
@@ -145,7 +245,7 @@ public class AddRentFragment extends Fragment {
         if(TextUtils.isEmpty(description.getText())) {
             description.setError(getString(R.string.error_field_required));
             return false;
-        }else if(description.getText().length()<60){
+        }else if(description.getText().length()<30){
             description.setError(getString(R.string.error_desc_short));
             return false;
         }else

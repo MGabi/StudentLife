@@ -20,4 +20,20 @@ public class User {
         this.secName = secName;
         this.age = age;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSecName() {
+        return secName;
+    }
+
+    public String getAge() {
+        return age;
+    }
 }

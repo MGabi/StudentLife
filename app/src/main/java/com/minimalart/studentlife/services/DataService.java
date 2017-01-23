@@ -1,13 +1,22 @@
 package com.minimalart.studentlife.services;
 
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
+import android.util.Log;
+
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.minimalart.studentlife.adapters.FoodZoneAdapter;
 import com.minimalart.studentlife.adapters.RentAnnounceAdapter;
 import com.minimalart.studentlife.models.CardContact;
+import com.minimalart.studentlife.models.CardFoodZone;
 import com.minimalart.studentlife.models.CardRentAnnounce;
 
 import java.util.ArrayList;
@@ -17,15 +26,11 @@ import java.util.ArrayList;
  */
 public class DataService {
 
-    private static final String RENT_TITLE = "title";
-    private static final String RENT_PRICE = "price";
-    private static final String RENT_ROOMS = "rooms";
-    private static final String RENT_LOCATION = "location";
-    private static final String RENT_DESCRIPTION = "description";
-    private static final String RENT_CHECKED = "checked";
-    private static final String RENT_UID = "userUID";
+    private static final String REF_RENT = "rent-announces";
+    private static final String REF_FOOD = "food-announces";
 
-    private RentAnnounceAdapter callbackAdapter;
+    private RentAnnounceAdapter callbackAdapterRent;
+    private FoodZoneAdapter callbackAdapterFood;
 
     private static DataService ourInstance = new DataService();
 
@@ -37,16 +42,25 @@ public class DataService {
 
     }
 
-    public void registerCallbackAdapter(RentAnnounceAdapter callbackAdapter) {
-        this.callbackAdapter = callbackAdapter;
+    public void registerCallbackAdapterRent(RentAnnounceAdapter callbackAdapter) {
+        this.callbackAdapterRent = callbackAdapter;
     }
 
-    public void unregisterCallbackAdapter() {
-        if (callbackAdapter != null) {
-            callbackAdapter = null;
+    public void unregisterCallbackAdapterRent() {
+        if (callbackAdapterRent != null) {
+            callbackAdapterRent = null;
         }
     }
 
+    public void registerCallbackAdapterFood(FoodZoneAdapter callbackAdapter) {
+        this.callbackAdapterFood = callbackAdapter;
+    }
+
+    public void unregisterCallbackAdapterFood() {
+        if (callbackAdapterFood != null) {
+            callbackAdapterFood = null;
+        }
+    }
     public ArrayList<CardContact> getContactFragItems() {
         ArrayList<CardContact> list = new ArrayList<>();
 
@@ -60,18 +74,19 @@ public class DataService {
     @SuppressWarnings("unchecked")
     public ArrayList<CardRentAnnounce> getRentAnnounces() {
         final ArrayList<CardRentAnnounce> cardRentAnnounces = new ArrayList<>();
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child("rent-announces");
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child(REF_RENT);
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         CardRentAnnounce card = ds.getValue(CardRentAnnounce.class);
+                        card.setAnnounceID(ds.getKey());
                         cardRentAnnounces.add(card);
                     }
                 }
-                if (callbackAdapter != null) {
-                    callbackAdapter.notifyDataSetChanged();
+                if (callbackAdapterRent != null) {
+                    callbackAdapterRent.notifyDataSetChanged();
                 }
             }
 
@@ -82,5 +97,44 @@ public class DataService {
         });
 
         return cardRentAnnounces;
+    }
+
+    @SuppressWarnings("unchecked")
+    public ArrayList<CardFoodZone> getFood(){
+        final ArrayList<CardFoodZone> cardFoodZones = new ArrayList<>();
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child(REF_FOOD);
+        dbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot != null){
+                    for (DataSnapshot ds : dataSnapshot.getChildren()){
+                        CardFoodZone card = ds.getValue(CardFoodZone.class);
+                        card.setFoodID(ds.getKey());
+                        cardFoodZones.add(card);
+                    }
+                    if (callbackAdapterFood != null) {
+                        callbackAdapterFood.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        return cardFoodZones;
+    }
+
+    public boolean isConnectedToNetwork(Context context) {
+        try {
+            ConnectivityManager connectivityManager
+                    = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

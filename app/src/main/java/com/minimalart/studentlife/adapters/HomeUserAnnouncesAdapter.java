@@ -21,33 +21,32 @@ import com.minimalart.studentlife.models.CardRentAnnounce;
 import java.util.ArrayList;
 
 /**
- * Created by ytgab on 17.12.2016.
+ * Created by ytgab on 23.01.2017.
  */
 
-public class RentAnnounceAdapter extends RecyclerView.Adapter<RentAnnounceAdapter.RentAnnounceViewHolder> {
+public class HomeUserAnnouncesAdapter extends RecyclerView.Adapter<HomeUserAnnouncesAdapter.HomeUserAnnouncesViewHolder>{
 
     private ArrayList<CardRentAnnounce> cardRentAnnounceArrayList;
     private Context context;
 
-    public RentAnnounceAdapter(ArrayList<CardRentAnnounce> cardRentAnnounceArrayList, Context context) {
+    public HomeUserAnnouncesAdapter(ArrayList<CardRentAnnounce> cardRentAnnounceArrayList, Context context) {
         this.cardRentAnnounceArrayList = cardRentAnnounceArrayList;
         this.context = context;
     }
 
     @Override
-    public RentAnnounceViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View announceCard = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_frag_search_rent, parent, false);
+    public HomeUserAnnouncesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View announceCard = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_home_user_announces, parent, false);
 
-        return new RentAnnounceViewHolder(announceCard);
+        return new HomeUserAnnouncesAdapter.HomeUserAnnouncesViewHolder(announceCard);
     }
 
     @Override
-    public void onBindViewHolder(RentAnnounceViewHolder holder, int position) {
-
+    public void onBindViewHolder(HomeUserAnnouncesViewHolder holder, int position) {
         final CardRentAnnounce cardRentAnnounce = cardRentAnnounceArrayList.get(position);
         holder.updateUI(cardRentAnnounce);
 
-        MaterialRippleLayout mlr = (MaterialRippleLayout)holder.itemView.findViewById(R.id.search_ripple);
+        MaterialRippleLayout mlr = (MaterialRippleLayout)holder.itemView.findViewById(R.id.search_home_ripple);
         mlr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,7 +64,7 @@ public class RentAnnounceAdapter extends RecyclerView.Adapter<RentAnnounceAdapte
         return cardRentAnnounceArrayList.size();
     }
 
-    public class RentAnnounceViewHolder extends RecyclerView.ViewHolder {
+    public class HomeUserAnnouncesViewHolder extends RecyclerView.ViewHolder{
 
         private TextView rentTitle;
         private TextView rentRooms;
@@ -76,20 +75,15 @@ public class RentAnnounceAdapter extends RecyclerView.Adapter<RentAnnounceAdapte
 
         private static final String REF_RENT_IMAGES = "rent-images";
 
-        public RentAnnounceViewHolder(View itemView) {
+        public HomeUserAnnouncesViewHolder(View itemView) {
             super(itemView);
-            rentTitle = (TextView)itemView.findViewById(R.id.card_search_rent_title);
-            rentRooms = (TextView)itemView.findViewById(R.id.card_search_rent_rooms);
-            rentPrice = (TextView)itemView.findViewById(R.id.card_search_rent_price);
-            rentLocation = (TextView)itemView.findViewById(R.id.card_search_rent_location);
-            rentImage = (ImageView)itemView.findViewById(R.id.card_search_rent_image);
+            rentTitle = (TextView)itemView.findViewById(R.id.card_home_user_announces_title);
+            rentImage = (ImageView)itemView.findViewById(R.id.card_home_user_announces_image);
         }
 
         public void updateUI(CardRentAnnounce cardRentAnnounce){
             getImageURL(cardRentAnnounce.getAnnounceID());
             rentTitle.setText(cardRentAnnounce.getTitle());
-            rentRooms.setText("Nr. camere: " + cardRentAnnounce.getRooms());
-            rentPrice.setText("Pret :" + cardRentAnnounce.getPrice() + " lei");
         }
 
         public void getImageURL(String announceID){

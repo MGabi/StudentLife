@@ -238,6 +238,31 @@
                                 android:textSize="18sp"
                                 android:id="@+id/card_about_material_ripple_txt"/>
 
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="#FF4081"
+                                android:layout_marginTop="12dp">
+
+                            </RelativeLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/frag_about_picasso"
+                                android:layout_marginTop="8dp"
+                                android:textSize="24sp"
+                                android:id="@+id/card_about_picasso"
+                                android:layout_marginBottom="7dp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/frag_about_picasso_license_txt"
+                                android:layout_marginTop="5dp"
+                                android:textSize="18sp"
+                                android:id="@+id/card_about_material_ripple_txt"/>
+
                         </LinearLayout>
 
                     </RelativeLayout>

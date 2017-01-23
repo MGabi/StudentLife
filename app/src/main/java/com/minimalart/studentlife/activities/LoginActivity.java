@@ -9,12 +9,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.minimalart.studentlife.R;
@@ -37,10 +39,26 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        firebaseAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    openMainActivity();
+                }
+            }
+        });
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        if (getIntent().getBooleanExtra("EXIT", false)) {
+            finish();
+        }
         /**
          * Declaring firebase things
          */
@@ -55,6 +73,12 @@ public class LoginActivity extends AppCompatActivity {
             fragmentManager.beginTransaction().add(R.id.activity_main_content, fragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.v("RESUME", "Called from starting first activity");
     }
 
     /**
@@ -105,8 +129,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    Snackbar.make(findViewById(R.id.mainLinearLayout), R.string.login_successful, Snackbar.LENGTH_LONG)
-                            .show();
                     USER_UID = firebaseAuth.getCurrentUser().getUid().toString();
                     openMainActivity();
                 }
@@ -120,7 +142,8 @@ public class LoginActivity extends AppCompatActivity {
 
     public void openMainActivity(){
         Intent intent = new Intent(getBaseContext(), MainActivity.class);
-        startActivity(intent);
+        int reqCODE = 1991;
+        startActivityForResult(intent, reqCODE);
     }
 }
 

@@ -16,6 +16,17 @@
         tools:context="com.minimalart.studentlife.activities.LoginActivity"
         android:id="@+id/add_rent_linearLayout">
 
+        <ImageButton
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="left"
+            android:layout_marginLeft="-10dp"
+            android:layout_marginTop="-10dp"
+            android:layout_marginBottom="-24dp"
+            android:src="@drawable/ic_close"
+            android:background="@color/full_alpha"
+            android:id="@+id/add_rent_exit_btn"/>
+
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/add_rent_scrollview"
             android:layout_width="match_parent"

@@ -10,29 +10,101 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v4.widget.NestedScrollView
+        <android.support.v4.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/standard_padding">
+            android:layout_height="match_parent"
+            android:id="@+id/swipeLayoutHome">
 
-            <LinearLayout
+            <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/home_text_name"
-                    android:paddingLeft="@dimen/standard_padding"
-                    android:paddingRight="@dimen/standard_padding"
-                    android:textSize="20dp"
-                    android:text="Salut, Nume."/>
+                    android:orientation="vertical">
 
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/home_text_name"
+                        android:padding="@dimen/standard_padding"
+                        android:textSize="20sp"
+                        android:text="Salut, Nume."/>
 
-        </android.support.v4.widget.NestedScrollView>
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        card:cardElevation="@dimen/card_elevation"
+                        card:cardCornerRadius="@dimen/card_elevation"
+                        android:layout_marginLeft="@dimen/card_margin_left"
+                        android:layout_marginRight="@dimen/card_margin_right"
+                        android:layout_marginBottom="@dimen/card_margin_bottom">
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="16sp"
+                                android:padding="10dp"
+                                android:text="Anunțurile tale"/>
+
+                            <android.support.v7.widget.RecyclerView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:id="@+id/home_my_rents_recyclerview">
+
+                            </android.support.v7.widget.RecyclerView>
+
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        card:cardElevation="@dimen/card_elevation"
+                        card:cardCornerRadius="@dimen/card_elevation"
+                        android:layout_marginTop="@dimen/card_margin_bottom"
+                        android:layout_marginLeft="@dimen/card_margin_left"
+                        android:layout_marginRight="@dimen/card_margin_right"
+                        android:layout_marginBottom="@dimen/card_margin_bottom">
+
+                        <com.balysv.materialripple.MaterialRippleLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="16sp"
+                                    android:padding="10dp"
+                                    android:text="Ofertele tale"/>
+
+                                <android.support.v7.widget.RecyclerView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:id="@+id/home_food_recyclerview">
+
+                                </android.support.v7.widget.RecyclerView>
+
+                            </LinearLayout>
+
+                        </com.balysv.materialripple.MaterialRippleLayout>
+                    </android.support.v7.widget.CardView>
+
+                </LinearLayout>
+
+            </android.support.v4.widget.NestedScrollView>
+        </android.support.v4.widget.SwipeRefreshLayout>
     </RelativeLayout>
 
 </FrameLayout>

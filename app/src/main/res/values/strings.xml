@@ -20,6 +20,9 @@
     <string name="error_bad_age_short">Vârsta este obligatorie</string>
     <string name="error_bad_age">Vârsta este prea mică</string>
     <string name="error_network_connection">Porneste conexiunea de date si redeschide aplicatia</string>
+    <string name="error_no_network_connection">Nu ai acces la internet</string>
+    <string name="error_unknown">A apărut o eroare. Verifică conexiunea la internet si reporneste aplicația.</string>
+    <string name="error_no_image">Trebuie să adaugi o imagine.</string>
     <string name="action_sign_up"><u>Nu ai cont? Înregistrează-te!</u></string>
     <string name="action_sign_up_firebase">Inregistrează-te</string>
     <string name="action_sign_in">Intră în cont</string>
@@ -35,8 +38,9 @@
     <string name="nav_action_add_food">Alertă masă ieftină</string>
     <string name="nav_item_about">Despre</string>
     <string name="nav_item_contact">Contact</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="nav_item_logout">Ieșire</string>
+    <string name="rent_added_success">Anunț adăugat cu succes</string>
+    <string name="food_added_success">Ofertă adăugată cu succes</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="frag_contact_name">Dezvoltator</string>
@@ -97,7 +101,23 @@ See the License for the specific language governing permissions and
 limitations under the License.
     </string>
 
+    <string name="frag_about_picasso">Picasso</string>
+    <string name="frag_about_picasso_license_txt">
+        \t\tCopyright (&#169;) 2013 Square, Inc.\n\n
+\tLicensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at\n\n\t\t\thttp://www.apache.org/licenses/LICENSE-2.0
+
+\tUnless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+    </string>
     <string name="frag_search_rent_hint">Caută...</string>
+
+    <string name="choose_browser">Alege rowserul</string>
+
 
 
 </resources>
