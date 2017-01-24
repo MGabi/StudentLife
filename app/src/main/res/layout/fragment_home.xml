@@ -52,7 +52,9 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="16sp"
                                 android:padding="10dp"
-                                android:text="Anunțurile tale"/>
+                                android:text="Anunțurile tale"
+                                android:textStyle="bold"
+                                android:textColor="@color/colorAccent"/>
 
                             <android.support.v7.widget.RecyclerView
                                 android:layout_width="match_parent"
@@ -86,7 +88,9 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="16sp"
                                 android:padding="10dp"
-                                android:text="Alertele tale de masa"/>
+                                android:text="Alertele tale de masa"
+                                android:textStyle="bold"
+                                android:textColor="@color/colorAccent"/>
 
                             <android.support.v7.widget.RecyclerView
                                 android:layout_width="match_parent"

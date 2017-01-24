@@ -1,11 +1,15 @@
 package com.minimalart.studentlife.fragments.navdrawer;
 
 
+import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -64,9 +68,7 @@ public class SearchRentFragment extends Fragment {
         rentAnnounceAdapter = new RentAnnounceAdapter(new ArrayList<CardRentAnnounce>(), getContext());
         rentRecyclerView.setAdapter(rentAnnounceAdapter);
         rentAnnounceAdapter.loadNewData(DataService.getInstance().getRentAnnounces());
-        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.card_grid_spacing);
-        rentRecyclerView.addItemDecoration(new SpaceVerticalItemDecoration(spacingInPixels));
-
+        rentRecyclerView.addItemDecoration(new DividerItemDecoration(rentRecyclerView.getContext(), llm.getOrientation()));
         swipe.setColorSchemeResources(R.color.colorAccent ,R.color.colorPrimary, R.color.colorPrimaryDark);
 
         swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -89,5 +91,35 @@ public class SearchRentFragment extends Fragment {
     public void onStop() {
         super.onStop();
         DataService.getInstance().unregisterCallbackAdapterRent();
+    }
+}
+
+class ItemSeparatorDecorator extends RecyclerView.ItemDecoration {
+
+    private Drawable drawable;
+
+    public ItemSeparatorDecorator(Context context) {
+        drawable = context.getResources().getDrawable(R.drawable.line_separator);
+    }
+
+    @Override
+    public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
+        super.onDrawOver(c, parent, state);
+
+        int left = parent.getPaddingLeft();
+        int right = parent.getWidth() - parent.getPaddingRight();
+
+        int childCount = parent.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View child = parent.getChildAt(i);
+
+            RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+
+            int top = child.getBottom() + params.bottomMargin;
+            int bottom = top + drawable.getIntrinsicHeight();
+
+            drawable.setBounds(left, top, right, bottom);
+            drawable.draw(c);
+        }
     }
 }

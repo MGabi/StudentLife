@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity
     private DatabaseReference databaseReference;
     private Fragment fragment;
     private Fragment viewRentDetailedFragment;
+    private AppBarLayout appBarLayout;
     /**
      * Titles for navdrawer items
      */
@@ -90,7 +92,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        appBarLayout = (AppBarLayout)findViewById(R.id.appbar_main);
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
 
@@ -187,6 +189,12 @@ public class MainActivity extends AppCompatActivity
                 t = 0;
         }
         toolbar.setTitle(TITLES[t]);
+
+        if(t == 0)
+            appBarLayout.setElevation(4);
+        else
+            appBarLayout.setElevation(0);
+
         if (needToolbar)
             fragmentManager.beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)

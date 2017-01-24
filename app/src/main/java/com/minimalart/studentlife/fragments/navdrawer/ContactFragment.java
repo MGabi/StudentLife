@@ -4,6 +4,7 @@ package com.minimalart.studentlife.fragments.navdrawer;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -46,34 +47,8 @@ public class ContactFragment extends Fragment {
         contactRecyclerView.setLayoutManager(llm);
         ContactAdapter contactAdapter = new ContactAdapter(DataService.getInstance().getContactFragItems(), getContext());
         contactRecyclerView.setAdapter(contactAdapter);
-        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.card_grid_spacing);
-        contactRecyclerView.addItemDecoration(new SpaceVerticalItemDecoration(spacingInPixels));
+        contactRecyclerView.addItemDecoration(new DividerItemDecoration(contactRecyclerView.getContext(), llm.getOrientation()));
         return view;
     }
 
-}
-
-class SpaceVerticalItemDecoration extends RecyclerView.ItemDecoration {
-    private int space;
-
-    public SpaceVerticalItemDecoration(int space) {
-        this.space = space;
-    }
-
-    @Override
-    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        super.getItemOffsets(outRect, view, parent, state);
-
-        int position = parent.getChildLayoutPosition(view);
-
-        outRect.left = space;
-        outRect.right = space;
-        outRect.bottom = space;
-
-        if (position == 0){
-            outRect.top = space;
-        } else{
-            outRect.top = 0;
-        }
-    }
 }
