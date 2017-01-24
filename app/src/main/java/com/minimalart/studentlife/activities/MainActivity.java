@@ -2,6 +2,7 @@ package com.minimalart.studentlife.activities;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -13,9 +14,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -58,6 +62,8 @@ public class MainActivity extends AppCompatActivity
     private FragmentManager fragmentManager;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
+    private Fragment fragment;
+    private Fragment viewRentDetailedFragment;
     /**
      * Titles for navdrawer items
      */
@@ -99,16 +105,17 @@ public class MainActivity extends AppCompatActivity
         fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentById(R.id.content_main);
 
-        if(fragment == null){
+        if (fragment == null) {
             fragment = HomeFragment.newInstance();
             fragmentManager.beginTransaction().add(R.id.content_main, fragment).commit();
             toolbar.setTitle(TITLES[0]);
         }
     }
 
-    public void showUser(User user){
+    public void showUser(User user) {
         Log.v("DSREF", user.getName() + ", " + user.getSecName() + ", " + user.getEmail() + ", " + user.getAge());
     }
+
     /**
      * Handling the action on pressing the back button
      */
@@ -117,12 +124,10 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if(fragmentManager.getBackStackEntryCount() != 0){
+        } else if (fragmentManager.getBackStackEntryCount() != 0) {
             //fragmentManager.popBackStack();
-            toolbar.setVisibility(View.VISIBLE);
             super.onBackPressed();
-        }
-        else {
+        } else {
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra("EXIT", true);
@@ -132,67 +137,67 @@ public class MainActivity extends AppCompatActivity
 
     /**
      * Loading the navmenu fragment by clicking drawer-items
+     *
      * @param ID : ID of the clicked button
      */
-    public void loadNavMenuFragments(int ID){
-        Fragment fragment;
+    public void loadNavMenuFragments(int ID) {
         boolean needToolbar = true;
         int t = 0;
-        switch(ID){
+        switch (ID) {
             case R.id.nav_home:
                 fragment = HomeFragment.newInstance();
-                t=0;
+                t = 0;
                 break;
             case R.id.nav_search_rent:
                 fragment = SearchRentFragment.newInstance();
-                t=1;
+                t = 1;
                 break;
             case R.id.nav_add_rent:
                 fragment = AddRentFragment.newInstance();
                 needToolbar = false;
-                t=2;
+                t = 2;
                 break;
             case R.id.nav_search_food:
                 fragment = FoodZoneFragment.newInstance();
-                t=3;
+                t = 3;
                 break;
             case R.id.nav_add_food:
                 fragment = FoodAlertFragment.newInstance();
                 needToolbar = false;
-                t=4;
+                t = 4;
                 break;
             case R.id.nav_about:
                 fragment = AboutFragment.newInstance();
-                t=5;
+                t = 5;
                 break;
             case R.id.nav_contact:
                 fragment = ContactFragment.newInstance();
-                t=6;
+                t = 6;
                 break;
             case R.id.nav_logout:
                 Toast.makeText(getBaseContext(), "Should be logged out", Toast.LENGTH_LONG).show();
                 FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
                 firebaseAuth.signOut();
                 Intent i = getBaseContext().getPackageManager()
-                        .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+                        .getLaunchIntentForPackage(getBaseContext().getPackageName());
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
             default:
                 fragment = HomeFragment.newInstance();
-                t=0;
+                t = 0;
         }
         toolbar.setTitle(TITLES[t]);
-        if(needToolbar)
+        if (needToolbar)
             fragmentManager.beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .replace(R.id.content_main, fragment)
                     .addToBackStack(null)
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
         else//TODO: modify to open in proper way fragment in no-toolbar frame layout
             fragmentManager.beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .add(R.id.content_main_without_toolbar, fragment)
                     .addToBackStack(null)
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
     }
 
@@ -212,9 +217,10 @@ public class MainActivity extends AppCompatActivity
 
     /**
      * Adding a new rent announcement to the database
+     *
      * @param cardRentAnnounce : current announce to be added
      */
-    public void addNewRentAnnounce(CardRentAnnounce cardRentAnnounce, byte[] image){
+    public void addNewRentAnnounce(CardRentAnnounce cardRentAnnounce, byte[] image) {
         DatabaseReference newRef = databaseReference.child(REF_RENT).push();
         newRef.setValue(cardRentAnnounce);
 
@@ -235,7 +241,7 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    public void addNewFood(CardFoodZone cardFoodZone, byte[] image){
+    public void addNewFood(CardFoodZone cardFoodZone, byte[] image) {
         DatabaseReference newRef = databaseReference.child(REF_FOOD).push();
         newRef.setValue(cardFoodZone);
 
@@ -280,9 +286,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void openRentAnnounceFragment() {
-        OpenRentAnnounceFragment fragment = OpenRentAnnounceFragment.newInstance();
-        fragmentManager.beginTransaction().replace(R.id.content_main_without_toolbar, fragment).addToBackStack(null).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
-        //toolbar.setVisibility(View.GONE);
+    public void openRentAnnounceFragment(CardRentAnnounce cardRentAnnounce) {
+        viewRentDetailedFragment = OpenRentAnnounceFragment.newInstance(cardRentAnnounce);
+        fragmentManager.beginTransaction()
+                .replace(R.id.content_main_without_toolbar, viewRentDetailedFragment)
+                .addToBackStack(null)
+                .commit();
     }
 }

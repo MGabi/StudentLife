@@ -66,13 +66,14 @@
             </LinearLayout>
 
             <ImageView
+                android:id="@+id/card_search_rent_image"
                 android:layout_width="120dp"
                 android:layout_height="match_parent"
-                android:src="@drawable/apartment_inside"
-                android:id="@+id/card_search_rent_image"
                 android:scaleType="centerCrop"
-                android:adjustViewBounds="true"
-                android:layout_alignParentRight="true"/>
+                android:fitsSystemWindows="true"
+                android:src="@drawable/apartment_inside"
+                android:layout_alignParentRight="true"
+                android:transitionName="imageTransition"/>
 
         </RelativeLayout>
 

@@ -1,10 +1,12 @@
 package com.minimalart.studentlife.models;
 
+import java.io.Serializable;
+
 /**
  * Created by ytgab on 17.12.2016.
  */
 
-public class CardRentAnnounce {
+public class CardRentAnnounce implements Serializable {
     private String userUID;
     private String title;
     private String rooms;

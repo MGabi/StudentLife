@@ -52,7 +52,7 @@ public class RentAnnounceAdapter extends RecyclerView.Adapter<RentAnnounceAdapte
         mlr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity)context).openRentAnnounceFragment();
+                ((MainActivity)context).openRentAnnounceFragment(cardRentAnnounce);
             }
         });
     }

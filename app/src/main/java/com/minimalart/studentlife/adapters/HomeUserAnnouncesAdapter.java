@@ -3,7 +3,6 @@ package com.minimalart.studentlife.adapters;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +15,7 @@ import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.minimalart.studentlife.R;
+import com.minimalart.studentlife.activities.MainActivity;
 import com.minimalart.studentlife.models.CardRentAnnounce;
 
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ public class HomeUserAnnouncesAdapter extends RecyclerView.Adapter<HomeUserAnnou
         mlr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.v("HOLDERCLICK", "Clicked;");
+                ((MainActivity)context).openRentAnnounceFragment(cardRentAnnounce);
             }
         });
     }
@@ -72,6 +72,7 @@ public class HomeUserAnnouncesAdapter extends RecyclerView.Adapter<HomeUserAnnou
         private TextView rentLocation;
         private ImageView rentImage;
         private Uri uri;
+        StorageReference storageReference;
 
         private static final String REF_RENT_IMAGES = "rent-images";
 
@@ -88,7 +89,7 @@ public class HomeUserAnnouncesAdapter extends RecyclerView.Adapter<HomeUserAnnou
 
         public void getImageURL(String announceID){
             FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-            StorageReference storageReference = firebaseStorage.getReference().child(REF_RENT_IMAGES).child(announceID);
+            storageReference = firebaseStorage.getReference().child(REF_RENT_IMAGES).child(announceID);
 
             Glide.with(context).using(new FirebaseImageLoader()).load(storageReference).into(rentImage);
         }
