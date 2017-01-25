@@ -29,8 +29,6 @@ import java.util.ArrayList;
 
 public class SearchRentFragment extends Fragment {
 
-    private ImageButton searchBtn;
-    private EditText searchTextField;
     private RecyclerView rentRecyclerView;
     private RentAnnounceAdapter rentAnnounceAdapter;
     private SwipeRefreshLayout swipe;
@@ -56,8 +54,6 @@ public class SearchRentFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search_rent, container, false);
 
-        searchBtn = (ImageButton)view.findViewById(R.id.img_search_rent_search);
-        searchTextField = (EditText)view.findViewById(R.id.search_rent_textfield);
         rentRecyclerView = (RecyclerView)view.findViewById(R.id.frag_search_rent_recyclerview);
         swipe = (SwipeRefreshLayout)view.findViewById(R.id.frag_search_swipe_layout);
 
@@ -91,35 +87,5 @@ public class SearchRentFragment extends Fragment {
     public void onStop() {
         super.onStop();
         DataService.getInstance().unregisterCallbackAdapterRent();
-    }
-}
-
-class ItemSeparatorDecorator extends RecyclerView.ItemDecoration {
-
-    private Drawable drawable;
-
-    public ItemSeparatorDecorator(Context context) {
-        drawable = context.getResources().getDrawable(R.drawable.line_separator);
-    }
-
-    @Override
-    public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
-        super.onDrawOver(c, parent, state);
-
-        int left = parent.getPaddingLeft();
-        int right = parent.getWidth() - parent.getPaddingRight();
-
-        int childCount = parent.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            View child = parent.getChildAt(i);
-
-            RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
-
-            int top = child.getBottom() + params.bottomMargin;
-            int bottom = top + drawable.getIntrinsicHeight();
-
-            drawable.setBounds(left, top, right, bottom);
-            drawable.draw(c);
-        }
     }
 }

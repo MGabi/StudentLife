@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.content_main, fragment)
                     .addToBackStack(null)
                     .commit();
-        else//TODO: modify to open in proper way fragment in no-toolbar frame layout
+        else
             fragmentManager.beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .add(R.id.content_main_without_toolbar, fragment)
