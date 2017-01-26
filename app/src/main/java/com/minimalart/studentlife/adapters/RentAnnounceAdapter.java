@@ -61,6 +61,10 @@ public class RentAnnounceAdapter extends RecyclerView.Adapter<RentAnnounceAdapte
         cardRentAnnounceArrayList = list;
     }
 
+    public ArrayList<CardRentAnnounce> getList(){
+        return cardRentAnnounceArrayList;
+    }
+
     @Override
     public int getItemCount() {
         return cardRentAnnounceArrayList.size();
@@ -86,11 +90,12 @@ public class RentAnnounceAdapter extends RecyclerView.Adapter<RentAnnounceAdapte
             rentImage = (ImageView)itemView.findViewById(R.id.card_search_rent_image);
         }
 
-        public void updateUI(CardRentAnnounce cardRentAnnounce){
-            getImageURL(cardRentAnnounce.getAnnounceID());
-            rentTitle.setText(cardRentAnnounce.getTitle());
-            rentRooms.setText("Nr. camere: " + cardRentAnnounce.getRooms());
-            rentPrice.setText("Pret :" + cardRentAnnounce.getPrice() + " lei");
+        public void updateUI(CardRentAnnounce currentAnnounce){
+            getImageURL(currentAnnounce.getAnnounceID());
+            rentTitle.setText(currentAnnounce.getTitle());
+            rentRooms.setText(context.getResources().getString(R.string.open_rent_rooms, currentAnnounce.getRooms()));
+            rentPrice.setText(context.getResources().getString(R.string.open_rent_price, currentAnnounce.getPrice()));
+            rentLocation.setText(context.getResources().getString(R.string.open_rent_location, currentAnnounce.getLocation()));
         }
 
         public void getImageURL(String announceID){

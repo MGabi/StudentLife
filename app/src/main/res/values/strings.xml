@@ -119,4 +119,16 @@ limitations under the License.
     <string name="choose_browser">Alege rowserul</string>
 
 
+    <string name="open_rent_description">Descriere: %1$s</string>
+    <string name="open_rent_title">Titlu: %1$s</string>
+    <string name="open_rent_price">Preț: %1$s lei \\ lună</string>
+    <string name="open_rent_rooms">Număr camere: %1$s</string>
+    <string name="open_rent_location">Locație: %1$s</string>
+    <string name="open_rent_seller">Acest anunț a fost postat de către utilizatorul: %1$s</string>
+    <string name="open_rent_discount_checked">Acest vânzător OFERĂ un discount dacă ești student!</string>
+    <string name="open_rent_discount_unchecked">Acest vânzător NU OFERĂ un discount dacă ești student!</string>
+
+    <string name="open_food_price">Preț: %1$s lei</string>
+
+
 </resources>

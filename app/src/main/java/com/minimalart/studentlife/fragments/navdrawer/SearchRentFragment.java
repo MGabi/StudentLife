@@ -12,6 +12,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.arlib.floatingsearchview.FloatingSearchView;
 import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.adapters.RentAnnounceAdapter;
 import com.minimalart.studentlife.models.CardRentAnnounce;
@@ -32,6 +34,7 @@ public class SearchRentFragment extends Fragment {
     private RecyclerView rentRecyclerView;
     private RentAnnounceAdapter rentAnnounceAdapter;
     private SwipeRefreshLayout swipe;
+    private FloatingSearchView floatingSearchView;
 
     public SearchRentFragment() {
     }
@@ -56,6 +59,7 @@ public class SearchRentFragment extends Fragment {
 
         rentRecyclerView = (RecyclerView)view.findViewById(R.id.frag_search_rent_recyclerview);
         swipe = (SwipeRefreshLayout)view.findViewById(R.id.frag_search_swipe_layout);
+        floatingSearchView = (FloatingSearchView)view.findViewById(R.id.search_rent_searchview);
 
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -74,6 +78,26 @@ public class SearchRentFragment extends Fragment {
                 swipe.setRefreshing(false);
             }
         });
+
+        floatingSearchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
+            @Override
+            public void onSearchTextChanged(String oldQuery, String newQuery) {
+                ArrayList<CardRentAnnounce> newList = new ArrayList<>();
+                Log.v("CARDLIST", String.valueOf(rentAnnounceAdapter.getList().size()));
+                for(CardRentAnnounce card : rentAnnounceAdapter.getList()){
+                    if(card.getTitle().toLowerCase().contains(newQuery.toLowerCase()) ||
+                            card.getPrice().toLowerCase().contains(newQuery.toLowerCase()) ||
+                            card.getRooms().toLowerCase().contains(newQuery.toLowerCase()) ||
+                            card.getLocation().toLowerCase().contains(newQuery.toLowerCase()) ||
+                            card.getDescription().toLowerCase().contains(newQuery.toLowerCase()))
+                        newList.add(card);
+                }
+
+                rentAnnounceAdapter.loadNewData(newList);
+                rentAnnounceAdapter.notifyDataSetChanged();
+            }
+        });
+
         return view;
     }
 

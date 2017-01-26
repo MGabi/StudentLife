@@ -85,8 +85,8 @@ public class FoodZoneAdapter extends RecyclerView.Adapter<FoodZoneAdapter.FoodZo
         public void updateUI(CardFoodZone cardFoodZone){
             getImageURL(cardFoodZone.getFoodID());
             foodTitle.setText(cardFoodZone.getFoodTitle());
-            foodPrice.setText("Pret: " + cardFoodZone.getFoodPrice() + " lei");
-            foodDesc.setText("Descriere: " + cardFoodZone.getFoodDesc());
+            foodPrice.setText(context.getResources().getString(R.string.open_food_price, cardFoodZone.getFoodPrice()));
+            foodDesc.setText(context.getResources().getString(R.string.open_rent_description, cardFoodZone.getFoodDesc()));
         }
 
         public void getImageURL(String announceID){
