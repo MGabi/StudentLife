@@ -61,6 +61,10 @@ public class DataService {
             callbackAdapterFood = null;
         }
     }
+
+    /**
+     * @return the list with contact cards for About fragment
+     */
     public ArrayList<CardContact> getContactFragItems() {
         ArrayList<CardContact> list = new ArrayList<>();
 
@@ -71,6 +75,10 @@ public class DataService {
         return list;
     }
 
+    /**
+     * Downloading rent announces from firebase database
+     * @return a list with current announces in database
+     */
     @SuppressWarnings("unchecked")
     public ArrayList<CardRentAnnounce> getRentAnnounces() {
         final ArrayList<CardRentAnnounce> cardRentAnnounces = new ArrayList<>();
@@ -99,6 +107,10 @@ public class DataService {
         return cardRentAnnounces;
     }
 
+    /**
+     * Downloading food announces from firebase database
+     * @return a list with current foods in database
+     */
     @SuppressWarnings("unchecked")
     public ArrayList<CardFoodZone> getFood(){
         final ArrayList<CardFoodZone> cardFoodZones = new ArrayList<>();
@@ -127,6 +139,11 @@ public class DataService {
         return cardFoodZones;
     }
 
+    /**
+     * Checking if app is connected to network
+     * @param context : context of the current activity/fragment in which this method is called
+     * @return the state of the network connection : true if it is connected, false if not
+     */
     public boolean isConnectedToNetwork(Context context) {
         try {
             ConnectivityManager connectivityManager

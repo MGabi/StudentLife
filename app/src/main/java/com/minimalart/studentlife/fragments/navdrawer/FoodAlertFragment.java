@@ -62,6 +62,17 @@ public class FoodAlertFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_food_alert, container, false);
 
+        initializeViews(view);
+        setClickListeners();
+
+        return view;
+    }
+
+    /**
+     * Initializing the necessary views
+     * @param view : context view, responsible for findViewById method
+     */
+    public void initializeViews(View view){
         title = (TextView) view.findViewById(R.id.food_title);
         desc = (TextView) view.findViewById(R.id.food_description);
         price = (TextView) view.findViewById(R.id.food_price);
@@ -71,6 +82,13 @@ public class FoodAlertFragment extends Fragment {
         studentCheckBox = (CheckBox) view.findViewById(R.id.food_alert_checkbox);
         exitBtn = (ImageButton) view.findViewById(R.id.food_alert_exit_btn);
         finalIMGByte = null;
+    }
+
+    /**
+     * Setting click listeners for every button
+     * and defining personal action for any of them
+     */
+    public void setClickListeners(){
         postFoodBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -118,9 +136,13 @@ public class FoodAlertFragment extends Fragment {
                 ab.show();
             }
         });
-        return view;
     }
 
+    /**
+     * Opening a chooser activity for grabbing an image from the phone media
+     * This intent will allow only images to be displayed
+     * This intent allow choosing only one image
+     */
     public void openImageChooser(){
         Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
         getIntent.setType("image/*");
@@ -134,6 +156,12 @@ public class FoodAlertFragment extends Fragment {
         startActivityForResult(chooserIntent, PICK_IMAGE);
     }
 
+    /**
+     * Callback for imageChooser activity
+     * @param requestCode : initial code which was used to start the intent ( PICK_IMAGE )
+     * @param resultCode : result code of the activity
+     * @param data : an intent with the result of choosing images from phone
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -165,10 +193,16 @@ public class FoodAlertFragment extends Fragment {
         }
     }
 
+    /**
+     * @return if image was retrieved from phone
+     */
     public Boolean isImageAdded(){
         return finalIMGByte != null;
     }
 
+    /**
+     * @return the integrity of fields
+     */
     public boolean checkFields(){
         boolean fieldsGood = true;
         if(!checkTitle())
@@ -184,6 +218,9 @@ public class FoodAlertFragment extends Fragment {
         return true;
     }
 
+    /**
+     * @return true if title is good, and false if title is too short
+     */
     public boolean checkTitle(){
         if(TextUtils.isEmpty(title.getText())){
             title.setError(getString(R.string.error_field_required));
@@ -196,6 +233,9 @@ public class FoodAlertFragment extends Fragment {
 
     }
 
+    /**
+     * @return true if the price is not null
+     */
     public boolean checkPrice(){
         if(TextUtils.isEmpty(price.getText())){
             price.setError(getString(R.string.error_field_required));
@@ -204,6 +244,9 @@ public class FoodAlertFragment extends Fragment {
             return true;
     }
 
+    /**
+     * @return true if location is good ( in lenght )
+     */
     public boolean checkLocation(){
         if(TextUtils.isEmpty(restaurant.getText())) {
             restaurant.setError(getString(R.string.error_field_required));
@@ -215,6 +258,9 @@ public class FoodAlertFragment extends Fragment {
             return true;
     }
 
+    /**
+     * @return true if the announce has a detailed description
+     */
     public boolean checkDescription(){
         if(TextUtils.isEmpty(desc.getText())) {
             desc.setError(getString(R.string.error_field_required));

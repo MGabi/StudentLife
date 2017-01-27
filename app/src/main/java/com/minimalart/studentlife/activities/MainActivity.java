@@ -65,12 +65,13 @@ public class MainActivity extends AppCompatActivity
     private FragmentManager fragmentManager;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
-    private Fragment fragment;
+    private Fragment fragment = null;
     private Fragment viewRentDetailedFragment;
     private Fragment viewFoodDetailedFragment;
     private AppBarLayout appBarLayout;
     private TextView headerName;
     private TextView headerEmail;
+
     /**
      * Titles for navdrawer items
      */
@@ -84,6 +85,9 @@ public class MainActivity extends AppCompatActivity
             "Contact"
     };
 
+    /**
+     * initializing basic views
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -186,9 +190,17 @@ public class MainActivity extends AppCompatActivity
                         .getLaunchIntentForPackage(getBaseContext().getPackageName());
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
+                break;
+            case R.id.nav_my_profile:
+                break;
+            case R.id.nav_settings:
+                Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                startActivity(intent);
+                break;
             default:
                 fragment = HomeFragment.newInstance();
                 t = 0;
+                break;
         }
         toolbar.setTitle(TITLES[t]);
 
@@ -197,13 +209,13 @@ public class MainActivity extends AppCompatActivity
         else
             appBarLayout.setElevation(0);
 
-        if (needToolbar)
+        if (needToolbar && fragment != null)
             fragmentManager.beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .replace(R.id.content_main, fragment)
                     .addToBackStack(null)
                     .commit();
-        else
+        else if (fragment != null)
             fragmentManager.beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .add(R.id.content_main_without_toolbar, fragment)
@@ -219,6 +231,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         loadNavMenuFragments(item.getItemId());
 
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
@@ -229,6 +242,7 @@ public class MainActivity extends AppCompatActivity
      * Adding a new rent announcement to the database
      *
      * @param cardRentAnnounce : current announce to be added
+     * @param image : current image in byte-format, ready to be uploaded to cloud storage
      */
     public void addNewRentAnnounce(CardRentAnnounce cardRentAnnounce, byte[] image) {
         DatabaseReference newRef = databaseReference.child(REF_RENT).push();
@@ -251,6 +265,11 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    /**
+     * Adding a new food announce to the database
+     * @param cardFoodZone : current announce to be added
+     * @param image : current image in byte-format, ready to be uploaded to cloud storage
+     */
     public void addNewFood(CardFoodZone cardFoodZone, byte[] image) {
         DatabaseReference newRef = databaseReference.child(REF_FOOD).push();
         newRef.setValue(cardFoodZone);
@@ -271,6 +290,9 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    /**
+     * interface callback for opening GPLUS developer page
+     */
     @Override
     public void openGPLUS() {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(GPLUS_URL));
@@ -278,16 +300,22 @@ public class MainActivity extends AppCompatActivity
         startActivity(chooser);
     }
 
+    /**
+     * interface callback for opening an email intent to developer
+     */
     @Override
     public void openEMAILSender() {
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.setType("plain/text");
         emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"ytgabi98@gmail.com"});
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, DEV_TITLE);
-        Intent chooser = Intent.createChooser(emailIntent, "Trimite e-mail...");
+        Intent chooser = Intent.createChooser(emailIntent, getResources().getString(R.string.email_intent));
         startActivity(chooser);
     }
 
+    /**
+     * interface callback for opening GPLAY developer page
+     */
     @Override
     public void openGPLAY() {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(GPLAY_URL));
@@ -295,6 +323,10 @@ public class MainActivity extends AppCompatActivity
         startActivity(chooser);
     }
 
+    /**
+     * interface callback for opening the detailedViewFragment for rent announces
+     * @param cardRentAnnounce : announce that will be displayed in fragment
+     */
     @Override
     public void openRentAnnounceFragment(CardRentAnnounce cardRentAnnounce) {
         viewRentDetailedFragment = OpenRentAnnounceFragment.newInstance(cardRentAnnounce);
@@ -304,6 +336,10 @@ public class MainActivity extends AppCompatActivity
                 .commit();
     }
 
+    /**
+     * interface callback for opening the detailedViewFragment for food alerts
+     * @param cardFoodZone : alert that will be displayed in fragment
+     */
     @Override
     public void openFoodAnnounce(CardFoodZone cardFoodZone) {
         viewFoodDetailedFragment = OpenFoodAnnounceFragment.newInstance(cardFoodZone);

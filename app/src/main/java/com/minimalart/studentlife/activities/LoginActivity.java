@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,12 +30,6 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
-    private static String USER_UID = "";
-
-    public static LoginActivity newInstance() {
-        LoginActivity activity = new LoginActivity();
-        return activity;
-    }
 
     @Override
     protected void onStart() {
@@ -52,6 +45,9 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * initializing basic views
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,12 +69,6 @@ public class LoginActivity extends AppCompatActivity {
             fragmentManager.beginTransaction().add(R.id.activity_main_content, fragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
         }
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.v("RESUME", "Called from starting first activity");
     }
 
     /**
@@ -140,6 +130,9 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * opening MainActivty when needed
+     */
     public void openMainActivity(){
         Intent intent = new Intent(getBaseContext(), MainActivity.class);
         int reqCODE = 1991;

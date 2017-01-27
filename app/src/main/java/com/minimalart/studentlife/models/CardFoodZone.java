@@ -9,6 +9,10 @@ import java.io.Serializable;
  * Created by ytgab on 11.01.2017.
  */
 
+/**
+ * CardFoodZone item
+ * used for food announces
+ */
 public class CardFoodZone implements Serializable {
 
     private String userUID;

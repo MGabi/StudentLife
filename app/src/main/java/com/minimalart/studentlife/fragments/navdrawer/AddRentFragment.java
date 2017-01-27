@@ -62,6 +62,17 @@ public class AddRentFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_rent, container, false);
 
+        initializeViews(view);
+        setClickListeners();
+
+        return view;
+    }
+
+    /**
+     * Initializing the necessary views
+     * @param view : context view, responsible for findViewById method
+     */
+    public void initializeViews(View view){
         title = (EditText)view.findViewById(R.id.rent_title);
         rooms = (EditText)view.findViewById(R.id.rent_rooms);
         price = (EditText)view.findViewById(R.id.rent_price);
@@ -72,6 +83,13 @@ public class AddRentFragment extends Fragment {
         postOffertBtn = (Button)view.findViewById(R.id.add_rent_button);
         exitBtn = (ImageButton)view.findViewById(R.id.add_rent_exit_btn);
         finalIMGByte = null;
+    }
+
+    /**
+     * Setting click listeners for every view
+     * and defining personal action for any of them
+     */
+    public void setClickListeners(){
 
         postOffertBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,10 +139,13 @@ public class AddRentFragment extends Fragment {
                 ab.show();
             }
         });
-
-        return view;
     }
 
+    /**
+     * Opening a chooser activity for grabbing an image from the phone media
+     * This intent will allow only images to be displayed
+     * This intent allow choosing only one image
+     */
     public void openImageChooser(){
         Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
         getIntent.setType("image/*");
@@ -138,6 +159,12 @@ public class AddRentFragment extends Fragment {
         startActivityForResult(chooserIntent, PICK_IMAGE);
     }
 
+    /**
+     * Callback for imageChooser activity
+     * @param requestCode : initial code which was used to start the intent ( PICK_IMAGE )
+     * @param resultCode : result code of the activity
+     * @param data : an intent with the result of choosing images from phone
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -168,10 +195,16 @@ public class AddRentFragment extends Fragment {
         }
     }
 
+    /**
+     * @return if image was retrieved from phone
+     */
     public Boolean isImageAdded(){
         return finalIMGByte != null;
     }
 
+    /**
+     * @return the integrity of fields
+     */
     public boolean checkFields(){
         boolean fieldsGood = true;
         if(!checkTitle())
@@ -189,6 +222,9 @@ public class AddRentFragment extends Fragment {
         return true;
     }
 
+    /**
+     * @return true if title is good, and false if title is too short
+     */
     public boolean checkTitle(){
         if(TextUtils.isEmpty(title.getText())){
             title.setError(getString(R.string.error_field_required));
@@ -201,6 +237,9 @@ public class AddRentFragment extends Fragment {
 
     }
 
+    /**
+     * @return true if the rooms number is not null or the number is too big
+     */
     public boolean checkRooms(){
         if(TextUtils.isEmpty(rooms.getText())) {
             rooms.setError(getString(R.string.error_field_required));
@@ -212,6 +251,9 @@ public class AddRentFragment extends Fragment {
             return true;
     }
 
+    /**
+     * @return true if the price is not null
+     */
     public boolean checkPrice(){
         if(TextUtils.isEmpty(price.getText())){
             price.setError(getString(R.string.error_field_required));
@@ -220,6 +262,9 @@ public class AddRentFragment extends Fragment {
             return true;
     }
 
+    /**
+     * @return true if location is good ( in lenght )
+     */
     public boolean checkLocation(){
         if(TextUtils.isEmpty(location.getText())) {
             location.setError(getString(R.string.error_field_required));
@@ -231,6 +276,9 @@ public class AddRentFragment extends Fragment {
             return true;
     }
 
+    /**
+     * @return true if the announce has a detailed description
+     */
     public boolean checkDescription(){
         if(TextUtils.isEmpty(description.getText())) {
             description.setError(getString(R.string.error_field_required));

@@ -139,6 +139,11 @@ limitations under the License.
     <string name="add_food_bigtitle">Adaugă alertă</string>
     <string name="title_activity_settings">Settings</string>
 
+    <string name="menu_profile">Profilul tău</string>
+    <string name="menu_settings">Setări</string>
+    <string name="others">Altele</string>
+    <string name="email_intent">Trimite e-mail...</string>
+
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->

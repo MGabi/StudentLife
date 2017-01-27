@@ -6,6 +6,10 @@ import java.io.Serializable;
  * Created by ytgab on 17.12.2016.
  */
 
+/**
+ * CardRentAnnounce item
+ * used for rent announces
+ */
 public class CardRentAnnounce implements Serializable {
     private String userUID;
     private String title;

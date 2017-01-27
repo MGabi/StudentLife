@@ -74,6 +74,9 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Downloads current user data from firebase
+     */
     public void getUserDataFromFirebase(){
         DatabaseReference dbRef;
         try {
@@ -107,13 +110,15 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    /**
+     * Initialize views
+     * @param view : used for findViewById method
+     */
     public void initializeViews(View view){
         name = (TextView) view.findViewById(R.id.home_text_name);
         swipe = (SwipeRefreshLayout) view.findViewById(R.id.swipeLayoutHome);
         cardFood = (CardView) view.findViewById(R.id.card_show_food);
         cardRent = (CardView) view.findViewById(R.id.card_show_rents);
-
-
 
         swipe.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent, R.color.colorPrimaryDark);
 
@@ -153,6 +158,9 @@ public class HomeFragment extends Fragment {
         cardRent.setVisibility(View.GONE);
     }
 
+    /**
+     * Setting up the current user rent announces in home fragment
+     */
     public void setUserAnnounces(){
         final ArrayList<CardRentAnnounce> cardRentAnnounces = new ArrayList<>();
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child(REF_RENT);
@@ -177,6 +185,9 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    /**
+     * Setting up the current user food announces in home fragment
+     */
     public void setUserFood(){
         final ArrayList<CardFoodZone> cardFoodZones = new ArrayList<>();
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child(REF_FOOD);
@@ -202,16 +213,27 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    /**
+     * Updating the adapter for when download process is done, because download is done in another thread
+     * @param cardRentAnnounces : downloaded list
+     */
     public void updateAdapterRent(ArrayList<CardRentAnnounce> cardRentAnnounces){
         this.homeUserAnnouncesAdapter.loadNewData(cardRentAnnounces);
         homeUserAnnouncesAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Updating the adapter for when download process is done, because download is done in another thread
+     * @param cardFoodZones : downloaded list
+     */
     public void updateAdapterFood(ArrayList<CardFoodZone> cardFoodZones){
         this.homeUserFoodAdapter.loadNewData(cardFoodZones);
         homeUserFoodAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Setting up the views;
+     */
     public void setViews(){
         name.setText("Salut, " + getCurrentUser().getName() + ".");
         name.setVisibility(View.VISIBLE);
@@ -220,31 +242,59 @@ public class HomeFragment extends Fragment {
         stopRefreshLayout(swipe);
     }
 
+    /**
+     * Setting current user
+     * @param user : user to be setted
+     */
     public void setCurrentUser(User user){
         this.currentUser = user;
     }
 
+    /**
+     * Getting the current user
+     * @return currentUser
+     */
     public User getCurrentUser(){
         return currentUser;
     }
 
+    /**
+     * Setting current user UID for further usability
+     * @param UID : UID for current user
+     */
     public void setCurrentUserUID(String UID){
         this.currentUserUID = UID;
     }
 
+    /**
+     * Getting the current user UID
+     * @return currentUserUID
+     */
     public String getCurrentUserUID(){
         return currentUserUID;
     }
 
+    /**
+     * Putting refreshLayout in refresh state
+     * @param srf
+     */
     public void showRefreshLayout(SwipeRefreshLayout srf){
         srf.setRefreshing(true);
     }
 
+    /**
+     * Stopping refreshLayout from refreshing
+     * @param srf
+     */
     public void stopRefreshLayout(SwipeRefreshLayout srf){
         srf.setRefreshing(false);
     }
 }
 
+/**
+ * Decorator class for recyclerview
+ * Adds spaces between cards
+ */
 class SpaceHorizontalItemDecoration extends RecyclerView.ItemDecoration {
     private int space;
 

@@ -57,6 +57,17 @@ public class SearchRentFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search_rent, container, false);
 
+        initializeViews(view);
+        setOnClickListeners();
+
+        return view;
+    }
+
+    /**
+     * Initializing basic views
+     * @param view : utilized for findViewById method
+     */
+    public void initializeViews(View view){
         rentRecyclerView = (RecyclerView)view.findViewById(R.id.frag_search_rent_recyclerview);
         swipe = (SwipeRefreshLayout)view.findViewById(R.id.frag_search_swipe_layout);
         floatingSearchView = (FloatingSearchView)view.findViewById(R.id.search_rent_searchview);
@@ -71,6 +82,13 @@ public class SearchRentFragment extends Fragment {
         rentRecyclerView.addItemDecoration(new DividerItemDecoration(rentRecyclerView.getContext(), llm.getOrientation()));
         swipe.setColorSchemeResources(R.color.colorPrimary ,R.color.colorAccent, R.color.colorPrimaryDark);
 
+    }
+
+    /**
+     * Setting click listeners for every button
+     * and defining personal action for any of them
+     */
+    public void setOnClickListeners(){
         swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -97,16 +115,22 @@ public class SearchRentFragment extends Fragment {
                 rentAnnounceAdapter.notifyDataSetChanged();
             }
         });
-
-        return view;
     }
 
+    /**
+     * Registering the callbackAdapter
+     * Is needed for waiting for results when downloading data from database
+     */
     @Override
     public void onStart() {
         super.onStart();
         DataService.getInstance().registerCallbackAdapterRent(rentAnnounceAdapter);
     }
 
+    /**
+     * Unregistering the callback
+     * save memory
+     */
     @Override
     public void onStop() {
         super.onStop();

@@ -4,6 +4,10 @@ package com.minimalart.studentlife.models;
  * Created by ytgab on 11.12.2016.
  */
 
+/**
+ * User item
+ * stores data from current user and any other user needed from database
+ */
 public class User {
     public String email;
     public String name;

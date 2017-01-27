@@ -79,6 +79,10 @@ public class OpenRentAnnounceFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Initializing views
+     * @param view : context for views to be able to find reference for every view
+     */
     public void initViews(View view){
         toolbar = (Toolbar)view.findViewById(R.id.detailed_toolbar);
         image = (ImageView)view.findViewById(R.id.detailed_image);
@@ -94,6 +98,10 @@ public class OpenRentAnnounceFragment extends Fragment {
         sellerUser = null;
     }
 
+    /**
+     * Setting up the views
+     * adding bold style, colors to few of them at runtime
+     */
     public void setViews(){
         toolbar.setTitle(currentAnnounce.getTitle());
         description.setText(getResources().getString(R.string.open_rent_description, currentAnnounce.getDescription()));
@@ -154,6 +162,10 @@ public class OpenRentAnnounceFragment extends Fragment {
         rooms.setText(sp);
     }
 
+    /**
+     * Downloading the seller data from Firebase
+     * @param userUID : user which will have to be retrieved
+     */
     public void downloadSellerCredentials(String userUID){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users").child(userUID);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -170,6 +182,10 @@ public class OpenRentAnnounceFragment extends Fragment {
         });
     }
 
+    /**
+     * Setting up the current seller after finishing the download
+     * @param user : downloaded user
+     */
     public void setSeller(User user){
         this.sellerUser = user;
         seller.setText(getResources().getString(R.string.open_rent_seller, sellerUser.getName() + " " + sellerUser.getSecName()));
@@ -185,6 +201,11 @@ public class OpenRentAnnounceFragment extends Fragment {
         seller.setText(sp);
     }
 
+    /**
+     * Downloading corresponding image from FirebaseStorage for current food announce and setting it
+     * up to the imageView
+     * @param ID : image ID
+     */
     public void setImage(String ID){
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         imgRef = firebaseStorage.getReference().child(REF_RENT_IMAGES).child(ID);

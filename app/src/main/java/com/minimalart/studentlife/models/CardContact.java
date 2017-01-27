@@ -4,6 +4,9 @@ package com.minimalart.studentlife.models;
  * Created by ytgab on 13.12.2016.
  */
 
+/**
+ * CardContact item
+ */
 public class CardContact {
 
     private final String DRAWABLE = "drawable/";

@@ -51,6 +51,17 @@ public class FoodZoneFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_food_zone, container, false);
 
+        initializeViews(view);
+        setOnClickListeners();
+
+        return view;
+    }
+
+    /**
+     * Initializing the necessary views
+     * @param view : context view, responsible for findViewById method
+     */
+    public void initializeViews(View view){
         foodRecyclerView = (RecyclerView)view.findViewById(R.id.frag_food_zone_recyclerview);
         swipe = (SwipeRefreshLayout) view.findViewById(R.id.frag_search_food_swipe);
         searchView = (FloatingSearchView) view.findViewById(R.id.search_food_searchview);
@@ -67,7 +78,13 @@ public class FoodZoneFragment extends Fragment {
 
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.card_grid_spacing);
         foodRecyclerView.addItemDecoration(new SpaceGridItemDecoration(spacingInPixels));
+    }
 
+    /**
+     * Setting click listeners for every view
+     * and defining personal action for any of them
+     */
+    public void setOnClickListeners(){
         swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -93,16 +110,22 @@ public class FoodZoneFragment extends Fragment {
                 foodZoneAdapter.notifyDataSetChanged();
             }
         });
-
-        return view;
     }
 
+    /**
+     * Registering the callbackAdapter
+     * Is needed for waiting for results when downloading data from database
+     */
     @Override
     public void onStart() {
         super.onStart();
         DataService.getInstance().registerCallbackAdapterFood(foodZoneAdapter);
     }
 
+    /**
+     * Unregistering the callback
+     * save memory
+     */
     @Override
     public void onStop() {
         super.onStop();
@@ -111,6 +134,10 @@ public class FoodZoneFragment extends Fragment {
 
 }
 
+/**
+ * Decorator class for recyclerview
+ * Adds spaces between cards
+ */
 class SpaceGridItemDecoration extends RecyclerView.ItemDecoration {
     private int space;
 

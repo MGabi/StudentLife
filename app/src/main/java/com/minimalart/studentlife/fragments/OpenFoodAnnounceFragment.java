@@ -81,6 +81,10 @@ public class OpenFoodAnnounceFragment extends Fragment {
         return v;
     }
 
+    /**
+     * Initializing views
+     * @param v : context for views to be able to find reference for every view
+     */
     public void initViews(View v){
         toolbar = (Toolbar)v.findViewById(R.id.food_detailed_toolbar);
         description = (TextView)v.findViewById(R.id.food_detailed_description);
@@ -95,6 +99,10 @@ public class OpenFoodAnnounceFragment extends Fragment {
         foodUser = null;
     }
 
+    /**
+     * Setting up the views
+     * adding bold style, colors to few of them at runtime
+     */
     public void setViews(){
         toolbar.setTitle(currentFood.getFoodTitle());
         description.setText(getResources().getString(R.string.open_rent_description, currentFood.getFoodDesc()));
@@ -149,6 +157,10 @@ public class OpenFoodAnnounceFragment extends Fragment {
         price.setText(sp);
     }
 
+    /**
+     * Downloading the seller data from Firebase
+     * @param userUID : user which will have to be retrieved
+     */
     public void downloadSellerCredentials(String userUID){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("users").child(userUID);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -165,6 +177,10 @@ public class OpenFoodAnnounceFragment extends Fragment {
         });
     }
 
+    /**
+     * Setting up the current seller after finishing the download
+     * @param user : downloaded user
+     */
     public void setSeller(User user){
         this.foodUser = user;
         seller.setText(getResources().getString(R.string.open_food_seller, foodUser.getName() + " " + foodUser.getSecName()));
@@ -180,6 +196,11 @@ public class OpenFoodAnnounceFragment extends Fragment {
         seller.setText(sp);
     }
 
+    /**
+     * Downloading corresponding image from FirebaseStorage for current food announce and setting it
+     * up to the imageView
+     * @param ID : image ID
+     */
     public void setImage(String ID){
         Log.v("SETIMAGE", ID);
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();

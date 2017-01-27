@@ -22,17 +22,25 @@
             android:id="@+id/nav_add_food"
             android:icon="@drawable/ic_alert"
             android:title="@string/nav_action_add_food"/>
+        <item
+            android:id="@+id/nav_my_profile"
+            android:icon="@drawable/ic_account"
+            android:title="@string/menu_profile"/>
     </group>
 
-    <item android:title="Contact">
+    <item android:title="@string/others">
         <menu>
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_settings"
+                android:title="@string/menu_settings"/>
             <item
                 android:id="@+id/nav_about"
                 android:icon="@drawable/ic_help"
                 android:title="@string/nav_item_about" />
             <item
                 android:id="@+id/nav_contact"
-                android:icon="@drawable/ic_account"
+                android:icon="@drawable/ic_send"
                 android:title="@string/nav_item_contact" />
             <item
                 android:id="@+id/nav_logout"

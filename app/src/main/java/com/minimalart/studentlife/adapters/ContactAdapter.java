@@ -23,18 +23,27 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
 
     private ArrayList<CardContact> cardContactArrayList;
     Context finalContext;
+
     public ContactAdapter(ArrayList<CardContact> cardContactArrayList, Context c) {
         this.cardContactArrayList = cardContactArrayList;
         this.finalContext = c;
     }
 
+    /**
+     * binding every cardview with right layout
+     * @return new instance of viewHolder
+     */
     @Override
     public ContactViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View contactCard = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_frag_contact, parent, false);
-
         return new ContactViewHolder(contactCard);
     }
 
+    /**
+     * recyclerview callback for binding every view in recyclerview
+     * @param holder : current pressed view
+     * @param position : current position
+     */
     @Override
     public void onBindViewHolder(ContactViewHolder holder, int position) {
         final CardContact cardContact = cardContactArrayList.get(position);
@@ -62,11 +71,18 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         });
     }
 
+    /**
+     * @return the count of the adapter list
+     */
     @Override
     public int getItemCount() {
         return cardContactArrayList.size();
     }
 
+
+    /**
+     * ViewHolder class for ContactFragment
+     */
     public class ContactViewHolder extends RecyclerView.ViewHolder {
 
         private TextView title;
@@ -80,6 +96,10 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
             this.image = (ImageView)itemView.findViewById(R.id.card_frag_contact_image);
         }
 
+        /**
+         * updating the UI for correspondant cardContact
+         * @param cardContact : current cardContact item
+         */
         public void updateUI(CardContact cardContact){
             String uriTITLE = cardContact.getTitle();
             int t = title.getResources().getIdentifier(uriTITLE, null, title.getContext().getPackageName());
