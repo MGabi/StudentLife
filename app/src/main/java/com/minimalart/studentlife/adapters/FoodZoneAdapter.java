@@ -16,7 +16,9 @@ import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.minimalart.studentlife.R;
+import com.minimalart.studentlife.activities.MainActivity;
 import com.minimalart.studentlife.models.CardFoodZone;
+import com.minimalart.studentlife.models.CardRentAnnounce;
 
 import java.util.ArrayList;
 
@@ -50,13 +52,17 @@ public class FoodZoneAdapter extends RecyclerView.Adapter<FoodZoneAdapter.FoodZo
         mlr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.v("HOLDERCLICK", "Clicked;");
+                ((MainActivity)context).openFoodAnnounce(cardFoodZone);
             }
         });
     }
 
     public void loadNewData(ArrayList<CardFoodZone> list){
         foodList = list;
+    }
+
+    public ArrayList<CardFoodZone> getList(){
+        return foodList;
     }
 
     @Override

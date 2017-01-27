@@ -1,5 +1,6 @@
 package com.minimalart.studentlife.fragments;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -28,36 +29,37 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.minimalart.studentlife.R;
+import com.minimalart.studentlife.models.CardFoodZone;
 import com.minimalart.studentlife.models.CardRentAnnounce;
 import com.minimalart.studentlife.models.User;
 
-public class OpenRentAnnounceFragment extends Fragment {
+public class OpenFoodAnnounceFragment extends Fragment {
 
-    private static final String RENT_PARAM = "parameter_rent_announce";
-    private static final String REF_RENT_IMAGES = "rent-images";
-    private CardRentAnnounce currentAnnounce;
+    private static final String FOOD_PARAM = "parameter_food";
+    private static final String REF_FOOD_IMAGES = "food-images";
+    private CardFoodZone currentFood;
+    private ImageView foodImg;
     private TextView description;
     private TextView location;
     private TextView price;
-    private TextView rooms;
-    private TextView discount;
     private TextView seller;
+    private TextView discount;
     private Toolbar toolbar;
-    private ImageView image;
     private ImageButton backBtn;
-    private StorageReference imgRef;
-    private User sellerUser;
+    private User foodUser;
+    private StorageReference storageReference;
     private Button email;
     private Button phone;
 
-    public OpenRentAnnounceFragment() {
+
+    public OpenFoodAnnounceFragment() {
         // Required empty public constructor
     }
 
-    public static OpenRentAnnounceFragment newInstance(CardRentAnnounce currentCard) {
-        OpenRentAnnounceFragment fragment = new OpenRentAnnounceFragment();
+    public static OpenFoodAnnounceFragment newInstance(CardFoodZone card) {
+        OpenFoodAnnounceFragment fragment = new OpenFoodAnnounceFragment();
         Bundle args = new Bundle();
-        args.putSerializable(RENT_PARAM, currentCard);
+        args.putSerializable(FOOD_PARAM, card);
         fragment.setArguments(args);
         return fragment;
     }
@@ -66,48 +68,46 @@ public class OpenRentAnnounceFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            this.currentAnnounce = (CardRentAnnounce)getArguments().getSerializable(RENT_PARAM);
+            this.currentFood = (CardFoodZone)getArguments().getSerializable(FOOD_PARAM);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_open_rent_announce, container, false);
-        initViews(view);
+        View v = inflater.inflate(R.layout.fragment_open_food_announce, container, false);
+        initViews(v);
         setViews();
-        return view;
+        return v;
     }
 
-    public void initViews(View view){
-        toolbar = (Toolbar)view.findViewById(R.id.detailed_toolbar);
-        image = (ImageView)view.findViewById(R.id.detailed_image);
-        description = (TextView)view.findViewById(R.id.detailed_description);
-        location = (TextView)view.findViewById(R.id.detailed_location);
-        price = (TextView)view.findViewById(R.id.detailed_price);
-        rooms = (TextView)view.findViewById(R.id.detailed_rooms);
-        discount = (TextView)view.findViewById(R.id.detailed_discount);
-        backBtn = (ImageButton)view.findViewById(R.id.detailed_back_btn);
-        seller = (TextView)view.findViewById(R.id.detailed_seller);
-        email = (Button) view.findViewById(R.id.detailed_contact_user_email);
-        phone = (Button)view.findViewById(R.id.detailed_contact_user_phone);
-        sellerUser = null;
+    public void initViews(View v){
+        toolbar = (Toolbar)v.findViewById(R.id.food_detailed_toolbar);
+        description = (TextView)v.findViewById(R.id.food_detailed_description);
+        price = (TextView)v.findViewById(R.id.food_detailed_price);
+        location = (TextView)v.findViewById(R.id.food_detailed_location);
+        seller = (TextView)v.findViewById(R.id.food_detailed_seller);
+        foodImg = (ImageView)v.findViewById(R.id.food_detailed_image);
+        discount = (TextView)v.findViewById(R.id.food_detailed_discount);
+        backBtn = (ImageButton)v.findViewById(R.id.food_detailed_back_btn);
+        email = (Button)v.findViewById(R.id.food_detailed_contact_user_email);
+        phone = (Button)v.findViewById(R.id.food_detailed_contact_user_phone);
+        foodUser = null;
     }
 
     public void setViews(){
-        toolbar.setTitle(currentAnnounce.getTitle());
-        description.setText(getResources().getString(R.string.open_rent_description, currentAnnounce.getDescription()));
-        location.setText(getResources().getString(R.string.open_rent_location, currentAnnounce.getLocation()));
-        price.setText(getResources().getString(R.string.open_rent_price, currentAnnounce.getPrice()));
-        rooms.setText(getResources().getString(R.string.open_rent_rooms, currentAnnounce.getRooms()));
+        toolbar.setTitle(currentFood.getFoodTitle());
+        description.setText(getResources().getString(R.string.open_rent_description, currentFood.getFoodDesc()));
+        location.setText(getResources().getString(R.string.open_rent_location, currentFood.getFoodLoc()));
+        price.setText(getResources().getString(R.string.open_rent_price, currentFood.getFoodPrice()));
         seller.setText(getResources().getString(R.string.open_rent_seller, "error"));
 
-        if(currentAnnounce.isChecked()){
+        if(currentFood.isChecked()){
             discount.setTextColor(getResources().getColor(R.color.colorAccentDark, getActivity().getTheme()));
-            discount.setText(getResources().getString(R.string.open_rent_discount_checked));
+            discount.setText(getResources().getString(R.string.open_food_discount_checked));
         }else{
             discount.setTextColor(getResources().getColor(R.color.blueDark, getActivity().getTheme()));
-            discount.setText(getResources().getString(R.string.open_rent_discount_unchecked));
+            discount.setText(getResources().getString(R.string.open_food_discount_unchecked));
         }
 
         backBtn.setOnClickListener(new View.OnClickListener() {
@@ -122,15 +122,15 @@ public class OpenRentAnnounceFragment extends Fragment {
             public void onClick(View v) {
                 Intent emailIntent = new Intent(Intent.ACTION_SEND);
                 emailIntent.setType("plain/text");
-                emailIntent.putExtra(Intent.EXTRA_EMAIL, sellerUser.getEmail());
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Anunț" + currentAnnounce.getTitle());
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, foodUser.getEmail());
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Alertă" + currentFood.getFoodTitle());
                 Intent chooser = Intent.createChooser(emailIntent, "Trimite e-mail...");
                 startActivity(chooser);
             }
         });
 
-        setImage(currentAnnounce.getAnnounceID());
-        downloadSellerCredentials(currentAnnounce.getUserUID());
+        setImage(currentFood.getFoodID());
+        downloadSellerCredentials(currentFood.getUserUID());
 
         StyleSpan bold = new StyleSpan(android.graphics.Typeface.BOLD);
         SpannableStringBuilder sp = new SpannableStringBuilder(description.getText());
@@ -147,11 +147,6 @@ public class OpenRentAnnounceFragment extends Fragment {
         index = price.getText().toString().indexOf(":");
         sp.setSpan(bold, 0, index+1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         price.setText(sp);
-
-        sp = new SpannableStringBuilder(rooms.getText());
-        index = rooms.getText().toString().indexOf(":");
-        sp.setSpan(bold, 0, index+1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-        rooms.setText(sp);
     }
 
     public void downloadSellerCredentials(String userUID){
@@ -171,8 +166,8 @@ public class OpenRentAnnounceFragment extends Fragment {
     }
 
     public void setSeller(User user){
-        this.sellerUser = user;
-        seller.setText(getResources().getString(R.string.open_rent_seller, sellerUser.getName() + " " + sellerUser.getSecName()));
+        this.foodUser = user;
+        seller.setText(getResources().getString(R.string.open_food_seller, foodUser.getName() + " " + foodUser.getSecName()));
 
         StyleSpan bold = new StyleSpan(android.graphics.Typeface.BOLD);
         ForegroundColorSpan colorAcc = new ForegroundColorSpan(getResources().getColor(R.color.colorAccentSecond, getActivity().getTheme()));
@@ -186,9 +181,10 @@ public class OpenRentAnnounceFragment extends Fragment {
     }
 
     public void setImage(String ID){
+        Log.v("SETIMAGE", ID);
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-        imgRef = firebaseStorage.getReference().child(REF_RENT_IMAGES).child(ID);
-
-        Glide.with(getContext()).using(new FirebaseImageLoader()).load(imgRef).centerCrop().into(image);
+        storageReference = firebaseStorage.getReference().child(REF_FOOD_IMAGES).child(ID);
+        Log.v("SETIMAGE", storageReference.toString());
+        Glide.with(getContext()).using(new FirebaseImageLoader()).load(storageReference).centerCrop().into(foodImg);
     }
 }

@@ -124,9 +124,9 @@
                         android:id="@+id/sign_up_button"
                         android:background="#00fafafa"
                         android:layout_height="wrap_content"
+                        android:layout_width="175dp"
                         android:text="@string/action_sign_up_firebase"
                         android:textStyle="bold"
-                        android:layout_width="175dp"
                         android:textColor="#616161">
 
                     </Button>

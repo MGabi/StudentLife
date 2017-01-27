@@ -69,7 +69,7 @@ public class SearchRentFragment extends Fragment {
         rentRecyclerView.setAdapter(rentAnnounceAdapter);
         rentAnnounceAdapter.loadNewData(DataService.getInstance().getRentAnnounces());
         rentRecyclerView.addItemDecoration(new DividerItemDecoration(rentRecyclerView.getContext(), llm.getOrientation()));
-        swipe.setColorSchemeResources(R.color.colorAccent ,R.color.colorPrimary, R.color.colorPrimaryDark);
+        swipe.setColorSchemeResources(R.color.colorPrimary ,R.color.colorAccent, R.color.colorPrimaryDark);
 
         swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

@@ -1,5 +1,6 @@
 package com.minimalart.studentlife.interfaces;
 
+import com.minimalart.studentlife.models.CardFoodZone;
 import com.minimalart.studentlife.models.CardRentAnnounce;
 
 /**
@@ -11,4 +12,5 @@ public interface HelperInterface {
     public void openEMAILSender();
     public void openGPLAY();
     public void openRentAnnounceFragment(CardRentAnnounce cardRentAnnounce);
+    public void openFoodAnnounce(CardFoodZone cardFoodZone);
 }

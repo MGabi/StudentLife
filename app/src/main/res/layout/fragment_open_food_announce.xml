@@ -12,14 +12,14 @@
         android:fitsSystemWindows="true">
 
         <android.support.design.widget.AppBarLayout
-            android:id="@+id/rent_appbar"
+            android:id="@+id/food_appbar"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="200dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             android:fitsSystemWindows="true">
 
             <android.support.design.widget.CollapsingToolbarLayout
-                android:id="@+id/rent_detailed_collapsing"
+                android:id="@+id/food_detailed_collapsing"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
@@ -30,7 +30,7 @@
                 android:descendantFocusability="blocksDescendants">
 
                 <ImageView
-                    android:id="@+id/detailed_image"
+                    android:id="@+id/food_detailed_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
@@ -40,7 +40,7 @@
                     android:transitionName="imageTransition"/>
 
                 <android.support.v7.widget.Toolbar
-                    android:id="@+id/detailed_toolbar"
+                    android:id="@+id/food_detailed_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
@@ -56,7 +56,7 @@
                     android:layout_marginTop="@dimen/standard_padding"
                     android:src="@drawable/ic_arrow_back"
                     android:background="@color/full_alpha"
-                    android:id="@+id/detailed_back_btn"/>
+                    android:id="@+id/food_detailed_back_btn"/>
 
             </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
@@ -81,7 +81,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/detailed_description"
+                        android:id="@+id/food_detailed_description"
                         android:textColor="@color/textSecondary"
                         android:textSize="16sp"
                         android:text="Descriere: "
@@ -98,24 +98,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/detailed_rooms"
-                        android:textColor="@color/textSecondary"
-                        android:textSize="16sp"
-                        android:text="Număr camere: "
-                        android:padding="@dimen/activity_horizontal_margin" />
-                </android.support.v7.widget.CardView>
-
-                <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/standard_padding"
-                    android:layout_marginLeft="@dimen/standard_padding"
-                    android:layout_marginRight="@dimen/standard_padding">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/detailed_location"
+                        android:id="@+id/food_detailed_location"
                         android:textColor="@color/textSecondary"
                         android:textSize="16sp"
                         android:text="Locatie: "
@@ -132,7 +115,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/detailed_price"
+                        android:id="@+id/food_detailed_price"
                         android:textColor="@color/textSecondary"
                         android:textSize="16sp"
                         android:text="Pret: "
@@ -150,7 +133,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/detailed_discount"
+                        android:id="@+id/food_detailed_discount"
                         android:textColor="@color/textSecondary"
                         android:textSize="16sp"
                         android:text="Discount studenti"
@@ -173,7 +156,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/detailed_seller"
+                            android:id="@+id/food_detailed_seller"
                             android:textSize="16sp"
                             android:text="@string/open_rent_seller"
                             android:padding="@dimen/activity_horizontal_margin" />
@@ -184,7 +167,7 @@
                             android:orientation="horizontal">
 
                             <Button
-                                android:id="@+id/detailed_contact_user_email"
+                                android:id="@+id/food_detailed_contact_user_email"
                                 android:background="@color/full_alpha"
                                 android:layout_height="wrap_content"
                                 android:layout_width="0dp"
@@ -196,7 +179,7 @@
                             </Button>
 
                             <Button
-                                android:id="@+id/detailed_contact_user_phone"
+                                android:id="@+id/food_detailed_contact_user_phone"
                                 android:background="@color/full_alpha"
                                 android:layout_height="wrap_content"
                                 android:layout_width="0dp"
@@ -221,12 +204,12 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_margin="@dimen/activity_horizontal_margin"
-            android:id="@+id/rent_detailed_fab"
+            android:id="@+id/food_detailed_fab"
             app:fabSize="normal"
             android:src="@drawable/ic_email"
-            app:layout_anchor="@id/rent_appbar"
-            app:layout_anchorGravity="bottom|right|end" />
+            android:layout_gravity="bottom|end"/>
 
     </android.support.design.widget.CoordinatorLayout>
 
 </FrameLayout>
+

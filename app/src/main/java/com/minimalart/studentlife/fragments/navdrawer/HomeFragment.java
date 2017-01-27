@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.minimalart.studentlife.R;
+import com.minimalart.studentlife.activities.MainActivity;
 import com.minimalart.studentlife.adapters.HomeUserAnnouncesAdapter;
 import com.minimalart.studentlife.adapters.HomeUserFoodAdapter;
 import com.minimalart.studentlife.models.CardFoodZone;
@@ -94,6 +95,7 @@ public class HomeFragment extends Fragment {
                     setCurrentUser(user);
                     setUserAnnounces();
                     setUserFood();
+                    ((MainActivity)getActivity()).setAboutUserData(user.getName(), user.getEmail());
                 }
 
             }
@@ -111,7 +113,9 @@ public class HomeFragment extends Fragment {
         cardFood = (CardView) view.findViewById(R.id.card_show_food);
         cardRent = (CardView) view.findViewById(R.id.card_show_rents);
 
-        swipe.setColorSchemeResources(R.color.colorAccent ,R.color.colorPrimary, R.color.colorPrimaryDark);
+
+
+        swipe.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent, R.color.colorPrimaryDark);
 
         swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

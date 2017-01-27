@@ -36,7 +36,6 @@ public class LoginFragment extends Fragment{
     private EditText emailView;
     private EditText passwordView;
     private TextView signUpTextView;
-    private View progressView;
     private View loginFormView;
     private Button logInButton;
     private MaterialRippleLayout signUpRipple;
@@ -68,7 +67,6 @@ public class LoginFragment extends Fragment{
         passwordView = (EditText) view.findViewById(R.id.password);
         logInButton = (Button) view.findViewById(R.id.log_in_button);
         loginFormView = view.findViewById(R.id.login_form);
-        progressView = view.findViewById(R.id.login_progress);
         signUpTextView = (TextView)view.findViewById(R.id.sign_up_text);
         signUpRipple = (MaterialRippleLayout)view.findViewById(R.id.ripple_signup_text);
 

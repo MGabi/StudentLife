@@ -3,11 +3,13 @@ package com.minimalart.studentlife.models;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.Serializable;
+
 /**
  * Created by ytgab on 11.01.2017.
  */
 
-public class CardFoodZone {
+public class CardFoodZone implements Serializable {
 
     private String userUID;
     private String foodTitle;

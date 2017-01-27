@@ -4,16 +4,20 @@ package com.minimalart.studentlife.fragments.navdrawer;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.arlib.floatingsearchview.FloatingSearchView;
 import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.adapters.FoodZoneAdapter;
 import com.minimalart.studentlife.models.CardFoodZone;
+import com.minimalart.studentlife.models.CardRentAnnounce;
 import com.minimalart.studentlife.services.DataService;
 
 import java.util.ArrayList;
@@ -22,6 +26,8 @@ public class FoodZoneFragment extends Fragment {
 
     private RecyclerView foodRecyclerView;
     private FoodZoneAdapter foodZoneAdapter;
+    private SwipeRefreshLayout swipe;
+    private FloatingSearchView searchView;
 
     public FoodZoneFragment() {
         // Required empty public constructor
@@ -46,6 +52,8 @@ public class FoodZoneFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_food_zone, container, false);
 
         foodRecyclerView = (RecyclerView)view.findViewById(R.id.frag_food_zone_recyclerview);
+        swipe = (SwipeRefreshLayout) view.findViewById(R.id.frag_search_food_swipe);
+        searchView = (FloatingSearchView) view.findViewById(R.id.search_food_searchview);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -59,6 +67,33 @@ public class FoodZoneFragment extends Fragment {
 
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.card_grid_spacing);
         foodRecyclerView.addItemDecoration(new SpaceGridItemDecoration(spacingInPixels));
+
+        swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                foodZoneAdapter.loadNewData(DataService.getInstance().getFood());
+                swipe.setRefreshing(false);
+            }
+        });
+
+        searchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
+            @Override
+            public void onSearchTextChanged(String oldQuery, String newQuery) {
+                ArrayList<CardFoodZone> newList = new ArrayList<>();
+                Log.v("CARDLIST", String.valueOf(foodZoneAdapter.getList().size()));
+                for(CardFoodZone card : foodZoneAdapter.getList()){
+                    if(card.getFoodDesc().toLowerCase().contains(newQuery.toLowerCase()) ||
+                            card.getFoodLoc().toLowerCase().contains(newQuery.toLowerCase()) ||
+                            card.getFoodPrice().toLowerCase().contains(newQuery.toLowerCase()) ||
+                            card.getFoodTitle().toLowerCase().contains(newQuery.toLowerCase()))
+                        newList.add(card);
+                }
+
+                foodZoneAdapter.loadNewData(newList);
+                foodZoneAdapter.notifyDataSetChanged();
+            }
+        });
+
         return view;
     }
 

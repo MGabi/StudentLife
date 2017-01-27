@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -32,6 +33,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.minimalart.studentlife.R;
+import com.minimalart.studentlife.fragments.OpenFoodAnnounceFragment;
 import com.minimalart.studentlife.fragments.OpenRentAnnounceFragment;
 import com.minimalart.studentlife.fragments.navdrawer.AboutFragment;
 import com.minimalart.studentlife.fragments.navdrawer.AddRentFragment;
@@ -65,7 +67,10 @@ public class MainActivity extends AppCompatActivity
     private DatabaseReference databaseReference;
     private Fragment fragment;
     private Fragment viewRentDetailedFragment;
+    private Fragment viewFoodDetailedFragment;
     private AppBarLayout appBarLayout;
+    private TextView headerName;
+    private TextView headerEmail;
     /**
      * Titles for navdrawer items
      */
@@ -78,13 +83,6 @@ public class MainActivity extends AppCompatActivity
             "Despre",
             "Contact"
     };
-
-    private static MainActivity mainActivityInstance = new MainActivity();
-
-    public static MainActivity newInstance() {
-        return mainActivityInstance;
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +102,9 @@ public class MainActivity extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        headerEmail = (TextView)navigationView.getHeaderView(0).findViewById(R.id.current_user_email_header);
+        headerName = (TextView)navigationView.getHeaderView(0).findViewById(R.id.current_user_name_header);
+
         fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentById(R.id.content_main);
 
@@ -114,8 +115,9 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void showUser(User user) {
-        Log.v("DSREF", user.getName() + ", " + user.getSecName() + ", " + user.getEmail() + ", " + user.getAge());
+    public void setAboutUserData(String name, String email){
+        headerEmail.setText(email);
+        headerName.setText(name);
     }
 
     /**
@@ -298,6 +300,15 @@ public class MainActivity extends AppCompatActivity
         viewRentDetailedFragment = OpenRentAnnounceFragment.newInstance(cardRentAnnounce);
         fragmentManager.beginTransaction()
                 .replace(R.id.content_main_without_toolbar, viewRentDetailedFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void openFoodAnnounce(CardFoodZone cardFoodZone) {
+        viewFoodDetailedFragment = OpenFoodAnnounceFragment.newInstance(cardFoodZone);
+        fragmentManager.beginTransaction()
+                .replace(R.id.content_main_without_toolbar, viewFoodDetailedFragment)
                 .addToBackStack(null)
                 .commit();
     }
