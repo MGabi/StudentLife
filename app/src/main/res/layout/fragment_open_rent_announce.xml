@@ -190,7 +190,7 @@
                                 android:layout_width="0dp"
                                 android:text="@string/open_rent_email"
                                 android:textStyle="bold"
-                                android:textColor="#616161"
+                                android:textColor="@color/textSecondary"
                                 android:layout_weight="1">
 
                             </Button>
@@ -202,7 +202,7 @@
                                 android:layout_width="0dp"
                                 android:text="@string/open_rent_phone"
                                 android:textStyle="bold"
-                                android:textColor="#616161"
+                                android:textColor="@color/textSecondary"
                                 android:layout_weight="1">
 
                             </Button>

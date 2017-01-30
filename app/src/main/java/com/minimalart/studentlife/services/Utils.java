@@ -2,17 +2,19 @@ package com.minimalart.studentlife.services;
 
 
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
-import android.util.Log;
+import android.support.annotation.ColorInt;
+import android.util.TypedValue;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.adapters.FoodZoneAdapter;
 import com.minimalart.studentlife.adapters.RentAnnounceAdapter;
 import com.minimalart.studentlife.models.CardContact;
@@ -24,7 +26,7 @@ import java.util.ArrayList;
 /**
  * Created by ytgab on 13.12.2016.
  */
-public class DataService {
+public class Utils {
 
     private static final String REF_RENT = "rent-announces";
     private static final String REF_FOOD = "food-announces";
@@ -32,15 +34,49 @@ public class DataService {
     private RentAnnounceAdapter callbackAdapterRent;
     private FoodZoneAdapter callbackAdapterFood;
 
-    private static DataService ourInstance = new DataService();
+    private static Utils ourInstance = new Utils();
 
-    public static DataService getInstance() {
+    public static Utils getInstance() {
         return ourInstance;
     }
 
-    private DataService() {
+    private Utils() {
 
     }
+
+    @ColorInt
+    public int getColorPrimary(Context context){
+        @ColorInt int colorPrimary;
+        TypedValue t = new TypedValue();
+        TypedArray ta = context.obtainStyledAttributes(t.data, new int[]{ R.attr.colorPrimary });
+        colorPrimary = ta.getColor(0, Color.GRAY);
+        ta.recycle();
+
+        return colorPrimary;
+    }
+
+    @ColorInt
+    public int getColorPrimaryDark(Context context){
+        @ColorInt int colorPrimaryDark;
+        TypedValue t = new TypedValue();
+        TypedArray ta = context.obtainStyledAttributes(t.data, new int[]{ R.attr.colorPrimaryDark });
+        colorPrimaryDark = ta.getColor(0, Color.GRAY);
+        ta.recycle();
+
+        return colorPrimaryDark;
+    }
+
+    @ColorInt
+    public int getColorAccent(Context context){
+        @ColorInt int colorAccent;
+        TypedValue t = new TypedValue();
+        TypedArray ta = context.obtainStyledAttributes(t.data, new int[]{ R.attr.colorAccent });
+        colorAccent = ta.getColor(0, Color.GRAY);
+        ta.recycle();
+
+        return colorAccent;
+    }
+
 
     public void registerCallbackAdapterRent(RentAnnounceAdapter callbackAdapter) {
         this.callbackAdapterRent = callbackAdapter;

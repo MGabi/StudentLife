@@ -21,7 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.activities.MainActivity;
 import com.minimalart.studentlife.models.CardRentAnnounce;
-import com.minimalart.studentlife.services.DataService;
+import com.minimalart.studentlife.services.Utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -94,7 +94,7 @@ public class AddRentFragment extends Fragment {
         postOffertBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean networkState = DataService.getInstance().isConnectedToNetwork(getContext());
+                boolean networkState = Utils.getInstance().isConnectedToNetwork(getContext());
                 if(checkFields() && networkState && isImageAdded()){
                     boolean check = discountCB.isChecked();
                     ((MainActivity)getActivity())

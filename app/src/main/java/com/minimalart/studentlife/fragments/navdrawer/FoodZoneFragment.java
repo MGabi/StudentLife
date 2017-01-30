@@ -3,6 +3,7 @@ package com.minimalart.studentlife.fragments.navdrawer;
 
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -17,8 +18,7 @@ import com.arlib.floatingsearchview.FloatingSearchView;
 import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.adapters.FoodZoneAdapter;
 import com.minimalart.studentlife.models.CardFoodZone;
-import com.minimalart.studentlife.models.CardRentAnnounce;
-import com.minimalart.studentlife.services.DataService;
+import com.minimalart.studentlife.services.Utils;
 
 import java.util.ArrayList;
 
@@ -28,6 +28,10 @@ public class FoodZoneFragment extends Fragment {
     private FoodZoneAdapter foodZoneAdapter;
     private SwipeRefreshLayout swipe;
     private FloatingSearchView searchView;
+
+    @ColorInt int colorPrimary;
+    @ColorInt int colorPrimaryDark;
+    @ColorInt int colorAccent;
 
     public FoodZoneFragment() {
         // Required empty public constructor
@@ -74,10 +78,15 @@ public class FoodZoneFragment extends Fragment {
 
         foodZoneAdapter = new FoodZoneAdapter(new ArrayList<CardFoodZone>(), getContext());
         foodRecyclerView.setAdapter(foodZoneAdapter);
-        foodZoneAdapter.loadNewData(DataService.getInstance().getFood());
+        foodZoneAdapter.loadNewData(Utils.getInstance().getFood());
 
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.card_grid_spacing);
         foodRecyclerView.addItemDecoration(new SpaceGridItemDecoration(spacingInPixels));
+
+        colorPrimary = Utils.getInstance().getColorPrimary(getContext());
+        colorPrimaryDark = Utils.getInstance().getColorPrimaryDark(getContext());
+        colorAccent = Utils.getInstance().getColorAccent(getContext());
+        swipe.setColorSchemeColors(colorPrimary, colorAccent, colorPrimaryDark);
     }
 
     /**
@@ -88,7 +97,7 @@ public class FoodZoneFragment extends Fragment {
         swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                foodZoneAdapter.loadNewData(DataService.getInstance().getFood());
+                foodZoneAdapter.loadNewData(Utils.getInstance().getFood());
                 swipe.setRefreshing(false);
             }
         });
@@ -119,7 +128,7 @@ public class FoodZoneFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        DataService.getInstance().registerCallbackAdapterFood(foodZoneAdapter);
+        Utils.getInstance().registerCallbackAdapterFood(foodZoneAdapter);
     }
 
     /**
@@ -129,7 +138,7 @@ public class FoodZoneFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        DataService.getInstance().unregisterCallbackAdapterFood();
+        Utils.getInstance().unregisterCallbackAdapterFood();
     }
 
 }

@@ -9,7 +9,6 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -111,7 +110,7 @@ public class OpenRentAnnounceFragment extends Fragment {
         seller.setText(getResources().getString(R.string.open_rent_seller, "error"));
 
         if(currentAnnounce.isChecked()){
-            discount.setTextColor(getResources().getColor(R.color.colorAccentDark, getActivity().getTheme()));
+            discount.setTextColor(getResources().getColor(R.color.cyan_accent_dark, getActivity().getTheme()));
             discount.setText(getResources().getString(R.string.open_rent_discount_checked));
         }else{
             discount.setTextColor(getResources().getColor(R.color.blueDark, getActivity().getTheme()));
@@ -191,7 +190,7 @@ public class OpenRentAnnounceFragment extends Fragment {
         seller.setText(getResources().getString(R.string.open_rent_seller, sellerUser.getName() + " " + sellerUser.getSecName()));
 
         StyleSpan bold = new StyleSpan(android.graphics.Typeface.BOLD);
-        ForegroundColorSpan colorAcc = new ForegroundColorSpan(getResources().getColor(R.color.colorAccentSecond, getActivity().getTheme()));
+        ForegroundColorSpan colorAcc = new ForegroundColorSpan(getResources().getColor(R.color.cyan_accent_second, getActivity().getTheme()));
         ForegroundColorSpan colorPrimary = new ForegroundColorSpan(getResources().getColor(R.color.blueDark, getActivity().getTheme()));
         SpannableStringBuilder sp = new SpannableStringBuilder(seller.getText().toString().replace(":", ""));
         int index = seller.getText().toString().indexOf(":");

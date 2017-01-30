@@ -24,7 +24,7 @@
                 android:layout_height="match_parent"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 android:fitsSystemWindows="true"
-                app:contentScrim="?attr/colorPrimary"
+                app:contentScrim="?colorPrimary"
                 app:expandedTitleMarginStart="48dp"
                 app:expandedTitleMarginEnd="64dp"
                 android:descendantFocusability="blocksDescendants">
@@ -173,7 +173,7 @@
                                 android:layout_width="0dp"
                                 android:text="@string/open_rent_email"
                                 android:textStyle="bold"
-                                android:textColor="#616161"
+                                android:textColor="@color/textSecondary"
                                 android:layout_weight="1">
 
                             </Button>
@@ -185,7 +185,7 @@
                                 android:layout_width="0dp"
                                 android:text="@string/open_rent_phone"
                                 android:textStyle="bold"
-                                android:textColor="#616161"
+                                android:textColor="@color/textSecondary"
                                 android:layout_weight="1">
 
                             </Button>

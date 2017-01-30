@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="toolbar_titles">
+        <item>Acasă</item>
+        <item>Chirii</item>
+        <item>Adaugă anunț chirie</item>
+        <item>Caută mese</item>
+        <item>Adaugă ofertă masă</item>
+        <item>Despre</item>
+        <item>Contact</item>
+        <item>Setări</item>
+    </string-array>
+
+    <string-array name="color_entries">
+        <item>Roșu</item>
+        <item>Roz</item>
+        <item>Violet</item>
+        <item>Albastru închis</item>
+    </string-array>
+
+    <string-array name="color_entries_values">
+        <item>red</item>
+        <item>pink</item>
+        <item>purple</item>
+        <item>deep_blue</item>
+    </string-array>
+
+</resources>

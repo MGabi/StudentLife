@@ -62,7 +62,7 @@
                                 android:textSize="30sp"
                                 android:id="@+id/card_avout_app_title"
                                 android:layout_marginBottom="7dp"
-                                android:textColor="@color/colorAccent"/>
+                                android:textColor="?colorAccent"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -115,7 +115,7 @@
                                 android:textSize="30sp"
                                 android:id="@+id/card_about_dev_title"
                                 android:layout_marginBottom="7dp"
-                                android:textColor="@color/colorAccent"/>
+                                android:textColor="?colorAccent"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -167,7 +167,7 @@
                                 android:textSize="30sp"
                                 android:id="@+id/card_about_app_version"
                                 android:layout_marginBottom="7dp"
-                                android:textColor="@color/colorAccent"/>
+                                android:textColor="?colorAccent"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -220,7 +220,7 @@
                                 android:textSize="30sp"
                                 android:id="@+id/card_about_license"
                                 android:layout_marginBottom="7dp"
-                                android:textColor="@color/colorAccent"/>
+                                android:textColor="?colorAccent"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -241,7 +241,7 @@
                             <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
-                                android:background="#FF4081"
+                                android:background="?colorAccent"
                                 android:layout_marginTop="12dp">
 
                             </RelativeLayout>

@@ -1,12 +1,17 @@
 package com.minimalart.studentlife.fragments.navdrawer;
 
+import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +31,7 @@ import com.minimalart.studentlife.adapters.HomeUserFoodAdapter;
 import com.minimalart.studentlife.models.CardFoodZone;
 import com.minimalart.studentlife.models.CardRentAnnounce;
 import com.minimalart.studentlife.models.User;
+import com.minimalart.studentlife.services.Utils;
 
 import java.util.ArrayList;
 
@@ -43,6 +49,10 @@ public class HomeFragment extends Fragment {
 
     private CardView cardRent;
     private CardView cardFood;
+
+    @ColorInt int colorPrimary;
+    @ColorInt int colorPrimaryDark;
+    @ColorInt int colorAccent;
 
     private static final String REF_RENT = "rent-announces";
     private static final String REF_FOOD = "food-announces";
@@ -120,8 +130,11 @@ public class HomeFragment extends Fragment {
         cardFood = (CardView) view.findViewById(R.id.card_show_food);
         cardRent = (CardView) view.findViewById(R.id.card_show_rents);
 
-        swipe.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent, R.color.colorPrimaryDark);
+        colorPrimary = Utils.getInstance().getColorPrimary(getContext());
+        colorPrimaryDark = Utils.getInstance().getColorPrimaryDark(getContext());
+        colorAccent = Utils.getInstance().getColorAccent(getContext());
 
+        swipe.setColorSchemeColors(colorPrimary, colorAccent, colorPrimaryDark);
         swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

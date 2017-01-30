@@ -1,6 +1,9 @@
 package com.minimalart.studentlife.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -9,6 +12,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,6 +35,11 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
+    private SharedPreferences preferences;
+    private Toolbar toolbar;
+
+    private static final String COLOR_KEY = "key_color_preference";
+    private static final String ACCENT_KEY = "key_accent_preference";
 
     @Override
     protected void onStart() {
@@ -51,7 +61,29 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        String theme = preferences.getString(COLOR_KEY, "red");
+        switch(theme){
+            case "red":
+                setTheme(R.style.AppTheme_Red);
+                break;
+            case "pink":
+                setTheme(R.style.AppTheme_Pink);
+                break;
+            case "purple":
+                setTheme(R.style.AppTheme_Purple);
+                break;
+            case "deep_blue":
+                setTheme(R.style.AppTheme_DarkBlue);
+                break;
+            default:
+                setTheme(R.style.AppTheme_Red);
+                break;
+        }
+
         setContentView(R.layout.activity_login);
+
         if (getIntent().getBooleanExtra("EXIT", false)) {
             finish();
         }
@@ -62,6 +94,12 @@ public class LoginActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar_login);
+        toolbar.setTitleTextColor(Color.parseColor("#FAFAFA"));
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
+
 
         Fragment fragment = fragmentManager.findFragmentById(R.id.activity_main_content);
         if(fragment == null){
@@ -75,8 +113,18 @@ public class LoginActivity extends AppCompatActivity {
      * Opening signup fragment
      */
     public void loadSignUpFragment(){
+        enableBackButton();
         SignUpFragment fragmentSignUp = SignUpFragment.newInstance();
         fragmentManager.beginTransaction().replace(R.id.activity_main_content, fragmentSignUp).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).addToBackStack(null).commit();
+    }
+
+    public void enableBackButton(){
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(getResources().getDrawable(R.drawable.ic_arrow_back, getTheme()));
+    }
+
+    public void disableBackButton(){
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
     /**
@@ -119,7 +167,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    USER_UID = firebaseAuth.getCurrentUser().getUid().toString();
                     openMainActivity();
                 }
                 else
@@ -137,6 +184,17 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(getBaseContext(), MainActivity.class);
         int reqCODE = 1991;
         startActivityForResult(intent, reqCODE);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                super.onBackPressed();
+                disableBackButton();
+                break;
+        }
+        return true;
     }
 }
 

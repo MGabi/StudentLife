@@ -12,6 +12,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +31,7 @@ public class LoginFragment extends Fragment{
 
     //Global static variables
     private static final int REQUEST_PERMISSIONS = 111;
-    private static boolean PERMISSION_MODE = true;
+    private static boolean PERMISSION_MODE = false;
 
     // UI references
     private EditText emailView;
@@ -71,13 +72,10 @@ public class LoginFragment extends Fragment{
         signUpRipple = (MaterialRippleLayout)view.findViewById(R.id.ripple_signup_text);
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            checkForPermissions();
-
-        if(PERMISSION_MODE)
+            if(!PERMISSION_MODE)
+                checkForPermissions();
+        else
             setupViews();
-        else{
-            Snackbar.make(loginFormView, R.string.error_need_permissions, Snackbar.LENGTH_INDEFINITE).show();
-        }
 
         return view;
     }
@@ -86,7 +84,6 @@ public class LoginFragment extends Fragment{
      * Setting up the views if permissions granted
      */
     public void setupViews(){
-
         /**
          * Trying to log in user to firebase database
          */
@@ -110,14 +107,6 @@ public class LoginFragment extends Fragment{
                 ((LoginActivity)getActivity()).loadSignUpFragment();
             }
         });
-    }
-
-    /**
-     * Closing keyboard if open
-     */
-    public void closeKeyboard(){
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
     }
 
     /**
@@ -210,19 +199,23 @@ public class LoginFragment extends Fragment{
      * if permissions are not granted, ask for them
      */
     public void checkForPermissions(){
+        Log.v("PERMISSIONS1", "PackageManager.PERM: " + String.valueOf(PackageManager.PERMISSION_GRANTED));
+        Log.v("PERMISSIONS1", "Ext. Storage: " + String.valueOf(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)));
+        Log.v("PERMISSIONS1", "Wri. Storage: " + String.valueOf(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)));
+        Log.v("PERMISSIONS1", "Camera: " + String.valueOf(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)));
+
         if((ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) ||
                 (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) ||
                 (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)) {
 
-            ActivityCompat.requestPermissions(getActivity(), new String[]{
+            requestPermissions( new String[]{
                     Manifest.permission.READ_EXTERNAL_STORAGE,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.CAMERA}, REQUEST_PERMISSIONS);
-            Toast.makeText(getContext(), "req perm", Toast.LENGTH_SHORT).show();
         }
         else{
             PERMISSION_MODE = true;
-            Toast.makeText(getContext(), "au deja permisiune", Toast.LENGTH_SHORT).show();
+            setupViews();
         }
     }
 
@@ -234,10 +227,10 @@ public class LoginFragment extends Fragment{
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch(requestCode){
             case REQUEST_PERMISSIONS:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    PERMISSION_MODE = true;
-                } else
-                    PERMISSION_MODE = false;
+                PERMISSION_MODE = grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                Log.v("PERMISSIONS1", "PERM MODE: " + Boolean.toString(PERMISSION_MODE));
+                if(PERMISSION_MODE)
+                    setupViews();
         }
     }
 

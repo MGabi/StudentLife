@@ -127,7 +127,7 @@
                         android:layout_width="175dp"
                         android:text="@string/action_sign_up_firebase"
                         android:textStyle="bold"
-                        android:textColor="#616161">
+                        android:textColor="@color/textSecondary">
 
                     </Button>
 

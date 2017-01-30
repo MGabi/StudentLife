@@ -1,31 +1,23 @@
 package com.minimalart.studentlife.fragments.navdrawer;
 
 
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.adapters.RentAnnounceAdapter;
 import com.minimalart.studentlife.models.CardRentAnnounce;
-import com.minimalart.studentlife.services.DataService;
+import com.minimalart.studentlife.services.Utils;
 
 import java.util.ArrayList;
 
@@ -35,6 +27,10 @@ public class SearchRentFragment extends Fragment {
     private RentAnnounceAdapter rentAnnounceAdapter;
     private SwipeRefreshLayout swipe;
     private FloatingSearchView floatingSearchView;
+
+    @ColorInt int colorPrimary;
+    @ColorInt int colorPrimaryDark;
+    @ColorInt int colorAccent;
 
     public SearchRentFragment() {
     }
@@ -78,9 +74,13 @@ public class SearchRentFragment extends Fragment {
 
         rentAnnounceAdapter = new RentAnnounceAdapter(new ArrayList<CardRentAnnounce>(), getContext());
         rentRecyclerView.setAdapter(rentAnnounceAdapter);
-        rentAnnounceAdapter.loadNewData(DataService.getInstance().getRentAnnounces());
+        rentAnnounceAdapter.loadNewData(Utils.getInstance().getRentAnnounces());
         rentRecyclerView.addItemDecoration(new DividerItemDecoration(rentRecyclerView.getContext(), llm.getOrientation()));
-        swipe.setColorSchemeResources(R.color.colorPrimary ,R.color.colorAccent, R.color.colorPrimaryDark);
+
+        colorPrimary = Utils.getInstance().getColorPrimary(getContext());
+        colorPrimaryDark = Utils.getInstance().getColorPrimaryDark(getContext());
+        colorAccent = Utils.getInstance().getColorAccent(getContext());
+        swipe.setColorSchemeColors(colorPrimary, colorAccent, colorPrimaryDark);
 
     }
 
@@ -92,7 +92,7 @@ public class SearchRentFragment extends Fragment {
         swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                rentAnnounceAdapter.loadNewData(DataService.getInstance().getRentAnnounces());
+                rentAnnounceAdapter.loadNewData(Utils.getInstance().getRentAnnounces());
                 swipe.setRefreshing(false);
             }
         });
@@ -124,7 +124,7 @@ public class SearchRentFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        DataService.getInstance().registerCallbackAdapterRent(rentAnnounceAdapter);
+        Utils.getInstance().registerCallbackAdapterRent(rentAnnounceAdapter);
     }
 
     /**
@@ -134,6 +134,6 @@ public class SearchRentFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        DataService.getInstance().unregisterCallbackAdapterRent();
+        Utils.getInstance().unregisterCallbackAdapterRent();
     }
 }

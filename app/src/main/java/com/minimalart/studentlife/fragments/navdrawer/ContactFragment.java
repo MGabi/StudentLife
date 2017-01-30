@@ -1,20 +1,18 @@
 package com.minimalart.studentlife.fragments.navdrawer;
 
 
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.adapters.ContactAdapter;
-import com.minimalart.studentlife.services.DataService;
+import com.minimalart.studentlife.services.Utils;
 
 public class ContactFragment extends Fragment {
 
@@ -45,7 +43,7 @@ public class ContactFragment extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         contactRecyclerView.setLayoutManager(llm);
-        ContactAdapter contactAdapter = new ContactAdapter(DataService.getInstance().getContactFragItems(), getContext());
+        ContactAdapter contactAdapter = new ContactAdapter(Utils.getInstance().getContactFragItems(), getContext());
         contactRecyclerView.setAdapter(contactAdapter);
         contactRecyclerView.addItemDecoration(new DividerItemDecoration(contactRecyclerView.getContext(), llm.getOrientation()));
         return view;

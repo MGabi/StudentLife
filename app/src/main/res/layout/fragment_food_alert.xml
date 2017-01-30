@@ -132,7 +132,7 @@
                         android:text="@string/food_alert_btn_img"
                         android:textStyle="bold"
                         android:layout_width="wrap_content"
-                        android:textColor="#616161"
+                        android:textColor="@color/textSecondary"
                         android:paddingLeft="@dimen/standard_padding"
                         android:paddingRight="@dimen/standard_padding">
 
@@ -144,7 +144,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/standard_padding"
-                    android:textColor="#616161"
+                    android:textColor="@color/textSecondary"
                     android:text="@string/food_alert_checkbox"
                     android:layout_gravity="center"
                     android:id="@+id/food_alert_checkbox" />
@@ -163,7 +163,7 @@
                         android:text="@string/food_alert_post_alert"
                         android:textStyle="bold"
                         android:layout_width="wrap_content"
-                        android:textColor="#616161"
+                        android:textColor="@color/textSecondary"
                         android:paddingLeft="@dimen/standard_padding"
                         android:paddingRight="@dimen/standard_padding"
                         android:paddingTop="5dp"

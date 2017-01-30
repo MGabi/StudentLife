@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="General">
+
+        <ListPreference
+            android:key="key_color_preference"
+            android:title="@string/settings_title_color"
+            android:defaultValue="purple"
+            android:summary="@string/settings_title_color_summary"
+            android:entryValues="@array/color_entries_values"
+            android:entries="@array/color_entries"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

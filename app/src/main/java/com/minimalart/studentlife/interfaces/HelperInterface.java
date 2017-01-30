@@ -11,9 +11,9 @@ import com.minimalart.studentlife.models.CardRentAnnounce;
  * Interface which helps accessing methods from MainActivity inside every fragment
  */
 public interface HelperInterface {
-    public void openGPLUS();
-    public void openEMAILSender();
-    public void openGPLAY();
-    public void openRentAnnounceFragment(CardRentAnnounce cardRentAnnounce);
-    public void openFoodAnnounce(CardFoodZone cardFoodZone);
+    void openGPLUS();
+    void openEMAILSender();
+    void openGPLAY();
+    void openRentAnnounceFragment(CardRentAnnounce cardRentAnnounce);
+    void openFoodAnnounce(CardFoodZone cardFoodZone);
 }

@@ -30,7 +30,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.models.CardFoodZone;
-import com.minimalart.studentlife.models.CardRentAnnounce;
 import com.minimalart.studentlife.models.User;
 
 public class OpenFoodAnnounceFragment extends Fragment {
@@ -111,7 +110,7 @@ public class OpenFoodAnnounceFragment extends Fragment {
         seller.setText(getResources().getString(R.string.open_rent_seller, "error"));
 
         if(currentFood.isChecked()){
-            discount.setTextColor(getResources().getColor(R.color.colorAccentDark, getActivity().getTheme()));
+            discount.setTextColor(getResources().getColor(R.color.cyan_accent_dark, getActivity().getTheme()));
             discount.setText(getResources().getString(R.string.open_food_discount_checked));
         }else{
             discount.setTextColor(getResources().getColor(R.color.blueDark, getActivity().getTheme()));
@@ -186,7 +185,7 @@ public class OpenFoodAnnounceFragment extends Fragment {
         seller.setText(getResources().getString(R.string.open_food_seller, foodUser.getName() + " " + foodUser.getSecName()));
 
         StyleSpan bold = new StyleSpan(android.graphics.Typeface.BOLD);
-        ForegroundColorSpan colorAcc = new ForegroundColorSpan(getResources().getColor(R.color.colorAccentSecond, getActivity().getTheme()));
+        ForegroundColorSpan colorAcc = new ForegroundColorSpan(getResources().getColor(R.color.cyan_accent_second, getActivity().getTheme()));
         ForegroundColorSpan colorPrimary = new ForegroundColorSpan(getResources().getColor(R.color.blueDark, getActivity().getTheme()));
         SpannableStringBuilder sp = new SpannableStringBuilder(seller.getText().toString().replace(":", ""));
         int index = seller.getText().toString().indexOf(":");

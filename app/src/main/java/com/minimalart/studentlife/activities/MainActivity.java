@@ -1,9 +1,10 @@
 package com.minimalart.studentlife.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
@@ -15,12 +16,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.transition.Transition;
-import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +42,6 @@ import com.minimalart.studentlife.fragments.navdrawer.SearchRentFragment;
 import com.minimalart.studentlife.interfaces.HelperInterface;
 import com.minimalart.studentlife.models.CardFoodZone;
 import com.minimalart.studentlife.models.CardRentAnnounce;
-import com.minimalart.studentlife.models.User;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, HelperInterface {
@@ -57,6 +53,8 @@ public class MainActivity extends AppCompatActivity
     private static final String GPLUS_URL = "https://plus.google.com/+GabiMatkoRO";
     private static final String DEV_TITLE = "Contact STUDENT LIFE";
     private static final String GPLAY_URL = "https://play.google.com/store/apps/dev?id=6865542268483195156";
+    private static final String COLOR_KEY = "key_color_preference";
+    private static final String ACCENT_KEY = "key_accent_preference";
 
     private Toolbar toolbar;
     private DrawerLayout drawer;
@@ -71,19 +69,12 @@ public class MainActivity extends AppCompatActivity
     private AppBarLayout appBarLayout;
     private TextView headerName;
     private TextView headerEmail;
+    private SharedPreferences preferences;
 
     /**
      * Titles for navdrawer items
      */
-    private final static String[] TITLES = {
-            "Acasă",
-            "Chirii",
-            "Adaugă anunț chirie",
-            "Caută mese",
-            "Adaugă ofertă masă",
-            "Despre",
-            "Contact"
-    };
+    private static String[] TITLES;
 
     /**
      * initializing basic views
@@ -91,9 +82,34 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        String theme = preferences.getString(COLOR_KEY, "red");
+        switch(theme){
+            case "red":
+                setTheme(R.style.AppTheme_Red);
+                break;
+            case "pink":
+                setTheme(R.style.AppTheme_Pink);
+                break;
+            case "purple":
+                setTheme(R.style.AppTheme_Purple);
+                break;
+            case "deep_blue":
+                setTheme(R.style.AppTheme_DarkBlue);
+                break;
+            default:
+                setTheme(R.style.AppTheme_Red);
+                break;
+        }
         setContentView(R.layout.activity_main);
+
+        PreferenceManager.setDefaultValues(getBaseContext(), R.xml.settings, false);
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        TITLES = getResources().getStringArray(R.array.toolbar_titles);
+
         appBarLayout = (AppBarLayout)findViewById(R.id.appbar_main);
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
@@ -109,6 +125,7 @@ public class MainActivity extends AppCompatActivity
         headerEmail = (TextView)navigationView.getHeaderView(0).findViewById(R.id.current_user_email_header);
         headerName = (TextView)navigationView.getHeaderView(0).findViewById(R.id.current_user_name_header);
 
+
         fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentById(R.id.content_main);
 
@@ -119,6 +136,11 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Settings fields in navdrawer header
+     * @param name
+     * @param email
+     */
     public void setAboutUserData(String name, String email){
         headerEmail.setText(email);
         headerName.setText(name);
@@ -150,6 +172,7 @@ public class MainActivity extends AppCompatActivity
      */
     public void loadNavMenuFragments(int ID) {
         boolean needToolbar = true;
+        fragment = null;
         int t = 0;
         switch (ID) {
             case R.id.nav_home:
@@ -194,8 +217,9 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_my_profile:
                 break;
             case R.id.nav_settings:
-                Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-                startActivity(intent);
+                t = 7;
+                fragment = null;
+                needToolbar = true;
                 break;
             default:
                 fragment = HomeFragment.newInstance();
@@ -221,6 +245,10 @@ public class MainActivity extends AppCompatActivity
                     .add(R.id.content_main_without_toolbar, fragment)
                     .addToBackStack(null)
                     .commit();
+        else if(fragment == null && t == 7){
+            startActivity(new Intent(getBaseContext(), SettingsActivity.class));
+        }
+
     }
 
     /**
