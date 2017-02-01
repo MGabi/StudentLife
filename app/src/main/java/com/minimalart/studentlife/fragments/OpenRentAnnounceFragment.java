@@ -2,6 +2,7 @@ package com.minimalart.studentlife.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
@@ -46,6 +47,7 @@ public class OpenRentAnnounceFragment extends Fragment {
     private ImageButton backBtn;
     private StorageReference imgRef;
     private User sellerUser;
+    private FloatingActionButton fab;
     private Button email;
     private Button phone;
 
@@ -94,6 +96,7 @@ public class OpenRentAnnounceFragment extends Fragment {
         seller = (TextView)view.findViewById(R.id.detailed_seller);
         email = (Button) view.findViewById(R.id.detailed_contact_user_email);
         phone = (Button)view.findViewById(R.id.detailed_contact_user_phone);
+        fab = (FloatingActionButton)view.findViewById(R.id.rent_detailed_fab);
         sellerUser = null;
     }
 

@@ -3,6 +3,7 @@ package com.minimalart.studentlife.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
@@ -47,6 +48,7 @@ public class OpenFoodAnnounceFragment extends Fragment {
     private ImageButton backBtn;
     private User foodUser;
     private StorageReference storageReference;
+    private FloatingActionButton fab;
     private Button email;
     private Button phone;
 
@@ -95,6 +97,7 @@ public class OpenFoodAnnounceFragment extends Fragment {
         backBtn = (ImageButton)v.findViewById(R.id.food_detailed_back_btn);
         email = (Button)v.findViewById(R.id.food_detailed_contact_user_email);
         phone = (Button)v.findViewById(R.id.food_detailed_contact_user_phone);
+        fab = (FloatingActionButton) v.findViewById(R.id.food_detailed_fab);
         foodUser = null;
     }
 
@@ -154,6 +157,7 @@ public class OpenFoodAnnounceFragment extends Fragment {
         index = price.getText().toString().indexOf(":");
         sp.setSpan(bold, 0, index+1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         price.setText(sp);
+
     }
 
     /**

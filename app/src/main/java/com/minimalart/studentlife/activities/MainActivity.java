@@ -24,8 +24,11 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -38,10 +41,12 @@ import com.minimalart.studentlife.fragments.navdrawer.ContactFragment;
 import com.minimalart.studentlife.fragments.navdrawer.FoodAlertFragment;
 import com.minimalart.studentlife.fragments.navdrawer.FoodZoneFragment;
 import com.minimalart.studentlife.fragments.navdrawer.HomeFragment;
+import com.minimalart.studentlife.fragments.navdrawer.MyProfileFragment;
 import com.minimalart.studentlife.fragments.navdrawer.SearchRentFragment;
 import com.minimalart.studentlife.interfaces.HelperInterface;
 import com.minimalart.studentlife.models.CardFoodZone;
 import com.minimalart.studentlife.models.CardRentAnnounce;
+import com.minimalart.studentlife.models.User;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, HelperInterface {
@@ -54,7 +59,6 @@ public class MainActivity extends AppCompatActivity
     private static final String DEV_TITLE = "Contact STUDENT LIFE";
     private static final String GPLAY_URL = "https://play.google.com/store/apps/dev?id=6865542268483195156";
     private static final String COLOR_KEY = "key_color_preference";
-    private static final String ACCENT_KEY = "key_accent_preference";
 
     private Toolbar toolbar;
     private DrawerLayout drawer;
@@ -70,6 +74,8 @@ public class MainActivity extends AppCompatActivity
     private TextView headerName;
     private TextView headerEmail;
     private SharedPreferences preferences;
+    private User currentLoggedUser;
+    private String currentLoggedUserUID;
 
     /**
      * Titles for navdrawer items
@@ -113,6 +119,7 @@ public class MainActivity extends AppCompatActivity
         appBarLayout = (AppBarLayout)findViewById(R.id.appbar_main);
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
+        currentLoggedUser = null;
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -125,15 +132,67 @@ public class MainActivity extends AppCompatActivity
         headerEmail = (TextView)navigationView.getHeaderView(0).findViewById(R.id.current_user_email_header);
         headerName = (TextView)navigationView.getHeaderView(0).findViewById(R.id.current_user_name_header);
 
-
         fragmentManager = getSupportFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentById(R.id.content_main);
 
+        getUserDataFromFirebase();
+    }
+
+    public void openFirstFragment(){
+        fragment = fragmentManager.findFragmentById(R.id.content_main);
         if (fragment == null) {
             fragment = HomeFragment.newInstance();
             fragmentManager.beginTransaction().add(R.id.content_main, fragment).commit();
             toolbar.setTitle(TITLES[0]);
         }
+    }
+
+    public void getUserDataFromFirebase(){
+        DatabaseReference dbRef;
+        try {
+            dbRef = FirebaseDatabase.getInstance()
+                    .getReference()
+                    .child("users")
+                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            setCurrentUserUID(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        }catch(NullPointerException e){
+            Toast.makeText(getBaseContext(), R.string.error_unknown, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot != null){
+                    User user = dataSnapshot.getValue(User.class);
+                    setCurrentLoggedUser(user);
+                    setAboutUserData(user.getName(), user.getEmail());
+                    openFirstFragment();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void setCurrentLoggedUser(User user){
+        this.currentLoggedUser = user;
+    }
+
+    public User getCurrentLoggedUser(){
+        Log.v("MYPROFILE1", "called");
+        return currentLoggedUser;
+    }
+
+    public void setCurrentUserUID(String s){
+        this.currentLoggedUserUID =  s;
+    }
+
+    public String getCurrentUserUID(){
+        return currentLoggedUserUID;
     }
 
     /**
@@ -215,11 +274,12 @@ public class MainActivity extends AppCompatActivity
                 startActivity(i);
                 break;
             case R.id.nav_my_profile:
+                fragment = MyProfileFragment.newInstance();
+                needToolbar = false;
                 break;
             case R.id.nav_settings:
                 t = 7;
                 fragment = null;
-                needToolbar = true;
                 break;
             default:
                 fragment = HomeFragment.newInstance();

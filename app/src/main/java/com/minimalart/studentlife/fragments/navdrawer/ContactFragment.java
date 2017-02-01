@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.adapters.ContactAdapter;
-import com.minimalart.studentlife.services.Utils;
+import com.minimalart.studentlife.others.Utils;
 
 public class ContactFragment extends Fragment {
 

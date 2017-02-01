@@ -1,7 +1,5 @@
 package com.minimalart.studentlife.fragments.navdrawer;
 
-import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
@@ -10,8 +8,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +27,7 @@ import com.minimalart.studentlife.adapters.HomeUserFoodAdapter;
 import com.minimalart.studentlife.models.CardFoodZone;
 import com.minimalart.studentlife.models.CardRentAnnounce;
 import com.minimalart.studentlife.models.User;
-import com.minimalart.studentlife.services.Utils;
+import com.minimalart.studentlife.others.Utils;
 
 import java.util.ArrayList;
 
@@ -79,8 +75,10 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         initializeViews(view);
-        getUserDataFromFirebase();
-
+        //getUserDataFromFirebase();
+        setCurrentUser(((MainActivity)getActivity()).getCurrentLoggedUser());
+        setUserAnnounces();
+        setUserFood();
         return view;
     }
 
@@ -248,6 +246,7 @@ public class HomeFragment extends Fragment {
      * Setting up the views;
      */
     public void setViews(){
+        setCurrentUser(((MainActivity)getActivity()).getCurrentLoggedUser());
         name.setText("Salut, " + getCurrentUser().getName() + ".");
         name.setVisibility(View.VISIBLE);
         cardRent.setVisibility(View.VISIBLE);

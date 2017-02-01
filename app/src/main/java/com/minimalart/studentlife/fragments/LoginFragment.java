@@ -199,11 +199,6 @@ public class LoginFragment extends Fragment{
      * if permissions are not granted, ask for them
      */
     public void checkForPermissions(){
-        Log.v("PERMISSIONS1", "PackageManager.PERM: " + String.valueOf(PackageManager.PERMISSION_GRANTED));
-        Log.v("PERMISSIONS1", "Ext. Storage: " + String.valueOf(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)));
-        Log.v("PERMISSIONS1", "Wri. Storage: " + String.valueOf(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)));
-        Log.v("PERMISSIONS1", "Camera: " + String.valueOf(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)));
-
         if((ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) ||
                 (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) ||
                 (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)) {
@@ -227,8 +222,10 @@ public class LoginFragment extends Fragment{
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch(requestCode){
             case REQUEST_PERMISSIONS:
-                PERMISSION_MODE = grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED;
-                Log.v("PERMISSIONS1", "PERM MODE: " + Boolean.toString(PERMISSION_MODE));
+                PERMISSION_MODE = grantResults.length > 0 &&
+                        grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                        grantResults[1] == PackageManager.PERMISSION_GRANTED &&
+                        grantResults[2] == PackageManager.PERMISSION_GRANTED;
                 if(PERMISSION_MODE)
                     setupViews();
         }

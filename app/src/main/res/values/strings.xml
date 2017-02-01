@@ -6,6 +6,7 @@
     <string name="prompt_firstname">Nume</string>
     <string name="prompt_secondname">Prenume</string>
     <string name="prompt_age">Vârstă</string>
+    <string name="prompt_phone">Telefon</string>
     <string name="error_invalid_email">Email invalid</string>
     <string name="error_invalid_password">Parola este prea scurtă</string>
     <string name="error_incorrect_password">Parola este incorectă</string>
@@ -149,5 +150,13 @@ limitations under the License.
 
     <string name="settings_title_color_accent">Schimbă culoarea de accent</string>
     <string name="settings_title_color_accent_summary">Alege o culoare de accent care să fie pe placul tău</string>
+
+    <string name="myprofile_title">Profilul tău</string>
+    <string name="myprofile_pictitle">Poza de profil</string>
+    <string name="myprofile_picdesc">Vizualizează sau schimbă poza de profil</string>
+
+    <string name="lorem">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula sem a malesuada rhoncus.
+    </string>
 
 </resources>

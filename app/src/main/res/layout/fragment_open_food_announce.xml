@@ -206,7 +206,7 @@
             android:layout_margin="@dimen/activity_horizontal_margin"
             android:id="@+id/food_detailed_fab"
             app:fabSize="normal"
-            android:src="@drawable/ic_email"
+            android:src="@drawable/ic_favorite"
             android:layout_gravity="bottom|end"/>
 
     </android.support.design.widget.CoordinatorLayout>

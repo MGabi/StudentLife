@@ -21,7 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.activities.MainActivity;
 import com.minimalart.studentlife.models.CardFoodZone;
-import com.minimalart.studentlife.services.Utils;
+import com.minimalart.studentlife.others.Utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

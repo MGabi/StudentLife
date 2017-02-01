@@ -1,4 +1,4 @@
-package com.minimalart.studentlife.services;
+package com.minimalart.studentlife.others;
 
 
 import android.content.Context;

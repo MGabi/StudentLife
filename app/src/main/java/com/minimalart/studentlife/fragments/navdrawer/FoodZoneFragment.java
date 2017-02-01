@@ -18,7 +18,7 @@ import com.arlib.floatingsearchview.FloatingSearchView;
 import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.adapters.FoodZoneAdapter;
 import com.minimalart.studentlife.models.CardFoodZone;
-import com.minimalart.studentlife.services.Utils;
+import com.minimalart.studentlife.others.Utils;
 
 import java.util.ArrayList;
 
