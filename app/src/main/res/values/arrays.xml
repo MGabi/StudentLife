@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="toolbar_titles">
-        <item>Acasă</item>
-        <item>Chirii</item>
-        <item>Adaugă anunț chirie</item>
-        <item>Caută mese</item>
-        <item>Adaugă ofertă masă</item>
-        <item>Despre</item>
-        <item>Contact</item>
-        <item>Setări</item>
+        <item>@string/title_home</item>
+        <item>@string/title_rent</item>
+        <item>@string/title_addrent</item>
+        <item>@string/title_searchfood</item>
+        <item>@string/title_addfood</item>
+        <item>@string/title_about</item>
+        <item>@string/title_contact</item>
+        <item>@string/title_settings</item>
     </string-array>
 
     <string-array name="color_entries">

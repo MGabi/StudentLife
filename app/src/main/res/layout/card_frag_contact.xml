@@ -29,6 +29,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/frag_contact_name"
                     android:textSize="24sp"
+                    android:textColor="@color/textPrincipal"
                     android:id="@+id/card_frag_contact_title" />
 
                 <TextView

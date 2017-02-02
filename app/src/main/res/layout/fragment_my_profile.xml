@@ -122,6 +122,7 @@
                             android:layout_height="48dp"
                             android:layout_marginLeft="@dimen/standard_padding"
                             android:src="@drawable/ic_edit"
+                            android:layout_centerInParent="true"
                             android:layout_alignParentRight="true"
                             android:background="@color/full_alpha"
                             android:id="@+id/myprofile_editname"/>
@@ -170,6 +171,7 @@
                             android:layout_height="48dp"
                             android:layout_marginLeft="@dimen/standard_padding"
                             android:src="@drawable/ic_edit"
+                            android:layout_centerInParent="true"
                             android:layout_alignParentRight="true"
                             android:background="@color/full_alpha"
                             android:id="@+id/myprofile_editemail"/>
@@ -219,6 +221,7 @@
                             android:layout_height="48dp"
                             android:layout_marginLeft="@dimen/standard_padding"
                             android:src="@drawable/ic_edit"
+                            android:layout_centerInParent="true"
                             android:layout_alignParentRight="true"
                             android:background="@color/full_alpha"
                             android:id="@+id/myprofile_editphone"/>
@@ -273,19 +276,23 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:id="@+id/myprofile_card_phone"
+                    android:id="@+id/myprofile_card_photo"
                     app:cardElevation="@dimen/card_elevation"
                     app:cardCornerRadius="@dimen/card_radius"
                     app:contentPadding="16dp">
 
-                    <RelativeLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
 
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:layout_weight="1"
+                            android:paddingRight="@dimen/standard_padding">
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -297,7 +304,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:maxEms="12"
+                                android:maxWidth="300dp"
                                 android:text="@string/myprofile_picdesc"
                                 android:textSize="16sp"
                                 android:textColor="@color/textSecondary"/>
@@ -308,14 +315,134 @@
                             android:layout_height="48dp"
                             android:layout_marginLeft="@dimen/standard_padding"
                             android:src="@drawable/ic_insert_photo"
+                            android:layout_centerInParent="true"
                             android:layout_alignParentRight="true"
                             android:background="@color/full_alpha"
-                            android:id="@+id/myprofile_editphone"/>
+                            android:id="@+id/myprofile_editphoto"/>
 
-                    </RelativeLayout>
+                    </LinearLayout>
 
                 </android.support.v7.widget.CardView>
 
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:id="@+id/myprofile_card_rents"
+                    app:cardElevation="@dimen/card_elevation"
+                    app:cardCornerRadius="@dimen/card_radius"
+                    app:contentPadding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_weight="1"
+                            android:paddingRight="@dimen/standard_padding">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/myprofile_rent_title"
+                                android:textSize="24sp"
+                                android:textColor="@color/textPrincipal"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/myprofile_rent_desc"
+                                android:textSize="16sp"
+                                android:textColor="@color/textSecondary"/>
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxEms="12"
+                            android:text="20"
+                            android:id="@+id/myprofile_rentnumber"
+                            android:textSize="24sp"
+                            android:textColor="?attr/colorAccent" />
+
+                        <ImageButton
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_arrow_right"
+                            android:background="@color/full_alpha"
+                            android:id="@+id/myprofile_editrents"/>
+
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/card_grid_spacing"
+                    android:layout_marginLeft="@dimen/card_grid_spacing"
+                    android:layout_marginRight="@dimen/card_grid_spacing"
+                    android:layout_marginBottom="@dimen/card_grid_spacing"
+                    android:id="@+id/myprofile_card_food"
+                    app:cardElevation="@dimen/card_elevation"
+                    app:cardCornerRadius="@dimen/card_radius"
+                    app:contentPadding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_weight="1"
+                            android:paddingRight="@dimen/standard_padding">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/myprofile_food_title"
+                                android:textSize="24sp"
+                                android:textColor="@color/textPrincipal"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+
+                                android:text="@string/myprofile_food_desc"
+                                android:textSize="16sp"
+                                android:textColor="@color/textSecondary"/>
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxEms="12"
+                            android:text="20"
+                            android:id="@+id/myprofile_foodnumber"
+                            android:textSize="24sp"
+                            android:textColor="?attr/colorAccent" />
+
+                        <ImageButton
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_arrow_right"
+                            android:background="@color/full_alpha"
+                            android:id="@+id/myprofile_editfood"/>
+
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
 
 
             </LinearLayout>

@@ -154,9 +154,25 @@ limitations under the License.
     <string name="myprofile_title">Profilul tău</string>
     <string name="myprofile_pictitle">Poza de profil</string>
     <string name="myprofile_picdesc">Vizualizează sau schimbă poza de profil</string>
+    <string name="myprofile_rent_title">Anunțurile tale</string>
+    <string name="myprofile_rent_desc">Vizualizează sau șterge anunțurile de imobiliare postate de tine</string>
+    <string name="myprofile_food_title">Alertele tale</string>
+    <string name="myprofile_food_desc">Vizualiează sau șterge alertele de masă postate de tine</string>
 
     <string name="lorem">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula sem a malesuada rhoncus.
     </string>
+
+    <string name="save">Salvează</string>
+    <string name="close">Închide</string>
+
+    <string name="title_home">Acasă</string>
+    <string name="title_rent">Chirii</string>
+    <string name="title_addrent">Adaugă anunț chirie</string>
+    <string name="title_searchfood">Caută mese</string>
+    <string name="title_addfood">Adaugă ofertă masă</string>
+    <string name="title_about">Despre</string>
+    <string name="title_contact">Contact</string>
+    <string name="title_settings">Setări</string>
 
 </resources>

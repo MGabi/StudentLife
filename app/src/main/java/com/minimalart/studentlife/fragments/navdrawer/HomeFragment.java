@@ -3,11 +3,13 @@ package com.minimalart.studentlife.fragments.navdrawer;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +23,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.minimalart.studentlife.R;
-import com.minimalart.studentlife.activities.MainActivity;
 import com.minimalart.studentlife.adapters.HomeUserAnnouncesAdapter;
 import com.minimalart.studentlife.adapters.HomeUserFoodAdapter;
 import com.minimalart.studentlife.models.CardFoodZone;
@@ -75,10 +76,17 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         initializeViews(view);
-        //getUserDataFromFirebase();
-        setCurrentUser(((MainActivity)getActivity()).getCurrentLoggedUser());
-        setUserAnnounces();
-        setUserFood();
+        if(Utils.getInstance().isConnectedToNetwork(getContext()))
+            getUserDataFromFirebase();
+        else{
+            Snackbar.make(view, getResources().getString(R.string.error_network_connection), Snackbar.LENGTH_INDEFINITE)
+                    .setAction(android.R.string.ok, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.v("NETWORKTEST", "MAIN");
+                        }}).show();
+            stopRefreshLayout(swipe);
+        }
         return view;
     }
 
@@ -106,7 +114,6 @@ public class HomeFragment extends Fragment {
                     setCurrentUser(user);
                     setUserAnnounces();
                     setUserFood();
-                    ((MainActivity)getActivity()).setAboutUserData(user.getName(), user.getEmail());
                 }
 
             }
@@ -246,7 +253,6 @@ public class HomeFragment extends Fragment {
      * Setting up the views;
      */
     public void setViews(){
-        setCurrentUser(((MainActivity)getActivity()).getCurrentLoggedUser());
         name.setText("Salut, " + getCurrentUser().getName() + ".");
         name.setVisibility(View.VISIBLE);
         cardRent.setVisibility(View.VISIBLE);

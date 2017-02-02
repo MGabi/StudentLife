@@ -6,6 +6,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.EditText;
 
 import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.activities.LoginActivity;
+import com.minimalart.studentlife.others.Utils;
 
 public class SignUpFragment extends Fragment {
 
@@ -63,12 +65,21 @@ public class SignUpFragment extends Fragment {
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkData())
-                    signUp(emailTextField.getText().toString(),
-                            passwordTextField.getText().toString(),
-                            nameTextField.getText().toString(),
-                            secNameTextField.getText().toString(),
-                            ageTextField.getText().toString());
+                if(Utils.getInstance().isConnectedToNetwork(getContext())){
+                    if(checkData())
+                        signUp(emailTextField.getText().toString(),
+                                passwordTextField.getText().toString(),
+                                nameTextField.getText().toString(),
+                                secNameTextField.getText().toString(),
+                                ageTextField.getText().toString());
+                }else{
+                    Snackbar.make(view, getResources().getString(R.string.error_network_connection), Snackbar.LENGTH_INDEFINITE)
+                            .setAction(android.R.string.ok, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Log.v("NETWORKTEST", "SIGNUP");
+                                }}).show();
+                }
             }
         });
 

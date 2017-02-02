@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -18,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +49,7 @@ import com.minimalart.studentlife.interfaces.HelperInterface;
 import com.minimalart.studentlife.models.CardFoodZone;
 import com.minimalart.studentlife.models.CardRentAnnounce;
 import com.minimalart.studentlife.models.User;
+import com.minimalart.studentlife.others.Utils;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, HelperInterface {
@@ -108,7 +111,6 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
         setContentView(R.layout.activity_main);
-
         PreferenceManager.setDefaultValues(getBaseContext(), R.xml.settings, false);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -134,14 +136,24 @@ public class MainActivity extends AppCompatActivity
 
         fragmentManager = getSupportFragmentManager();
 
-        getUserDataFromFirebase();
+        if(Utils.getInstance().isConnectedToNetwork(getBaseContext()))
+            getUserDataFromFirebase();
+        else{
+            //TODO: show no network fragment.
+            Snackbar.make(drawer, getResources().getString(R.string.error_network_connection), Snackbar.LENGTH_INDEFINITE)
+                    .setAction(android.R.string.ok, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.v("NETWORKTEST", "MAIN");
+                        }}).show();
+        }
     }
 
     public void openFirstFragment(){
         fragment = fragmentManager.findFragmentById(R.id.content_main);
         if (fragment == null) {
             fragment = HomeFragment.newInstance();
-            fragmentManager.beginTransaction().add(R.id.content_main, fragment).commit();
+            fragmentManager.beginTransaction().add(R.id.content_main, fragment).commitAllowingStateLoss();
             toolbar.setTitle(TITLES[0]);
         }
     }
@@ -351,6 +363,11 @@ public class MainActivity extends AppCompatActivity
                 Log.v("FBSTORAGE", "RENT Success");
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+
     }
 
     /**

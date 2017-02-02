@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="200dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:paddingLeft="@dimen/standard_padding"
+        android:paddingRight="@dimen/standard_padding"
+        android:paddingTop="@dimen/standard_padding">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="@dimen/standard_padding"
+            android:layout_marginRight="@dimen/standard_padding"
+            android:layout_marginTop="@dimen/standard_padding"
+            android:id="@+id/field_phone">
+
+            <EditText
+                android:id="@+id/dialog_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Telefon"
+                android:inputType="phone"
+                android:maxLines="1"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <com.balysv.materialripple.MaterialRippleLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/ripple_save"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true">
+
+            <Button
+                android:id="@+id/save_btn"
+                android:background="#00fafafa"
+                android:layout_height="wrap_content"
+                android:text="@string/save"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:textColor="?attr/colorAccent">
+
+            </Button>
+
+        </com.balysv.materialripple.MaterialRippleLayout>
+
+        <com.balysv.materialripple.MaterialRippleLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@id/ripple_save">
+
+            <Button
+                android:id="@+id/close_btn"
+                android:background="#00fafafa"
+                android:layout_height="wrap_content"
+                android:text="@string/close"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:textColor="@color/textSecondary">
+
+            </Button>
+
+        </com.balysv.materialripple.MaterialRippleLayout>
+
+    </RelativeLayout>
+
+
+
+</FrameLayout>

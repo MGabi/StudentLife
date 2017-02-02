@@ -177,13 +177,12 @@ public class Utils {
 
     /**
      * Checking if app is connected to network
-     * @param context : context of the current activity/fragment in which this method is called
+     * @param context : context of the current activity/fragment in which method is called
      * @return the state of the network connection : true if it is connected, false if not
      */
     public boolean isConnectedToNetwork(Context context) {
         try {
-            ConnectivityManager connectivityManager
-                    = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
             return activeNetworkInfo != null && activeNetworkInfo.isConnected();
         } catch (Exception e) {

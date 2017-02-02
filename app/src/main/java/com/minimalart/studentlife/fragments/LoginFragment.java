@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.activities.LoginActivity;
+import com.minimalart.studentlife.others.Utils;
 
 
 public class LoginFragment extends Fragment{
@@ -40,6 +41,7 @@ public class LoginFragment extends Fragment{
     private View loginFormView;
     private Button logInButton;
     private MaterialRippleLayout signUpRipple;
+    private View mainView;
 
     public LoginFragment() {
 
@@ -62,7 +64,7 @@ public class LoginFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
-
+        setMainView(view);
 
         emailView = (EditText) view.findViewById(R.id.email);
         passwordView = (EditText) view.findViewById(R.id.password);
@@ -83,17 +85,33 @@ public class LoginFragment extends Fragment{
     /**
      * Setting up the views if permissions granted
      */
+    public View getMainView(){
+        return mainView;
+    }
+
+    public void setMainView(View v){
+        mainView = v;
+    }
+
     public void setupViews(){
         /**
          * Trying to log in user to firebase database
          */
+        final View v = getMainView();
         logInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkData()) {
-                    /*closeKeyboard();*/
-                    logInUser(emailView.getText().toString(),
-                            passwordView.getText().toString());
+                if(Utils.getInstance().isConnectedToNetwork(getContext())) {
+                    if (checkData())
+                        logInUser(emailView.getText().toString(),
+                                passwordView.getText().toString());
+                }else{
+                    Snackbar.make(v, getResources().getString(R.string.error_network_connection), Snackbar.LENGTH_INDEFINITE)
+                            .setAction(android.R.string.ok, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Log.v("NETWORKTEST", "LOGIN");
+                                }}).show();
                 }
             }
         });
