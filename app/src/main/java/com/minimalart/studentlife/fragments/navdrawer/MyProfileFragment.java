@@ -1,10 +1,12 @@
 package com.minimalart.studentlife.fragments.navdrawer;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,24 +16,33 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.minimalart.studentlife.R;
-import com.minimalart.studentlife.activities.MainActivity;
 import com.minimalart.studentlife.dialogs.SavePhoneDialog;
+import com.minimalart.studentlife.dialogs.SavePhotoDialog;
+import com.minimalart.studentlife.fragments.ModifyRentsFragment;
 import com.minimalart.studentlife.models.User;
 import com.minimalart.studentlife.dialogs.SaveEmailDialog;
 import com.minimalart.studentlife.dialogs.SaveNameDialog;
 import com.minimalart.studentlife.others.Utils;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MyProfileFragment extends Fragment implements AppBarLayout.OnOffsetChangedListener {
 
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR  = 0.9f;
-    private static final int ALPHA_ANIMATIONS_DURATION              = 200;
+    private static final int ALPHA_ANIMATIONS_DURATION = 200;
+    private static final String REF_USER_IMAGES = "user-images";
 
     private boolean isTheTitleVisible = false;
 
@@ -48,6 +59,7 @@ public class MyProfileFragment extends Fragment implements AppBarLayout.OnOffset
     private ImageButton editPhoto;
     private ImageButton editRents;
     private ImageButton editFood;
+    private CircleImageView mainImage;
 
     public MyProfileFragment() {
 
@@ -67,17 +79,21 @@ public class MyProfileFragment extends Fragment implements AppBarLayout.OnOffset
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_my_profile, container, false);
-        getUserDataFromFirebase(view);
 
         toolbar = (Toolbar) view.findViewById(R.id.myprofile_toolbar);
         title = (TextView) view.findViewById(R.id.myprofile_textview_title);
         appBarLayout = (AppBarLayout) view.findViewById(R.id.myprofile_appbar);
-        appBarLayout.addOnOffsetChangedListener(this);
+        mainImage = (CircleImageView)view.findViewById(R.id.myprofile_main_image);
         backButton = (ImageButton) view.findViewById(R.id.my_profile_back);
+        appBarLayout.addOnOffsetChangedListener(this);
+
+        getUserDataFromFirebase(view);
+
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().getSupportFragmentManager().popBackStack();
+                //getImageURLandSetToImageView(FirebaseAuth.getInstance().getCurrentUser().getUid());
             }
         });
 
@@ -87,6 +103,7 @@ public class MyProfileFragment extends Fragment implements AppBarLayout.OnOffset
 
     public void getUserDataFromFirebase(final View v){
         if(Utils.getInstance().isConnectedToNetwork(getContext())){
+            getImageURLandSetToImageView(FirebaseAuth.getInstance().getCurrentUser().getUid());
             DatabaseReference dbRef;
             try {
                 dbRef = FirebaseDatabase.getInstance()
@@ -125,8 +142,24 @@ public class MyProfileFragment extends Fragment implements AppBarLayout.OnOffset
         }
     }
 
+    public void getImageURLandSetToImageView(String imageID){
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(REF_USER_IMAGES).child(imageID);
+        Glide.with(getContext())
+                .using(new FirebaseImageLoader())
+                .load(storageReference)
+                .placeholder(R.drawable.person_no_photo)
+                .dontAnimate()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .into(mainImage);
+    }
+
     public void setUser(User u){
         this.user = u;
+    }
+
+    public User getUser(){
+        return user;
     }
 
     public void initViews(final View view){
@@ -137,7 +170,6 @@ public class MyProfileFragment extends Fragment implements AppBarLayout.OnOffset
         editPhoto = (ImageButton)view.findViewById(R.id.myprofile_editphoto);
         editRents = (ImageButton)view.findViewById(R.id.myprofile_editrents);
         editFood = (ImageButton)view.findViewById(R.id.myprofile_editfood);
-
         editName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,7 +197,26 @@ public class MyProfileFragment extends Fragment implements AppBarLayout.OnOffset
         editPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SavePhotoDialog dialog = new SavePhotoDialog(view, mainImage.getDrawable());
+                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        getImageURLandSetToImageView(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    }
+                });
+                dialog.show(getActivity().getSupportFragmentManager(), "DIAG_CHANGE_PHOTO");
+            }
+        });
 
+        editRents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .add(R.id.content_main_without_toolbar, ModifyRentsFragment.newInstance(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 

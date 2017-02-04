@@ -22,6 +22,7 @@
     <string name="error_bad_age">Vârsta este prea mică</string>
     <string name="error_network_connection">Porneste conexiunea de date si redeschide aplicatia</string>
     <string name="error_no_network_connection">Nu ai acces la internet</string>
+    <string name="error_no_image_added">Nu ai adăugat o imagine nouă</string>
     <string name="error_unknown">A apărut o eroare. Verifică conexiunea la internet si reporneste aplicația.</string>
     <string name="error_no_image">Trebuie să adaugi o imagine.</string>
     <string name="action_sign_up"><u>Nu ai cont? Înregistrează-te!</u></string>
@@ -43,6 +44,7 @@
     <string name="nav_item_logout">Ieșire</string>
     <string name="rent_added_success">Anunț adăugat cu succes</string>
     <string name="food_added_success">Ofertă adăugată cu succes</string>
+    <string name="image_added_success">Imaginea a fost salvată</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="frag_contact_name">Dezvoltator</string>
@@ -162,6 +164,8 @@ limitations under the License.
     <string name="lorem">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula sem a malesuada rhoncus.
     </string>
+
+    <string name="modify_rents_title">Modifică anunțurile</string>
 
     <string name="save">Salvează</string>
     <string name="close">Închide</string>

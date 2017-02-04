@@ -1,6 +1,5 @@
 package com.minimalart.studentlife.fragments.navdrawer;
 
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.design.widget.Snackbar;
@@ -28,6 +27,7 @@ import com.minimalart.studentlife.adapters.HomeUserFoodAdapter;
 import com.minimalart.studentlife.models.CardFoodZone;
 import com.minimalart.studentlife.models.CardRentAnnounce;
 import com.minimalart.studentlife.models.User;
+import com.minimalart.studentlife.others.SpaceHorizontalItemDecoration;
 import com.minimalart.studentlife.others.Utils;
 
 import java.util.ArrayList;
@@ -306,35 +306,6 @@ public class HomeFragment extends Fragment {
      */
     public void stopRefreshLayout(SwipeRefreshLayout srf){
         srf.setRefreshing(false);
-    }
-}
-
-/**
- * Decorator class for recyclerview
- * Adds spaces between cards
- */
-class SpaceHorizontalItemDecoration extends RecyclerView.ItemDecoration {
-    private int space;
-
-    public SpaceHorizontalItemDecoration(int space) {
-        this.space = space;
-    }
-
-    @Override
-    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        super.getItemOffsets(outRect, view, parent, state);
-
-        int position = parent.getChildLayoutPosition(view);
-
-        outRect.top = space;
-        outRect.bottom = space + 5;
-        outRect.right = space + 5;
-
-        if (position == 0){
-            outRect.left = space + 5;
-        } else{
-            outRect.left = 0;
-        }
     }
 }
 

@@ -1,7 +1,6 @@
 package com.minimalart.studentlife.fragments.navdrawer;
 
 
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.v4.app.Fragment;
@@ -18,6 +17,7 @@ import com.arlib.floatingsearchview.FloatingSearchView;
 import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.adapters.FoodZoneAdapter;
 import com.minimalart.studentlife.models.CardFoodZone;
+import com.minimalart.studentlife.others.SpaceGridItemDecoration;
 import com.minimalart.studentlife.others.Utils;
 
 import java.util.ArrayList;
@@ -141,39 +141,4 @@ public class FoodZoneFragment extends Fragment {
         Utils.getInstance().unregisterCallbackAdapterFood();
     }
 
-}
-
-/**
- * Decorator class for recyclerview
- * Adds spaces between cards
- */
-class SpaceGridItemDecoration extends RecyclerView.ItemDecoration {
-    private int space;
-
-    public SpaceGridItemDecoration(int space) {
-        this.space = space;
-    }
-
-    @Override
-    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-        super.getItemOffsets(outRect, view, parent, state);
-
-        int position = parent.getChildLayoutPosition(view);
-
-        outRect.right = space;
-        outRect.bottom = space/2;
-
-        // Add top margin only for the first item to avoid double space between items
-        if (position == 0 || position == 1){
-            outRect.top = space;
-        } else{
-            outRect.top = 0;
-        }
-
-        if(position % 2 != 0){
-            outRect.left = 0;
-        } else{
-            outRect.left = space;
-        }
-    }
 }

@@ -29,4 +29,5 @@
 
     <color name="full_alpha">#00000000</color>
     <color name="white">#FAFAFA</color>
+    <color name="shaded_white">#D9FAFAFA</color>
 </resources>

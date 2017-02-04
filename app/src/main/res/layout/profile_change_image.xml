@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/standard_padding"
+        android:paddingRight="@dimen/standard_padding"
+        android:paddingTop="@dimen/standard_padding">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="250dp"
+            android:id="@+id/relative_photo">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:maxHeight="250dp"
+                android:scaleType="centerCrop"
+                android:id="@+id/dialog_photo"
+                android:src="@drawable/apartment_inside">
+            </ImageView>
+
+            <ImageButton
+                android:layout_width="128dp"
+                android:layout_height="128dp"
+                android:src="@drawable/ic_add"
+                android:id="@+id/myprofile_select_image"
+                android:layout_centerInParent="true"
+                android:background="@color/full_alpha"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/relative_photo"
+            android:layout_marginTop="@dimen/standard_padding">
+
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:id="@+id/ripple_save"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_alignParentRight="true">
+
+                <Button
+                    android:id="@+id/save_btn"
+                    android:background="#00fafafa"
+                    android:layout_height="wrap_content"
+                    android:text="@string/save"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:textColor="?attr/colorAccent">
+
+                </Button>
+
+            </com.balysv.materialripple.MaterialRippleLayout>
+
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_toLeftOf="@id/ripple_save">
+
+                <Button
+                    android:id="@+id/close_btn"
+                    android:background="#00fafafa"
+                    android:layout_height="wrap_content"
+                    android:text="@string/close"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/textSecondary">
+
+                </Button>
+
+            </com.balysv.materialripple.MaterialRippleLayout>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+
+</FrameLayout>

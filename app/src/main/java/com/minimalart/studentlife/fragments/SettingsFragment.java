@@ -44,24 +44,6 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         switch(preference.getKey()){
             case COLOR_KEY:
-                /*switch(newValue.toString()){
-                    case "red":
-                        getActivity().getApplication().setTheme(R.style.AppTheme_Red);
-                        break;
-                    case "pink":
-                        getActivity().getApplication().setTheme(R.style.AppTheme_Pink);
-                        break;
-                    case "purple":
-                        getActivity().getApplication().setTheme(R.style.AppTheme_Purple);
-                        break;
-                    case "deep_purple":
-                        getActivity().getApplication().setTheme(R.style.AppTheme_DarkBlue);
-                        break;
-                    default:
-                        getActivity().getApplication().setTheme(R.style.AppTheme_Red);
-                        break;
-                }
-                break;*/
                 Intent i = getActivity().getBaseContext().getPackageManager()
                         .getLaunchIntentForPackage( getActivity().getBaseContext().getPackageName() );
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

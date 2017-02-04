@@ -196,7 +196,7 @@ public class AddRentFragment extends Fragment {
     }
 
     /**
-     * @return if image was retrieved from phone
+     * @return true if image was retrieved from phone
      */
     public Boolean isImageAdded(){
         return finalIMGByte != null;
