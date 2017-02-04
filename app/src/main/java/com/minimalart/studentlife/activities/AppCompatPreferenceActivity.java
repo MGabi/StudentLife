@@ -1,8 +1,10 @@
 package com.minimalart.studentlife.activities;
 
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -12,6 +14,8 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.minimalart.studentlife.R;
+
 /**
  * A {@link android.preference.PreferenceActivity} which implements and proxies the necessary calls
  * to be used with AppCompat.
@@ -19,11 +23,49 @@ import android.view.ViewGroup;
 public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
 
     private AppCompatDelegate mDelegate;
+    private static final String COLOR_KEY = "key_color_preference";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getDelegate().installViewFactory();
         getDelegate().onCreate(savedInstanceState);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        String theme = preferences.getString(COLOR_KEY, "red");
+        switch(theme) {
+            case "red":
+                setTheme(R.style.AppTheme_Red);
+                break;
+            case "pink":
+                setTheme(R.style.AppTheme_Pink);
+                break;
+            case "purple":
+                setTheme(R.style.AppTheme_Purple);
+                break;
+            case "deep_blue":
+                setTheme(R.style.AppTheme_DarkBlue);
+                break;
+            case "l_blue":
+                setTheme(R.style.AppTheme_LightBlue);
+                break;
+            case "l_green":
+                setTheme(R.style.AppTheme_LightGreen);
+                break;
+            case "yellow":
+                setTheme(R.style.AppTheme_Yellow);
+                break;
+            case "amber":
+                setTheme(R.style.AppTheme_Amber);
+                break;
+            case "brown":
+                setTheme(R.style.AppTheme_Brown);
+                break;
+            case "gray":
+                setTheme(R.style.AppTheme_Gray);
+            default:
+                setTheme(R.style.AppTheme_Red);
+                break;
+        }
         super.onCreate(savedInstanceState);
     }
 

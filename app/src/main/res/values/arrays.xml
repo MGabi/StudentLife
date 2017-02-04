@@ -16,6 +16,12 @@
         <item>Roz</item>
         <item>Violet</item>
         <item>Albastru închis</item>
+        <item>Albastru deschis</item>
+        <item>Verde deschis</item>
+        <item>Galben</item>
+        <item>Amber</item>
+        <item>Maro</item>
+        <item>Gri</item>
     </string-array>
 
     <string-array name="color_entries_values">
@@ -23,6 +29,12 @@
         <item>pink</item>
         <item>purple</item>
         <item>deep_blue</item>
+        <item>l_blue</item>
+        <item>l_green</item>
+        <item>yellow</item>
+        <item>amber</item>
+        <item>brown</item>
+        <item>gray</item>
     </string-array>
 
 </resources>

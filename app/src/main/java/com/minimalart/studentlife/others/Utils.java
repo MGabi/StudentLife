@@ -28,12 +28,6 @@ import java.util.ArrayList;
  */
 public class Utils {
 
-    private static final String REF_RENT = "rent-announces";
-    private static final String REF_FOOD = "food-announces";
-
-    private RentAnnounceAdapter callbackAdapterRent;
-    private FoodZoneAdapter callbackAdapterFood;
-
     private static Utils ourInstance = new Utils();
 
     public static Utils getInstance() {
@@ -77,27 +71,6 @@ public class Utils {
         return colorAccent;
     }
 
-
-    public void registerCallbackAdapterRent(RentAnnounceAdapter callbackAdapter) {
-        this.callbackAdapterRent = callbackAdapter;
-    }
-
-    public void unregisterCallbackAdapterRent() {
-        if (callbackAdapterRent != null) {
-            callbackAdapterRent = null;
-        }
-    }
-
-    public void registerCallbackAdapterFood(FoodZoneAdapter callbackAdapter) {
-        this.callbackAdapterFood = callbackAdapter;
-    }
-
-    public void unregisterCallbackAdapterFood() {
-        if (callbackAdapterFood != null) {
-            callbackAdapterFood = null;
-        }
-    }
-
     /**
      * @return the list with contact cards for About fragment
      */
@@ -109,70 +82,6 @@ public class Utils {
         list.add(new CardContact("frag_contact_site", "frag_contact_site_val", "google_plus_img"));
         list.add(new CardContact("frag_contact_gplay", "frag_contact_gplay_url", "google_playstore"));
         return list;
-    }
-
-    /**
-     * Downloading rent announces from firebase database
-     * @return a list with current announces in database
-     */
-    @SuppressWarnings("unchecked")
-    public ArrayList<CardRentAnnounce> getRentAnnounces() {
-        final ArrayList<CardRentAnnounce> cardRentAnnounces = new ArrayList<>();
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child(REF_RENT);
-        dbRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot != null) {
-                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        CardRentAnnounce card = ds.getValue(CardRentAnnounce.class);
-                        card.setAnnounceID(ds.getKey());
-                        cardRentAnnounces.add(card);
-                    }
-                }
-                if (callbackAdapterRent != null) {
-                    callbackAdapterRent.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        return cardRentAnnounces;
-    }
-
-    /**
-     * Downloading food announces from firebase database
-     * @return a list with current foods in database
-     */
-    @SuppressWarnings("unchecked")
-    public ArrayList<CardFoodZone> getFood(){
-        final ArrayList<CardFoodZone> cardFoodZones = new ArrayList<>();
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child(REF_FOOD);
-        dbRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot != null){
-                    for (DataSnapshot ds : dataSnapshot.getChildren()){
-                        CardFoodZone card = ds.getValue(CardFoodZone.class);
-                        card.setFoodID(ds.getKey());
-                        cardFoodZones.add(card);
-                    }
-                    if (callbackAdapterFood != null) {
-                        callbackAdapterFood.notifyDataSetChanged();
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        return cardFoodZones;
     }
 
     /**

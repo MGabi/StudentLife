@@ -26,6 +26,44 @@
         <item name="colorPrimaryDark">@color/blue_dark</item>
         <item name="colorAccent">@color/accent_pink</item>
     </style>
+<!--                       new                        -->
+    <style name="AppTheme.LightBlue" parent="AppTheme">
+        <item name="colorPrimary">@color/light_blue</item>
+        <item name="colorPrimaryDark">@color/light_blue_dark</item>
+        <item name="colorAccent">@color/red_accent</item>
+    </style>
+
+    <style name="AppTheme.LightGreen" parent="AppTheme">
+        <item name="colorPrimary">@color/light_green</item>
+        <item name="colorPrimaryDark">@color/light_green_dark</item>
+        <item name="colorAccent">@color/deep_purple_accent</item>
+    </style>
+
+    <style name="AppTheme.Yellow" parent="AppTheme">
+        <item name="colorPrimary">@color/yellow</item>
+        <item name="colorPrimaryDark">@color/yellow_dark</item>
+        <item name="colorAccent">@color/deep_purple_accent</item>
+    </style>
+
+    <style name="AppTheme.Amber" parent="AppTheme">
+        <item name="colorPrimary">@color/amber</item>
+        <item name="colorPrimaryDark">@color/amber_dark</item>
+        <item name="colorAccent">@color/purple_accent</item>
+    </style>
+
+    <style name="AppTheme.Brown" parent="AppTheme">
+        <item name="colorPrimary">@color/brown</item>
+        <item name="colorPrimaryDark">@color/brown_dark</item>
+        <item name="colorAccent">@color/amber_accent</item>
+    </style>
+
+    <style name="AppTheme.Gray" parent="AppTheme">
+        <item name="colorPrimary">@color/gray</item>
+        <item name="colorPrimaryDark">@color/gray_dark</item>
+        <item name="colorAccent">@color/red_accent</item>
+    </style>
+
+
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="drawerArrowStyle">@style/drawerWhite</item>

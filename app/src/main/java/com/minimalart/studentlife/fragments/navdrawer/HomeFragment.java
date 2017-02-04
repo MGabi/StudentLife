@@ -166,7 +166,7 @@ public class HomeFragment extends Fragment {
         homeUserFoodAdapter = new HomeUserFoodAdapter(new ArrayList<CardFoodZone>(), getContext());
         foodRecyclerView.setAdapter(homeUserFoodAdapter);
 
-        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.card_grid_spacing);
+        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.card_home_spacing);
         homeUserAnnouncesRecyclerView.addItemDecoration(new SpaceHorizontalItemDecoration(spacingInPixels));
         foodRecyclerView.addItemDecoration(new SpaceHorizontalItemDecoration(spacingInPixels));
 

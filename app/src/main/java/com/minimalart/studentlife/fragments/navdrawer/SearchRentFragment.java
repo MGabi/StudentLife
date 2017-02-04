@@ -14,6 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.adapters.RentAnnounceAdapter;
 import com.minimalart.studentlife.models.CardRentAnnounce;
@@ -27,6 +32,9 @@ public class SearchRentFragment extends Fragment {
     private RentAnnounceAdapter rentAnnounceAdapter;
     private SwipeRefreshLayout swipe;
     private FloatingSearchView floatingSearchView;
+    private ArrayList<CardRentAnnounce> fullList;
+
+    private static final String REF_RENT = "rent-announces";
 
     @ColorInt int colorPrimary;
     @ColorInt int colorPrimaryDark;
@@ -74,7 +82,8 @@ public class SearchRentFragment extends Fragment {
 
         rentAnnounceAdapter = new RentAnnounceAdapter(new ArrayList<CardRentAnnounce>(), getContext());
         rentRecyclerView.setAdapter(rentAnnounceAdapter);
-        rentAnnounceAdapter.loadNewData(Utils.getInstance().getRentAnnounces());
+        swipe.setRefreshing(true);
+        getRentAnnounces();
         rentRecyclerView.addItemDecoration(new DividerItemDecoration(rentRecyclerView.getContext(), llm.getOrientation()));
 
         colorPrimary = Utils.getInstance().getColorPrimary(getContext());
@@ -85,6 +94,37 @@ public class SearchRentFragment extends Fragment {
     }
 
     /**
+     * Downloading rent announces from firebase database
+     * @return a list with current announces in database
+     */
+    @SuppressWarnings("unchecked")
+    public void getRentAnnounces() {
+        final ArrayList<CardRentAnnounce> cardRentAnnounces = new ArrayList<>();
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child(REF_RENT);
+        dbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        CardRentAnnounce card = ds.getValue(CardRentAnnounce.class);
+                        card.setAnnounceID(ds.getKey());
+                        cardRentAnnounces.add(card);
+                    }
+                }
+                rentAnnounceAdapter.loadNewData(cardRentAnnounces);
+                rentAnnounceAdapter.notifyDataSetChanged();
+                fullList = cardRentAnnounces;
+                swipe.setRefreshing(false);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    /**
      * Setting click listeners for every button
      * and defining personal action for any of them
      */
@@ -92,8 +132,7 @@ public class SearchRentFragment extends Fragment {
         swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                rentAnnounceAdapter.loadNewData(Utils.getInstance().getRentAnnounces());
-                swipe.setRefreshing(false);
+                getRentAnnounces();
             }
         });
 
@@ -101,8 +140,7 @@ public class SearchRentFragment extends Fragment {
             @Override
             public void onSearchTextChanged(String oldQuery, String newQuery) {
                 ArrayList<CardRentAnnounce> newList = new ArrayList<>();
-                Log.v("CARDLIST", String.valueOf(rentAnnounceAdapter.getList().size()));
-                for(CardRentAnnounce card : rentAnnounceAdapter.getList()){
+                for(CardRentAnnounce card : fullList){
                     if(card.getTitle().toLowerCase().contains(newQuery.toLowerCase()) ||
                             card.getPrice().toLowerCase().contains(newQuery.toLowerCase()) ||
                             card.getRooms().toLowerCase().contains(newQuery.toLowerCase()) ||
@@ -115,25 +153,5 @@ public class SearchRentFragment extends Fragment {
                 rentAnnounceAdapter.notifyDataSetChanged();
             }
         });
-    }
-
-    /**
-     * Registering the callbackAdapter
-     * Is needed for waiting for results when downloading data from database
-     */
-    @Override
-    public void onStart() {
-        super.onStart();
-        Utils.getInstance().registerCallbackAdapterRent(rentAnnounceAdapter);
-    }
-
-    /**
-     * Unregistering the callback
-     * save memory
-     */
-    @Override
-    public void onStop() {
-        super.onStop();
-        Utils.getInstance().unregisterCallbackAdapterRent();
     }
 }

@@ -8,40 +8,49 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.adapters.FoodZoneAdapter;
 import com.minimalart.studentlife.models.CardFoodZone;
 import com.minimalart.studentlife.others.SpaceGridItemDecoration;
 import com.minimalart.studentlife.others.Utils;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class FoodZoneFragment extends Fragment {
+public class SearchFoodFragment extends Fragment {
+
+    private static final String REF_FOOD = "food-announces";
 
     private RecyclerView foodRecyclerView;
     private FoodZoneAdapter foodZoneAdapter;
     private SwipeRefreshLayout swipe;
     private FloatingSearchView searchView;
-
+    private ArrayList<CardFoodZone> fullList;
     @ColorInt int colorPrimary;
     @ColorInt int colorPrimaryDark;
     @ColorInt int colorAccent;
 
-    public FoodZoneFragment() {
+    public SearchFoodFragment() {
         // Required empty public constructor
     }
 
     /**
      * @return a reference to this fragment
      */
-    public static FoodZoneFragment newInstance() {
-        FoodZoneFragment fragment = new FoodZoneFragment();
+    public static SearchFoodFragment newInstance() {
+        SearchFoodFragment fragment = new SearchFoodFragment();
         return fragment;
     }
 
@@ -78,7 +87,8 @@ public class FoodZoneFragment extends Fragment {
 
         foodZoneAdapter = new FoodZoneAdapter(new ArrayList<CardFoodZone>(), getContext());
         foodRecyclerView.setAdapter(foodZoneAdapter);
-        foodZoneAdapter.loadNewData(Utils.getInstance().getFood());
+        swipe.setRefreshing(true);
+        getFood();
 
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.card_grid_spacing);
         foodRecyclerView.addItemDecoration(new SpaceGridItemDecoration(spacingInPixels));
@@ -90,6 +100,37 @@ public class FoodZoneFragment extends Fragment {
     }
 
     /**
+     * Downloading food announces from firebase database
+     * @return a list with current foods in database
+     */
+    @SuppressWarnings("unchecked")
+    public void getFood(){
+        final ArrayList<CardFoodZone> cardFoodZones = new ArrayList<>();
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child(REF_FOOD);
+        dbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot != null){
+                    for (DataSnapshot ds : dataSnapshot.getChildren()){
+                        CardFoodZone card = ds.getValue(CardFoodZone.class);
+                        card.setFoodID(ds.getKey());
+                        cardFoodZones.add(card);
+                    }
+                    foodZoneAdapter.loadNewData(cardFoodZones);
+                    foodZoneAdapter.notifyDataSetChanged();
+                    fullList = cardFoodZones;
+                    swipe.setRefreshing(false);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    /**
      * Setting click listeners for every view
      * and defining personal action for any of them
      */
@@ -97,8 +138,7 @@ public class FoodZoneFragment extends Fragment {
         swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                foodZoneAdapter.loadNewData(Utils.getInstance().getFood());
-                swipe.setRefreshing(false);
+                getFood();
             }
         });
 
@@ -106,39 +146,16 @@ public class FoodZoneFragment extends Fragment {
             @Override
             public void onSearchTextChanged(String oldQuery, String newQuery) {
                 ArrayList<CardFoodZone> newList = new ArrayList<>();
-                Log.v("CARDLIST", String.valueOf(foodZoneAdapter.getList().size()));
-                for(CardFoodZone card : foodZoneAdapter.getList()){
-                    if(card.getFoodDesc().toLowerCase().contains(newQuery.toLowerCase()) ||
+                for (CardFoodZone card : fullList) {
+                    if (card.getFoodDesc().toLowerCase().contains(newQuery.toLowerCase()) ||
                             card.getFoodLoc().toLowerCase().contains(newQuery.toLowerCase()) ||
                             card.getFoodPrice().toLowerCase().contains(newQuery.toLowerCase()) ||
                             card.getFoodTitle().toLowerCase().contains(newQuery.toLowerCase()))
                         newList.add(card);
                 }
-
                 foodZoneAdapter.loadNewData(newList);
                 foodZoneAdapter.notifyDataSetChanged();
             }
         });
     }
-
-    /**
-     * Registering the callbackAdapter
-     * Is needed for waiting for results when downloading data from database
-     */
-    @Override
-    public void onStart() {
-        super.onStart();
-        Utils.getInstance().registerCallbackAdapterFood(foodZoneAdapter);
-    }
-
-    /**
-     * Unregistering the callback
-     * save memory
-     */
-    @Override
-    public void onStop() {
-        super.onStop();
-        Utils.getInstance().unregisterCallbackAdapterFood();
-    }
-
 }

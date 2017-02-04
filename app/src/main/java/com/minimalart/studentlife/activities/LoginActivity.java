@@ -77,6 +77,24 @@ public class LoginActivity extends AppCompatActivity {
             case "deep_blue":
                 setTheme(R.style.AppTheme_DarkBlue);
                 break;
+            case "l_blue":
+                setTheme(R.style.AppTheme_LightBlue);
+                break;
+            case "l_green":
+                setTheme(R.style.AppTheme_LightGreen);
+                break;
+            case "yellow":
+                setTheme(R.style.AppTheme_Yellow);
+                break;
+            case "amber":
+                setTheme(R.style.AppTheme_Amber);
+                break;
+            case "brown":
+                setTheme(R.style.AppTheme_Brown);
+                break;
+            case "gray":
+                setTheme(R.style.AppTheme_Gray);
+                break;
             default:
                 setTheme(R.style.AppTheme_Red);
                 break;

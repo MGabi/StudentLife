@@ -41,7 +41,7 @@ import com.minimalart.studentlife.fragments.navdrawer.AboutFragment;
 import com.minimalart.studentlife.fragments.navdrawer.AddRentFragment;
 import com.minimalart.studentlife.fragments.navdrawer.ContactFragment;
 import com.minimalart.studentlife.fragments.navdrawer.FoodAlertFragment;
-import com.minimalart.studentlife.fragments.navdrawer.FoodZoneFragment;
+import com.minimalart.studentlife.fragments.navdrawer.SearchFoodFragment;
 import com.minimalart.studentlife.fragments.navdrawer.HomeFragment;
 import com.minimalart.studentlife.fragments.navdrawer.MyProfileFragment;
 import com.minimalart.studentlife.fragments.navdrawer.SearchRentFragment;
@@ -105,6 +105,24 @@ public class MainActivity extends AppCompatActivity
                 break;
             case "deep_blue":
                 setTheme(R.style.AppTheme_DarkBlue);
+                break;
+            case "l_blue":
+                setTheme(R.style.AppTheme_LightBlue);
+                break;
+            case "l_green":
+                setTheme(R.style.AppTheme_LightGreen);
+                break;
+            case "yellow":
+                setTheme(R.style.AppTheme_Yellow);
+                break;
+            case "amber":
+                setTheme(R.style.AppTheme_Amber);
+                break;
+            case "brown":
+                setTheme(R.style.AppTheme_Brown);
+                break;
+            case "gray":
+                setTheme(R.style.AppTheme_Gray);
                 break;
             default:
                 setTheme(R.style.AppTheme_Red);
@@ -260,7 +278,7 @@ public class MainActivity extends AppCompatActivity
                 t = 2;
                 break;
             case R.id.nav_search_food:
-                fragment = FoodZoneFragment.newInstance();
+                fragment = SearchFoodFragment.newInstance();
                 t = 3;
                 break;
             case R.id.nav_add_food:
