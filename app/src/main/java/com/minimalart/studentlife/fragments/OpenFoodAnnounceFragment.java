@@ -2,8 +2,11 @@ package com.minimalart.studentlife.fragments;
 
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
@@ -22,6 +25,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -51,6 +57,7 @@ public class OpenFoodAnnounceFragment extends Fragment {
     private FloatingActionButton fab;
     private Button email;
     private Button phone;
+    private View rootView;
 
 
     public OpenFoodAnnounceFragment() {
@@ -77,6 +84,7 @@ public class OpenFoodAnnounceFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_open_food_announce, container, false);
+        rootView = v;
         initViews(v);
         setViews();
         return v;
@@ -127,15 +135,28 @@ public class OpenFoodAnnounceFragment extends Fragment {
             }
         });
 
-        email.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener() {
+            final View view = rootView;
             @Override
             public void onClick(View v) {
-                Intent emailIntent = new Intent(Intent.ACTION_SEND);
-                emailIntent.setType("plain/text");
-                emailIntent.putExtra(Intent.EXTRA_EMAIL, foodUser.getEmail());
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Alertă" + currentFood.getFoodTitle());
-                Intent chooser = Intent.createChooser(emailIntent, "Trimite e-mail...");
-                startActivity(chooser);
+                DatabaseReference ref = FirebaseDatabase.getInstance()
+                        .getReference()
+                        .child("users-details")
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .child("food-favorites")
+                        .child(currentFood.getFoodID());
+
+                ref.setValue(currentFood.getFoodID()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Snackbar.make(view, getResources().getString(R.string.fav_added), Snackbar.LENGTH_LONG).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Snackbar.make(view, getResources().getString(R.string.fav_error), Snackbar.LENGTH_LONG).show();
+                    }
+                });
             }
         });
 
@@ -178,6 +199,45 @@ public class OpenFoodAnnounceFragment extends Fragment {
 
             }
         });
+
+        DatabaseReference refPhone = FirebaseDatabase.getInstance().getReference().child("users-details").child(userUID).child("phone");
+        refPhone.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot != null){
+                    setPhone(dataSnapshot.getValue(String.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+    public void setPhone(final String phoneNumber){
+        final View view = rootView;
+        phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(phoneNumber.length() == 10) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setData(Uri.parse("tel:" + phoneNumber));
+                    startActivity(intent);
+                }else{
+                    Snackbar.make(view, getResources().getString(R.string.error_bad_phone), Snackbar.LENGTH_INDEFINITE)
+                            .setAction(android.R.string.ok, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    }).show();
+                }
+            }
+        });
     }
 
     /**
@@ -187,6 +247,18 @@ public class OpenFoodAnnounceFragment extends Fragment {
     public void setSeller(User user){
         this.foodUser = user;
         seller.setText(getResources().getString(R.string.open_food_seller, foodUser.getName() + " " + foodUser.getSecName()));
+
+        email.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                emailIntent.setType("plain/text");
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, foodUser.getEmail());
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Alertă" + currentFood.getFoodTitle());
+                Intent chooser = Intent.createChooser(emailIntent, "Trimite e-mail...");
+                startActivity(chooser);
+            }
+        });
 
         StyleSpan bold = new StyleSpan(android.graphics.Typeface.BOLD);
         ForegroundColorSpan colorAcc = new ForegroundColorSpan(getResources().getColor(R.color.cyan_accent_second, getActivity().getTheme()));

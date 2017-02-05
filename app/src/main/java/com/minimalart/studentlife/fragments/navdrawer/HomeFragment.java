@@ -76,8 +76,10 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         initializeViews(view);
-        if(Utils.getInstance().isConnectedToNetwork(getContext()))
+        if(Utils.getInstance().isConnectedToNetwork(getContext())) {
+            showRefreshLayout(swipe);
             getUserDataFromFirebase();
+        }
         else{
             Snackbar.make(view, getResources().getString(R.string.error_network_connection), Snackbar.LENGTH_INDEFINITE)
                     .setAction(android.R.string.ok, new View.OnClickListener() {
@@ -112,8 +114,7 @@ public class HomeFragment extends Fragment {
                 if(dataSnapshot != null){
                     User user = dataSnapshot.getValue(User.class);
                     setCurrentUser(user);
-                    setUserAnnounces();
-                    setUserFood();
+                    prepareFavLists();
                 }
 
             }
@@ -123,6 +124,54 @@ public class HomeFragment extends Fragment {
 
             }
         });
+    }
+
+    public void prepareFavLists(){
+        DatabaseReference favRent = FirebaseDatabase.getInstance().getReference()
+                .child("users-details")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("rent-favorites");
+        favRent.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot != null){
+                    ArrayList<String> favoriteRents = new ArrayList<>();
+                    for(DataSnapshot data : dataSnapshot.getChildren()){
+                        favoriteRents.add(data.getKey());
+                    }
+                    setUserAnnounces(favoriteRents);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        DatabaseReference favFood = FirebaseDatabase.getInstance().getReference()
+                .child("users-details")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("food-favorites");
+        favFood.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot != null){
+                    ArrayList<String> favoriteFoods = new ArrayList<>();
+                    for(DataSnapshot data : dataSnapshot.getChildren()){
+                        favoriteFoods.add(data.getKey());
+                    }
+                    setUserFood(favoriteFoods);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        /*setUserAnnounces();
+        setUserFood();*/
     }
 
     /**
@@ -143,9 +192,7 @@ public class HomeFragment extends Fragment {
         swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                setUserAnnounces();
-                setUserFood();
-                swipe.setRefreshing(false);
+                prepareFavLists();
             }
         });
 
@@ -179,18 +226,20 @@ public class HomeFragment extends Fragment {
     /**
      * Setting up the current user rent announces in home fragment
      */
-    public void setUserAnnounces(){
+    public void setUserAnnounces(final ArrayList<String> favRents){
         final ArrayList<CardRentAnnounce> cardRentAnnounces = new ArrayList<>();
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child(REF_RENT);
-        dbRef.addValueEventListener(new ValueEventListener() {
+        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        CardRentAnnounce card = ds.getValue(CardRentAnnounce.class);
-                        card.setAnnounceID(ds.getKey());
-                        if(card.getUserUID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+                        if(favRents.contains(ds.getKey())) {
+                            CardRentAnnounce card = ds.getValue(CardRentAnnounce.class);
+                            card.setAnnounceID(ds.getKey());
+                            //if(card.getUserUID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
                             cardRentAnnounces.add(card);
+                        }
                     }
                     updateAdapterRent(cardRentAnnounces);
                 }
@@ -201,27 +250,29 @@ public class HomeFragment extends Fragment {
 
             }
         });
+
     }
 
     /**
      * Setting up the current user food announces in home fragment
      */
-    public void setUserFood(){
+    public void setUserFood(final ArrayList<String> favFoods){
         final ArrayList<CardFoodZone> cardFoodZones = new ArrayList<>();
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child(REF_FOOD);
-        dbRef.addValueEventListener(new ValueEventListener() {
+        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot != null){
                     for (DataSnapshot ds : dataSnapshot.getChildren()){
-                        CardFoodZone card = ds.getValue(CardFoodZone.class);
-                        card.setFoodID(ds.getKey());
-                        if(card.getUserUID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+                        if(favFoods.contains(ds.getKey())) {
+                            CardFoodZone card = ds.getValue(CardFoodZone.class);
+                            card.setFoodID(ds.getKey());
                             cardFoodZones.add(card);
+                        }
                     }
                     updateAdapterFood(cardFoodZones);
-                    setViews();
                 }
+                setViews();
             }
 
             @Override

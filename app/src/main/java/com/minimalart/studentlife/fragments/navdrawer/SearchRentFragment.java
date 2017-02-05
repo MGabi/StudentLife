@@ -101,7 +101,7 @@ public class SearchRentFragment extends Fragment {
     public void getRentAnnounces() {
         final ArrayList<CardRentAnnounce> cardRentAnnounces = new ArrayList<>();
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child(REF_RENT);
-        dbRef.addValueEventListener(new ValueEventListener() {
+        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {

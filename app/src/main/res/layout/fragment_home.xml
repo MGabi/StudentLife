@@ -50,7 +50,7 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="16sp"
                                 android:padding="10dp"
-                                android:text="Anunțurile tale"
+                                android:text="@string/frag_home_fav_rents"
                                 android:textStyle="bold"
                                 android:textColor="?colorAccent"/>
 
@@ -84,7 +84,7 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="16sp"
                                 android:padding="10dp"
-                                android:text="Alertele tale de masa"
+                                android:text="@string/frag_home_fav_foods"
                                 android:textStyle="bold"
                                 android:textColor="?colorAccent"/>
 

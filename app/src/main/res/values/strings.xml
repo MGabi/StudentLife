@@ -25,6 +25,7 @@
     <string name="error_no_image_added">Nu ai adăugat o imagine nouă</string>
     <string name="error_unknown">A apărut o eroare. Verifică conexiunea la internet si reporneste aplicația.</string>
     <string name="error_no_image">Trebuie să adaugi o imagine.</string>
+    <string name="error_bad_phone">Utilizatorul nu a adăugat un număr de telefon sau acesta este incorect</string>
     <string name="action_sign_up"><u>Nu ai cont? Înregistrează-te!</u></string>
     <string name="action_sign_up_firebase">Inregistrează-te</string>
     <string name="action_sign_in">Intră în cont</string>
@@ -46,7 +47,8 @@
     <string name="food_added_success">Ofertă adăugată cu succes</string>
     <string name="image_added_success">Imaginea a fost salvată</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
+    <string name="fav_added">Adăugat la favorite!</string>
+    <string name="fav_error">Nu s-a putut adăuga la favorite. Încearcă mai târziu!</string>
     <string name="frag_contact_name">Dezvoltator</string>
     <string name="frag_contact_email">Email</string>
     <string name="frag_contact_email_val">ytgabi98@gmail.com</string>
@@ -76,6 +78,9 @@
     <string name="error_rooms_too_big">Numărul de camere este prea mare</string>
     <string name="error_loc_short">Locație prea scurtă</string>
     <string name="error_desc_short">Descriere prea scurtă</string>
+
+    <string name="frag_home_fav_rents">Anunțuri favorite</string>
+    <string name="frag_home_fav_foods">Mâncăruri favorite</string>
 
     <string name="frag_about_app">Despre aplicație</string>
     <string name="frag_about_app_desc">\t\t\tIt has survived not only five centuries, but also the leap into electronic typesetting,

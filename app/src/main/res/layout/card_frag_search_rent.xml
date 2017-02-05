@@ -29,6 +29,7 @@
                     android:ellipsize="marquee"
                     android:id="@+id/card_search_rent_title"
                     android:text="Titlu"
+                    android:textColor="@color/textPrincipal"
                     android:maxLines="1"
                     android:lines="1"
                     android:textSize="20sp"

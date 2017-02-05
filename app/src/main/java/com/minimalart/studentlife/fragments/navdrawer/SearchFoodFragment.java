@@ -107,7 +107,7 @@ public class SearchFoodFragment extends Fragment {
     public void getFood(){
         final ArrayList<CardFoodZone> cardFoodZones = new ArrayList<>();
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child(REF_FOOD);
-        dbRef.addValueEventListener(new ValueEventListener() {
+        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot != null){

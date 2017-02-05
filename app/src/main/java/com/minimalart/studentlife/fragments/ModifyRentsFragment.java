@@ -20,24 +20,27 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.adapters.RentAnnounceAdapter;
-import com.minimalart.studentlife.others.SimpleItemTouchHelperCallback;
+import com.minimalart.studentlife.interfaces.OnCardDismissedListener;
+import com.minimalart.studentlife.others.CardSwipeItemTouchHelper;
 import com.minimalart.studentlife.models.CardRentAnnounce;
 import com.minimalart.studentlife.others.Utils;
 
 import java.util.ArrayList;
 
-public class ModifyRentsFragment extends Fragment {
+public class ModifyRentsFragment extends Fragment{
 
     private static final String ARG_USER_UID = "useruid";
     private static final String REF_RENT = "rent-announces";
+    private static final String REF_RENT_IMAGES = "rent-images";
 
     private String userUID;
     private RecyclerView rents;
     private RentAnnounceAdapter adapter;
     private SwipeRefreshLayout swipe;
-    private ItemTouchHelper itemTouchHelper;
 
     @ColorInt
     int colorPrimary;
@@ -108,16 +111,56 @@ public class ModifyRentsFragment extends Fragment {
     }
 
     public void addDismissBehavior(){
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
-        itemTouchHelper = new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(rents);
+        CardSwipeItemTouchHelper callback = new CardSwipeItemTouchHelper(adapter);
+        callback.setOnCardDismissedListener(new OnCardDismissedListener() {
+            @Override
+            public void onCardRemoved(RecyclerView.ViewHolder holder) {
+                final int poz = holder.getAdapterPosition();
+                final String ID = adapter.getList()
+                        .get(poz)
+                        .getAnnounceID();
+
+                DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+                dbRef.child(REF_RENT)
+                        .child(ID)
+                        .removeValue();
+
+                StorageReference ref = FirebaseStorage.getInstance()
+                        .getReference();
+                ref.child(REF_RENT_IMAGES)
+                        .child(ID)
+                        .delete();
+
+                DatabaseReference deleteRef = FirebaseDatabase.getInstance().getReference();
+                deleteRef.child("users-details").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for(DataSnapshot ds : dataSnapshot.getChildren()){
+                            DatabaseReference d = FirebaseDatabase.getInstance().getReference();
+                            d.child("users-details").child(ds.getKey())
+                                    .child("rent-favorites")
+                                    .child(ID)
+                                    .removeValue();
+                        }
+                        adapter.remove(poz);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });
+        ItemTouchHelper helper = new ItemTouchHelper(callback);
+        helper.attachToRecyclerView(rents);
     }
 
     @SuppressWarnings("unchecked")
     public void downloadAnnounces() {
         final ArrayList<CardRentAnnounce> cardRentAnnounces = new ArrayList<>();
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child(REF_RENT);
-        dbRef.addValueEventListener(new ValueEventListener() {
+        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {

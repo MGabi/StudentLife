@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity
                     .setAction(android.R.string.ok, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Log.v("NETWORKTEST", "MAIN");
+
                         }}).show();
         }
     }

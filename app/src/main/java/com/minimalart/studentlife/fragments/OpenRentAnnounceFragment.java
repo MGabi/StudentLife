@@ -1,8 +1,11 @@
 package com.minimalart.studentlife.fragments;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
@@ -10,6 +13,7 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +21,13 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -50,6 +58,7 @@ public class OpenRentAnnounceFragment extends Fragment {
     private FloatingActionButton fab;
     private Button email;
     private Button phone;
+    private View rootView;
 
     public OpenRentAnnounceFragment() {
         // Required empty public constructor
@@ -75,6 +84,7 @@ public class OpenRentAnnounceFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_open_rent_announce, container, false);
+        rootView = view;
         initViews(view);
         setViews();
         return view;
@@ -127,15 +137,28 @@ public class OpenRentAnnounceFragment extends Fragment {
             }
         });
 
-        email.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener() {
+            final View view = rootView;
             @Override
             public void onClick(View v) {
-                Intent emailIntent = new Intent(Intent.ACTION_SEND);
-                emailIntent.setType("plain/text");
-                emailIntent.putExtra(Intent.EXTRA_EMAIL, sellerUser.getEmail());
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Anunț" + currentAnnounce.getTitle());
-                Intent chooser = Intent.createChooser(emailIntent, "Trimite e-mail...");
-                startActivity(chooser);
+                DatabaseReference ref = FirebaseDatabase.getInstance()
+                        .getReference()
+                        .child("users-details")
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .child("rent-favorites")
+                        .child(currentAnnounce.getAnnounceID());
+
+                ref.setValue(currentAnnounce.getAnnounceID()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Snackbar.make(view, getResources().getString(R.string.fav_added), Snackbar.LENGTH_LONG).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Snackbar.make(view, getResources().getString(R.string.fav_error), Snackbar.LENGTH_LONG).show();
+                    }
+                });
             }
         });
 
@@ -182,6 +205,43 @@ public class OpenRentAnnounceFragment extends Fragment {
 
             }
         });
+
+        DatabaseReference refPhone = FirebaseDatabase.getInstance().getReference().child("users-details").child(userUID).child("phone");
+        refPhone.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot != null){
+                    setPhone(dataSnapshot.getValue(String.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void setPhone(final String phoneNumber){
+        final View view = rootView;
+        phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(phoneNumber.length() == 10) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setData(Uri.parse("tel:" + phoneNumber));
+                    startActivity(intent);
+                }else{
+                    Snackbar.make(view, getResources().getString(R.string.error_bad_phone), Snackbar.LENGTH_INDEFINITE)
+                            .setAction(android.R.string.ok, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    }).show();
+                }
+            }
+        });
     }
 
     /**
@@ -201,6 +261,18 @@ public class OpenRentAnnounceFragment extends Fragment {
         sp.setSpan(bold, index, seller.getText().length()-1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
         sp.setSpan(colorPrimary, 0, index, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
         seller.setText(sp);
+
+        email.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                emailIntent.setType("plain/text");
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, sellerUser.getEmail());
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Anunț" + currentAnnounce.getTitle());
+                Intent chooser = Intent.createChooser(emailIntent, "Trimite e-mail...");
+                startActivity(chooser);
+            }
+        });
     }
 
     /**

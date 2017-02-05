@@ -166,7 +166,7 @@ public class FoodAlertFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        int RESULT_OK = ((MainActivity)getActivity()).RESULT_OK;
+        int RESULT_OK = -1;
         if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
 
             Uri uri = data.getData();
