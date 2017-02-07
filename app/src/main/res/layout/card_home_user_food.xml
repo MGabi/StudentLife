@@ -33,6 +33,7 @@
                 android:ellipsize="marquee"
                 android:id="@+id/card_home_user_food_title"
                 android:text="Title"
+                android:textColor="@color/textPrincipal"
                 android:maxLines="1"
                 android:lines="1"
                 android:textStyle="normal"

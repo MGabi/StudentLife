@@ -17,9 +17,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.Explode;
+import android.transition.Fade;
+import android.transition.Slide;
+import android.transition.Transition;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,8 +40,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.minimalart.studentlife.R;
+import com.minimalart.studentlife.adapters.HomeUserAnnouncesAdapter;
+import com.minimalart.studentlife.adapters.HomeUserFoodAdapter;
 import com.minimalart.studentlife.fragments.OpenFoodAnnounceFragment;
 import com.minimalart.studentlife.fragments.OpenRentAnnounceFragment;
+import com.minimalart.studentlife.fragments.TestFragment;
 import com.minimalart.studentlife.fragments.navdrawer.AboutFragment;
 import com.minimalart.studentlife.fragments.navdrawer.AddRentFragment;
 import com.minimalart.studentlife.fragments.navdrawer.ContactFragment;
@@ -50,6 +58,7 @@ import com.minimalart.studentlife.models.CardFoodZone;
 import com.minimalart.studentlife.models.CardRentAnnounce;
 import com.minimalart.studentlife.models.User;
 import com.minimalart.studentlife.others.Utils;
+import com.minimalart.studentlife.transitions.DetailsTransition;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, HelperInterface {
@@ -62,6 +71,15 @@ public class MainActivity extends AppCompatActivity
     private static final String DEV_TITLE = "Contact STUDENT LIFE";
     private static final String GPLAY_URL = "https://play.google.com/store/apps/dev?id=6865542268483195156";
     private static final String COLOR_KEY = "key_color_preference";
+
+    private static final String TAG_HOME = "HOME";
+    private static final String TAG_SEARCH_RENT = "RENTS";
+    private static final String TAG_ADD_RENT = "ADD_RENTS";
+    private static final String TAG_SEARCH_FOOD = "FOOD";
+    private static final String TAG_ADD_FOOD = "ADD_FOOD";
+    private static final String TAG_ABOUT = "ABOUT";
+    private static final String TAG_CONTACT = "CONTACT";
+    private static final String TAG_SETTINGS = "SETTINGS";
 
     private Toolbar toolbar;
     private DrawerLayout drawer;
@@ -148,12 +166,18 @@ public class MainActivity extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.getMenu().getItem(0).setChecked(true);
 
         headerEmail = (TextView)navigationView.getHeaderView(0).findViewById(R.id.current_user_email_header);
         headerName = (TextView)navigationView.getHeaderView(0).findViewById(R.id.current_user_name_header);
 
         fragmentManager = getSupportFragmentManager();
+        fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
 
+            }
+        });
         if(Utils.getInstance().isConnectedToNetwork(getBaseContext()))
             getUserDataFromFirebase();
         else{
@@ -213,7 +237,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     public User getCurrentLoggedUser(){
-        Log.v("MYPROFILE1", "called");
         return currentLoggedUser;
     }
 
@@ -262,37 +285,47 @@ public class MainActivity extends AppCompatActivity
     public void loadNavMenuFragments(int ID) {
         boolean needToolbar = true;
         fragment = null;
+        String TAG = null;
         int t = 0;
         switch (ID) {
             case R.id.nav_home:
                 fragment = HomeFragment.newInstance();
+                TAG = TAG_HOME;
                 t = 0;
+                toolbar.setTitle(TITLES[t]);
                 break;
             case R.id.nav_search_rent:
                 fragment = SearchRentFragment.newInstance();
+                TAG = TAG_SEARCH_RENT;
                 t = 1;
+                toolbar.setTitle(TITLES[t]);
                 break;
             case R.id.nav_add_rent:
                 fragment = AddRentFragment.newInstance();
+                TAG = TAG_ADD_RENT;
                 needToolbar = false;
-                t = 2;
                 break;
             case R.id.nav_search_food:
                 fragment = SearchFoodFragment.newInstance();
+                TAG = TAG_SEARCH_FOOD;
                 t = 3;
                 break;
             case R.id.nav_add_food:
                 fragment = FoodAlertFragment.newInstance();
+                TAG = TAG_ADD_FOOD;
                 needToolbar = false;
-                t = 4;
                 break;
             case R.id.nav_about:
                 fragment = AboutFragment.newInstance();
+                TAG = TAG_ABOUT;
                 t = 5;
+                toolbar.setTitle(TITLES[t]);
                 break;
             case R.id.nav_contact:
                 fragment = ContactFragment.newInstance();
+                TAG = TAG_CONTACT;
                 t = 6;
+                toolbar.setTitle(TITLES[t]);
                 break;
             case R.id.nav_logout:
                 Toast.makeText(getBaseContext(), "Should be logged out", Toast.LENGTH_LONG).show();
@@ -308,15 +341,14 @@ public class MainActivity extends AppCompatActivity
                 needToolbar = false;
                 break;
             case R.id.nav_settings:
-                t = 7;
                 fragment = null;
                 break;
             default:
                 fragment = HomeFragment.newInstance();
                 t = 0;
+                toolbar.setTitle(TITLES[t]);
                 break;
         }
-        toolbar.setTitle(TITLES[t]);
 
         if(t == 0)
             appBarLayout.setElevation(4);
@@ -326,20 +358,25 @@ public class MainActivity extends AppCompatActivity
         if (needToolbar && fragment != null)
             fragmentManager.beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                    .replace(R.id.content_main, fragment)
+                    .replace(R.id.content_main, fragment, TAG)
                     .addToBackStack(null)
                     .commit();
-        else if (fragment != null)
+        else if (fragment != null) {
+            fragment.setEnterTransition(new Slide());
+            fragment.setExitTransition(new Slide());
             fragmentManager.beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                    .add(R.id.content_main_without_toolbar, fragment)
+                    .add(R.id.content_main_without_toolbar, fragment, TAG)
                     .addToBackStack(null)
                     .commit();
-        else if(fragment == null && t == 7){
+        }
+        else if(fragment == null){
             startActivity(new Intent(getBaseContext(), SettingsActivity.class));
         }
 
     }
+
+
 
     /**
      * Listener for navigation items
@@ -348,8 +385,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         loadNavMenuFragments(item.getItemId());
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
@@ -365,6 +400,27 @@ public class MainActivity extends AppCompatActivity
     public void addNewRentAnnounce(CardRentAnnounce cardRentAnnounce, byte[] image) {
         DatabaseReference newRef = databaseReference.child(REF_RENT).push();
         newRef.setValue(cardRentAnnounce);
+
+        final DatabaseReference nrRentRef = databaseReference.child("users-details")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("rent-numbers");
+        nrRentRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue(Long.class) == null){
+                    long val = 1;
+                    nrRentRef.setValue(val);
+                }else{
+                    long currAnnounces = dataSnapshot.getValue(Long.class);
+                    nrRentRef.setValue(currAnnounces+1);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         final FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         final StorageReference storageReference = firebaseStorage.getReference().child(REF_RENT_IMAGES).child(newRef.getKey());
@@ -396,6 +452,27 @@ public class MainActivity extends AppCompatActivity
     public void addNewFood(CardFoodZone cardFoodZone, byte[] image) {
         DatabaseReference newRef = databaseReference.child(REF_FOOD).push();
         newRef.setValue(cardFoodZone);
+
+        final DatabaseReference nrFoodRef = databaseReference.child("users-details")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("food-numbers");
+        nrFoodRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue(Long.class) == null){
+                    long val = 1;
+                    nrFoodRef.setValue(val);
+                }else{
+                    long currAnnounces = dataSnapshot.getValue(Long.class);
+                    nrFoodRef.setValue(currAnnounces+1);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         final FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         final StorageReference storageReference = firebaseStorage.getReference().child(REF_FOOD_IMAGES).child(newRef.getKey());
@@ -451,7 +528,7 @@ public class MainActivity extends AppCompatActivity
      * @param cardRentAnnounce : announce that will be displayed in fragment
      */
     @Override
-    public void openRentAnnounceFragment(CardRentAnnounce cardRentAnnounce) {
+    public void openRentAnnounceFragment(CardRentAnnounce cardRentAnnounce, ImageView image) {
         viewRentDetailedFragment = OpenRentAnnounceFragment.newInstance(cardRentAnnounce);
         fragmentManager.beginTransaction()
                 .replace(R.id.content_main_without_toolbar, viewRentDetailedFragment)
@@ -470,5 +547,22 @@ public class MainActivity extends AppCompatActivity
                 .replace(R.id.content_main_without_toolbar, viewFoodDetailedFragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    public void openTestFragment(ImageView image){
+        TestFragment fragment = TestFragment.newInstance();
+        fragment.setPoz(0);
+        fragment.setSharedElementEnterTransition(new DetailsTransition());
+        fragment.setSharedElementReturnTransition(new DetailsTransition());
+        fragment.setEnterTransition(new Slide());
+        fragment.setExitTransition(new Slide());
+
+
+        fragmentManager.beginTransaction()
+                .addSharedElement(image, image.getTransitionName())
+                .replace(R.id.content_main, fragment)
+                .addToBackStack(null)
+                .commit();
+
     }
 }

@@ -30,6 +30,7 @@ import com.google.firebase.storage.StorageReference;
 import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.dialogs.SavePhoneDialog;
 import com.minimalart.studentlife.dialogs.SavePhotoDialog;
+import com.minimalart.studentlife.fragments.ModifyFoodFragment;
 import com.minimalart.studentlife.fragments.ModifyRentsFragment;
 import com.minimalart.studentlife.models.User;
 import com.minimalart.studentlife.dialogs.SaveEmailDialog;
@@ -59,6 +60,8 @@ public class MyProfileFragment extends Fragment implements AppBarLayout.OnOffset
     private ImageButton editPhoto;
     private ImageButton editRents;
     private ImageButton editFood;
+    private TextView rentNr;
+    private TextView foodNr;
     private CircleImageView mainImage;
 
     public MyProfileFragment() {
@@ -86,6 +89,8 @@ public class MyProfileFragment extends Fragment implements AppBarLayout.OnOffset
         mainImage = (CircleImageView)view.findViewById(R.id.myprofile_main_image);
         backButton = (ImageButton) view.findViewById(R.id.my_profile_back);
         appBarLayout.addOnOffsetChangedListener(this);
+        rentNr = (TextView)view.findViewById(R.id.myprofile_rentnumber);
+        foodNr = (TextView)view.findViewById(R.id.myprofile_foodnumber);
 
         getUserDataFromFirebase(view);
 
@@ -132,6 +137,8 @@ public class MyProfileFragment extends Fragment implements AppBarLayout.OnOffset
 
                 }
             });
+
+            getNumbers();
         }else{
             Snackbar.make(v, getResources().getString(R.string.error_network_connection), Snackbar.LENGTH_INDEFINITE)
                     .setAction(android.R.string.ok, new View.OnClickListener() {
@@ -140,6 +147,45 @@ public class MyProfileFragment extends Fragment implements AppBarLayout.OnOffset
 
                 }}).show();
         }
+    }
+
+    public void getNumbers(){
+        DatabaseReference refR = FirebaseDatabase.getInstance().getReference();
+        refR.child("users-details")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("rent-numbers")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.getValue(Long.class) != null)
+                            rentNr.setText(String.valueOf(dataSnapshot.getValue(Long.class)));
+                        else
+                            rentNr.setText(String.valueOf(0));
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+        DatabaseReference refF = FirebaseDatabase.getInstance().getReference();
+        refF.child("users-details")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("food-numbers")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.getValue(Long.class) != null)
+                            foodNr.setText(String.valueOf(dataSnapshot.getValue(Long.class)));
+                        else
+                            foodNr.setText(String.valueOf(0));
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
     }
 
     public void getImageURLandSetToImageView(String imageID){
@@ -170,6 +216,7 @@ public class MyProfileFragment extends Fragment implements AppBarLayout.OnOffset
         editPhoto = (ImageButton)view.findViewById(R.id.myprofile_editphoto);
         editRents = (ImageButton)view.findViewById(R.id.myprofile_editrents);
         editFood = (ImageButton)view.findViewById(R.id.myprofile_editfood);
+
         editName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -215,6 +262,18 @@ public class MyProfileFragment extends Fragment implements AppBarLayout.OnOffset
                         .beginTransaction()
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                         .add(R.id.content_main_without_toolbar, ModifyRentsFragment.newInstance(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
+        editFood.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .add(R.id.content_main_without_toolbar, ModifyFoodFragment.newInstance(FirebaseAuth.getInstance().getCurrentUser().getUid()))
                         .addToBackStack(null)
                         .commit();
             }

@@ -1,6 +1,7 @@
 package com.minimalart.studentlife.adapters;
 
 import android.content.Context;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,12 +48,13 @@ public class RentAnnounceAdapter extends RecyclerView.Adapter<RentAnnounceAdapte
 
         final CardRentAnnounce cardRentAnnounce = cardRentAnnounceArrayList.get(position);
         holder.updateUI(cardRentAnnounce);
-
+        final ImageView image = holder.rentImage;
+        ViewCompat.setTransitionName(image, String.valueOf(position) + "_rent");
         MaterialRippleLayout mlr = (MaterialRippleLayout)holder.itemView.findViewById(R.id.search_ripple);
         mlr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity)context).openRentAnnounceFragment(cardRentAnnounce);
+                ((MainActivity)context).openRentAnnounceFragment(cardRentAnnounce, image);
             }
         });
     }

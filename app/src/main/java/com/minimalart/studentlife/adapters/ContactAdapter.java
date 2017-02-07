@@ -45,10 +45,11 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
      * @param position : current position
      */
     @Override
-    public void onBindViewHolder(ContactViewHolder holder, int position) {
+    public void onBindViewHolder(final ContactViewHolder holder, int position) {
         final CardContact cardContact = cardContactArrayList.get(position);
         holder.updateUI(cardContact);
         final int pos = position;
+        holder.image.setTransitionName("bla" + pos);
         MaterialRippleLayout mlr = (MaterialRippleLayout)holder.itemView.findViewById(R.id.contact_ripple);
         mlr.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +57,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
                 if(finalContext instanceof MainActivity)
                     switch(pos){
                         case 0:
+                            ((MainActivity)finalContext).openTestFragment(holder.image);
                             break;
                         case 1:
                             ((MainActivity)finalContext).openEMAILSender();

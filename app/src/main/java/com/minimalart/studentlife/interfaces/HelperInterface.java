@@ -1,5 +1,8 @@
 package com.minimalart.studentlife.interfaces;
 
+import android.widget.ImageView;
+
+import com.minimalart.studentlife.adapters.HomeUserAnnouncesAdapter;
 import com.minimalart.studentlife.models.CardFoodZone;
 import com.minimalart.studentlife.models.CardRentAnnounce;
 
@@ -14,6 +17,6 @@ public interface HelperInterface {
     void openGPLUS();
     void openEMAILSender();
     void openGPLAY();
-    void openRentAnnounceFragment(CardRentAnnounce cardRentAnnounce);
+    void openRentAnnounceFragment(CardRentAnnounce cardRentAnnounce, ImageView image);
     void openFoodAnnounce(CardFoodZone cardFoodZone);
 }

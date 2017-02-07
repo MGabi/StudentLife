@@ -3,6 +3,7 @@ package com.minimalart.studentlife.fragments.navdrawer;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -112,6 +113,7 @@ public class AddRentFragment extends Fragment {
                         Toast.makeText(getContext(), R.string.error_no_network_connection, Toast.LENGTH_LONG).show();
                     if(!isImageAdded()){
                         Toast.makeText(getContext(), R.string.error_no_image, Toast.LENGTH_LONG).show();
+                        addImageBtn.setBackgroundColor(getResources().getColor(R.color.red_alpha, getActivity().getTheme()));
                     }
                 }
             }
@@ -127,16 +129,7 @@ public class AddRentFragment extends Fragment {
         exitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getFragmentManager().popBackStack();
-                Fragment fragment = HomeFragment.newInstance();
-                getFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_main, fragment)
-                        .setTransition(android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .commit();
-                android.support.v7.app.ActionBar ab = ((MainActivity)getActivity()).getSupportActionBar();
-                ab.setTitle("Acasă");
-                ab.show();
+                getActivity().getSupportFragmentManager().popBackStack();
             }
         });
     }
@@ -189,9 +182,13 @@ public class AddRentFragment extends Fragment {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 finalIMGByte = baos.toByteArray();
+                addImageBtn.setBackgroundColor(getResources().getColor(R.color.green_alpha, getActivity().getTheme()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }else{
+            addImageBtn.setBackgroundColor(getResources().getColor(R.color.red_alpha, getActivity().getTheme()));
+            finalIMGByte = null;
         }
     }
 

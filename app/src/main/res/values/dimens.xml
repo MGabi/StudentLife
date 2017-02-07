@@ -10,7 +10,7 @@
     <dimen name="card_margin_left">8dp</dimen>
     <dimen name="card_margin_right">8dp</dimen>
     <dimen name="card_margin_bottom">6dp</dimen>
-    <dimen name="card_magin_top">6dp</dimen>
+    <dimen name="card_margin_top">6dp</dimen>
     <dimen name="card_grid_spacing">2dp</dimen>
     <dimen name="card_home_spacing">6dp</dimen>
 

@@ -114,20 +114,21 @@ public class OpenFoodAnnounceFragment extends Fragment {
      * adding bold style, colors to few of them at runtime
      */
     public void setViews(){
-        toolbar.setTitle(currentFood.getFoodTitle());
-        description.setText(getResources().getString(R.string.open_rent_description, currentFood.getFoodDesc()));
-        location.setText(getResources().getString(R.string.open_rent_location, currentFood.getFoodLoc()));
-        price.setText(getResources().getString(R.string.open_rent_price, currentFood.getFoodPrice()));
-        seller.setText(getResources().getString(R.string.open_rent_seller, "error"));
+        if(isAdded()) {
+            toolbar.setTitle(currentFood.getFoodTitle());
+            description.setText(getResources().getString(R.string.open_rent_description, currentFood.getFoodDesc()));
+            location.setText(getResources().getString(R.string.open_rent_location, currentFood.getFoodLoc()));
+            price.setText(getResources().getString(R.string.open_rent_price, currentFood.getFoodPrice()));
+            seller.setText(getResources().getString(R.string.open_rent_seller, "error"));
 
-        if(currentFood.isChecked()){
-            discount.setTextColor(getResources().getColor(R.color.cyan_accent_dark, getActivity().getTheme()));
-            discount.setText(getResources().getString(R.string.open_food_discount_checked));
-        }else{
-            discount.setTextColor(getResources().getColor(R.color.blueDark, getActivity().getTheme()));
-            discount.setText(getResources().getString(R.string.open_food_discount_unchecked));
+            if (currentFood.isChecked()) {
+                discount.setTextColor(getResources().getColor(R.color.cyan_accent_dark, getActivity().getTheme()));
+                discount.setText(getResources().getString(R.string.open_food_discount_checked));
+            } else {
+                discount.setTextColor(getResources().getColor(R.color.blueDark, getActivity().getTheme()));
+                discount.setText(getResources().getString(R.string.open_food_discount_unchecked));
+            }
         }
-
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,6 +140,31 @@ public class OpenFoodAnnounceFragment extends Fragment {
             final View view = rootView;
             @Override
             public void onClick(View v) {
+                DatabaseReference ref = FirebaseDatabase.getInstance()
+                        .getReference()
+                        .child("users-details")
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .child("food-favorites")
+                        .child(currentFood.getFoodID());
+
+                ref.setValue(currentFood.getFoodID()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Snackbar.make(view, getResources().getString(R.string.fav_added), Snackbar.LENGTH_LONG).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Snackbar.make(view, getResources().getString(R.string.fav_error), Snackbar.LENGTH_LONG).show();
+                    }
+                });
+            }
+        });
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final View view = rootView;
                 DatabaseReference ref = FirebaseDatabase.getInstance()
                         .getReference()
                         .child("users-details")
@@ -214,8 +240,6 @@ public class OpenFoodAnnounceFragment extends Fragment {
 
             }
         });
-
-
     }
 
     public void setPhone(final String phoneNumber){
@@ -246,29 +270,31 @@ public class OpenFoodAnnounceFragment extends Fragment {
      */
     public void setSeller(User user){
         this.foodUser = user;
-        seller.setText(getResources().getString(R.string.open_food_seller, foodUser.getName() + " " + foodUser.getSecName()));
+        if(isAdded()) {
+            seller.setText(getResources().getString(R.string.open_food_seller, foodUser.getName() + " " + foodUser.getSecName()));
 
-        email.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent emailIntent = new Intent(Intent.ACTION_SEND);
-                emailIntent.setType("plain/text");
-                emailIntent.putExtra(Intent.EXTRA_EMAIL, foodUser.getEmail());
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Alertă" + currentFood.getFoodTitle());
-                Intent chooser = Intent.createChooser(emailIntent, "Trimite e-mail...");
-                startActivity(chooser);
-            }
-        });
+            email.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                    emailIntent.setType("plain/text");
+                    emailIntent.putExtra(Intent.EXTRA_EMAIL, foodUser.getEmail());
+                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Alertă" + currentFood.getFoodTitle());
+                    Intent chooser = Intent.createChooser(emailIntent, "Trimite e-mail...");
+                    startActivity(chooser);
+                }
+            });
 
-        StyleSpan bold = new StyleSpan(android.graphics.Typeface.BOLD);
-        ForegroundColorSpan colorAcc = new ForegroundColorSpan(getResources().getColor(R.color.cyan_accent_second, getActivity().getTheme()));
-        ForegroundColorSpan colorPrimary = new ForegroundColorSpan(getResources().getColor(R.color.blueDark, getActivity().getTheme()));
-        SpannableStringBuilder sp = new SpannableStringBuilder(seller.getText().toString().replace(":", ""));
-        int index = seller.getText().toString().indexOf(":");
-        sp.setSpan(colorAcc, index, seller.getText().length()-1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-        sp.setSpan(bold, index, seller.getText().length()-1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-        sp.setSpan(colorPrimary, 0, index, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-        seller.setText(sp);
+            StyleSpan bold = new StyleSpan(android.graphics.Typeface.BOLD);
+            ForegroundColorSpan colorAcc = new ForegroundColorSpan(getResources().getColor(R.color.cyan_accent_second, getActivity().getTheme()));
+            ForegroundColorSpan colorPrimary = new ForegroundColorSpan(getResources().getColor(R.color.blueDark, getActivity().getTheme()));
+            SpannableStringBuilder sp = new SpannableStringBuilder(seller.getText().toString().replace(":", ""));
+            int index = seller.getText().toString().indexOf(":");
+            sp.setSpan(colorAcc, index, seller.getText().length() - 1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            sp.setSpan(bold, index, seller.getText().length() - 1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            sp.setSpan(colorPrimary, 0, index, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            seller.setText(sp);
+        }
     }
 
     /**

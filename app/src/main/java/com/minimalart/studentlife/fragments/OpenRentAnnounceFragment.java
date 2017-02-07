@@ -1,9 +1,11 @@
 package com.minimalart.studentlife.fragments;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -42,6 +44,9 @@ import com.minimalart.studentlife.models.User;
 public class OpenRentAnnounceFragment extends Fragment {
 
     private static final String RENT_PARAM = "parameter_rent_announce";
+    private static final String TRANS_ID_PARAM = "parameter_image_transition_name";
+    private static final String TRANS_POZ_PARAM = "parameter_position";
+
     private static final String REF_RENT_IMAGES = "rent-images";
     private CardRentAnnounce currentAnnounce;
     private TextView description;
@@ -59,15 +64,24 @@ public class OpenRentAnnounceFragment extends Fragment {
     private Button email;
     private Button phone;
     private View rootView;
+    private Bitmap currentImageBitmap;
+    private int pozition;
 
-    public OpenRentAnnounceFragment() {
-        // Required empty public constructor
-    }
 
-    public static OpenRentAnnounceFragment newInstance(CardRentAnnounce currentCard) {
+    public static OpenRentAnnounceFragment newInstance(CardRentAnnounce currentCard){
         OpenRentAnnounceFragment fragment = new OpenRentAnnounceFragment();
         Bundle args = new Bundle();
         args.putSerializable(RENT_PARAM, currentCard);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static OpenRentAnnounceFragment newInstanceWithImage(CardRentAnnounce currentCard, Bitmap bitmap, int poz) {
+        OpenRentAnnounceFragment fragment = new OpenRentAnnounceFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(RENT_PARAM, currentCard);
+        args.putParcelable(TRANS_ID_PARAM, bitmap);
+        args.putInt(TRANS_POZ_PARAM, poz);
         fragment.setArguments(args);
         return fragment;
     }
@@ -77,6 +91,8 @@ public class OpenRentAnnounceFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             this.currentAnnounce = (CardRentAnnounce)getArguments().getSerializable(RENT_PARAM);
+            this.currentImageBitmap = getArguments().getParcelable(TRANS_ID_PARAM);
+            this.pozition = getArguments().getInt(TRANS_POZ_PARAM);
         }
     }
 
@@ -85,9 +101,18 @@ public class OpenRentAnnounceFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_open_rent_announce, container, false);
         rootView = view;
+        image = (ImageView)view.findViewById(R.id.detailed_image);
+        image.setImageBitmap(currentImageBitmap);
+        image.setTransitionName(String.valueOf(pozition) + "_rent");
+        Log.v("TRANSITIONTEST", "in onCreateView: " + image.getTransitionName());
         initViews(view);
         setViews();
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     /**
@@ -115,21 +140,22 @@ public class OpenRentAnnounceFragment extends Fragment {
      * adding bold style, colors to few of them at runtime
      */
     public void setViews(){
-        toolbar.setTitle(currentAnnounce.getTitle());
-        description.setText(getResources().getString(R.string.open_rent_description, currentAnnounce.getDescription()));
-        location.setText(getResources().getString(R.string.open_rent_location, currentAnnounce.getLocation()));
-        price.setText(getResources().getString(R.string.open_rent_price, currentAnnounce.getPrice()));
-        rooms.setText(getResources().getString(R.string.open_rent_rooms, currentAnnounce.getRooms()));
-        seller.setText(getResources().getString(R.string.open_rent_seller, "error"));
+        if(isAdded()) {
+            toolbar.setTitle(currentAnnounce.getTitle());
+            description.setText(getResources().getString(R.string.open_rent_description, currentAnnounce.getDescription()));
+            location.setText(getResources().getString(R.string.open_rent_location, currentAnnounce.getLocation()));
+            price.setText(getResources().getString(R.string.open_rent_price, currentAnnounce.getPrice()));
+            rooms.setText(getResources().getString(R.string.open_rent_rooms, currentAnnounce.getRooms()));
+            seller.setText(getResources().getString(R.string.open_rent_seller, "error"));
 
-        if(currentAnnounce.isChecked()){
-            discount.setTextColor(getResources().getColor(R.color.cyan_accent_dark, getActivity().getTheme()));
-            discount.setText(getResources().getString(R.string.open_rent_discount_checked));
-        }else{
-            discount.setTextColor(getResources().getColor(R.color.blueDark, getActivity().getTheme()));
-            discount.setText(getResources().getString(R.string.open_rent_discount_unchecked));
+            if (currentAnnounce.isChecked()) {
+                discount.setTextColor(getResources().getColor(R.color.cyan_accent_dark, getActivity().getTheme()));
+                discount.setText(getResources().getString(R.string.open_rent_discount_checked));
+            } else {
+                discount.setTextColor(getResources().getColor(R.color.blueDark, getActivity().getTheme()));
+                discount.setText(getResources().getString(R.string.open_rent_discount_unchecked));
+            }
         }
-
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -138,9 +164,9 @@ public class OpenRentAnnounceFragment extends Fragment {
         });
 
         fab.setOnClickListener(new View.OnClickListener() {
-            final View view = rootView;
             @Override
             public void onClick(View v) {
+                final View view = rootView;
                 DatabaseReference ref = FirebaseDatabase.getInstance()
                         .getReference()
                         .child("users-details")
@@ -162,7 +188,7 @@ public class OpenRentAnnounceFragment extends Fragment {
             }
         });
 
-        setImage(currentAnnounce.getAnnounceID());
+        //setImage(currentAnnounce.getAnnounceID());
         downloadSellerCredentials(currentAnnounce.getUserUID());
 
         StyleSpan bold = new StyleSpan(android.graphics.Typeface.BOLD);
@@ -250,29 +276,31 @@ public class OpenRentAnnounceFragment extends Fragment {
      */
     public void setSeller(User user){
         this.sellerUser = user;
-        seller.setText(getResources().getString(R.string.open_rent_seller, sellerUser.getName() + " " + sellerUser.getSecName()));
+        if(isAdded()) {
+            seller.setText(getResources().getString(R.string.open_rent_seller, sellerUser.getName() + " " + sellerUser.getSecName()));
 
-        StyleSpan bold = new StyleSpan(android.graphics.Typeface.BOLD);
-        ForegroundColorSpan colorAcc = new ForegroundColorSpan(getResources().getColor(R.color.cyan_accent_second, getActivity().getTheme()));
-        ForegroundColorSpan colorPrimary = new ForegroundColorSpan(getResources().getColor(R.color.blueDark, getActivity().getTheme()));
-        SpannableStringBuilder sp = new SpannableStringBuilder(seller.getText().toString().replace(":", ""));
-        int index = seller.getText().toString().indexOf(":");
-        sp.setSpan(colorAcc, index, seller.getText().length()-1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-        sp.setSpan(bold, index, seller.getText().length()-1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-        sp.setSpan(colorPrimary, 0, index, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-        seller.setText(sp);
+            StyleSpan bold = new StyleSpan(android.graphics.Typeface.BOLD);
+            ForegroundColorSpan colorAcc = new ForegroundColorSpan(getResources().getColor(R.color.cyan_accent_second, getActivity().getTheme()));
+            ForegroundColorSpan colorPrimary = new ForegroundColorSpan(getResources().getColor(R.color.blueDark, getActivity().getTheme()));
+            SpannableStringBuilder sp = new SpannableStringBuilder(seller.getText().toString().replace(":", ""));
+            int index = seller.getText().toString().indexOf(":");
+            sp.setSpan(colorAcc, index, seller.getText().length() - 1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            sp.setSpan(bold, index, seller.getText().length() - 1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            sp.setSpan(colorPrimary, 0, index, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            seller.setText(sp);
 
-        email.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent emailIntent = new Intent(Intent.ACTION_SEND);
-                emailIntent.setType("plain/text");
-                emailIntent.putExtra(Intent.EXTRA_EMAIL, sellerUser.getEmail());
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Anunț" + currentAnnounce.getTitle());
-                Intent chooser = Intent.createChooser(emailIntent, "Trimite e-mail...");
-                startActivity(chooser);
-            }
-        });
+            email.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                    emailIntent.setType("plain/text");
+                    emailIntent.putExtra(Intent.EXTRA_EMAIL, sellerUser.getEmail());
+                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Anunț" + currentAnnounce.getTitle());
+                    Intent chooser = Intent.createChooser(emailIntent, "Trimite e-mail...");
+                    startActivity(chooser);
+                }
+            });
+        }
     }
 
     /**
@@ -283,7 +311,7 @@ public class OpenRentAnnounceFragment extends Fragment {
     public void setImage(String ID){
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         imgRef = firebaseStorage.getReference().child(REF_RENT_IMAGES).child(ID);
-
-        Glide.with(getContext()).using(new FirebaseImageLoader()).load(imgRef).centerCrop().into(image);
+        //image.setImageDrawable(getResources().getDrawable(R.drawable.apartment_inside, getActivity().getTheme()));
+        //Glide.with(getContext()).using(new FirebaseImageLoader()).load(imgRef).centerCrop().into(image);
     }
 }

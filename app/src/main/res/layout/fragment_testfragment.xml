@@ -1,0 +1,14 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.minimalart.studentlife.fragments.TestFragment">
+
+    <ImageView
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:src="@drawable/profile_pic"
+        android:id="@+id/card_frag_contact_image"
+        android:transitionName="trans"/>
+
+</FrameLayout>

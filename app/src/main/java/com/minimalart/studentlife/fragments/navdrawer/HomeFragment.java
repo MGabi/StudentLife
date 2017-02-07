@@ -1,5 +1,7 @@
 package com.minimalart.studentlife.fragments.navdrawer;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.design.widget.Snackbar;
@@ -8,10 +10,13 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Fade;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,13 +27,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.minimalart.studentlife.R;
+import com.minimalart.studentlife.activities.MainActivity;
 import com.minimalart.studentlife.adapters.HomeUserAnnouncesAdapter;
 import com.minimalart.studentlife.adapters.HomeUserFoodAdapter;
+import com.minimalart.studentlife.fragments.OpenFoodAnnounceFragment;
+import com.minimalart.studentlife.fragments.OpenRentAnnounceFragment;
+import com.minimalart.studentlife.interfaces.OnCardAnnounceClickedListener;
+import com.minimalart.studentlife.interfaces.OnCardFoodClickedListener;
+import com.minimalart.studentlife.interfaces.OnImageReadyListener;
 import com.minimalart.studentlife.models.CardFoodZone;
 import com.minimalart.studentlife.models.CardRentAnnounce;
 import com.minimalart.studentlife.models.User;
 import com.minimalart.studentlife.others.SpaceHorizontalItemDecoration;
 import com.minimalart.studentlife.others.Utils;
+import com.minimalart.studentlife.transitions.DetailsTransition;
 
 import java.util.ArrayList;
 
@@ -74,7 +86,6 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-
         initializeViews(view);
         if(Utils.getInstance().isConnectedToNetwork(getContext())) {
             showRefreshLayout(swipe);
@@ -212,6 +223,61 @@ public class HomeFragment extends Fragment {
         homeUserAnnouncesRecyclerView.setAdapter(homeUserAnnouncesAdapter);
         homeUserFoodAdapter = new HomeUserFoodAdapter(new ArrayList<CardFoodZone>(), getContext());
         foodRecyclerView.setAdapter(homeUserFoodAdapter);
+
+        homeUserAnnouncesAdapter.setOnImageReadyListener(new OnImageReadyListener() {
+            @Override
+            public void onImageReady() {
+                startPostponedEnterTransition();
+                homeUserAnnouncesAdapter.setOnImageReadyListener(null);
+            }
+        });
+
+        homeUserAnnouncesAdapter.setOnCardAnnounceClickedListener(new OnCardAnnounceClickedListener() {
+            @Override
+            public void onCardClicked(CardRentAnnounce card, ImageView imageView, int poz) {
+                Log.v("TRANSITIONTEST", "CLICKED FROM HOME FRAGMENT --- RENT");
+                Log.v("TRANSITIONTEST", "in onClick: " + imageView.getTransitionName());
+
+                imageView.setDrawingCacheEnabled(true);
+                Bitmap bitmap = imageView.getDrawingCache();
+
+                OpenRentAnnounceFragment newFragment = OpenRentAnnounceFragment.newInstanceWithImage(card, bitmap, poz);
+
+                newFragment.setSharedElementEnterTransition(new DetailsTransition());
+                newFragment.setEnterTransition(new Fade());
+                newFragment.setExitTransition(new Fade());
+                newFragment.setSharedElementReturnTransition(new DetailsTransition());
+
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .addSharedElement(imageView, imageView.getTransitionName())
+                        .replace(R.id.content_main_without_toolbar, newFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
+        homeUserFoodAdapter.setOnCardFoodClickedListener(new OnCardFoodClickedListener() {
+            @Override
+            public void onCardClicked(CardFoodZone card, ImageView image) {
+                Log.v("TRANSITIONTEST", "CLICKED FROM HOME FRAGMENT --- FOOD");
+                Log.v("TRANSITIONTEST", image.getTransitionName());
+
+                OpenFoodAnnounceFragment newFragment = OpenFoodAnnounceFragment.newInstance(card);
+
+                newFragment.setSharedElementEnterTransition(new DetailsTransition());
+                newFragment.setEnterTransition(new Fade());
+                newFragment.setExitTransition(new Fade());
+                newFragment.setSharedElementReturnTransition(new DetailsTransition());
+
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .addSharedElement(image, image.getTransitionName())
+                        .replace(R.id.content_main_without_toolbar, newFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
 
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.card_home_spacing);
         homeUserAnnouncesRecyclerView.addItemDecoration(new SpaceHorizontalItemDecoration(spacingInPixels));

@@ -2,8 +2,8 @@ package com.minimalart.studentlife.adapters;
 
 import android.content.Context;
 import android.net.Uri;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +17,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.activities.MainActivity;
+import com.minimalart.studentlife.interfaces.OnCardAnnounceClickedListener;
+import com.minimalart.studentlife.interfaces.OnCardFoodClickedListener;
 import com.minimalart.studentlife.models.CardFoodZone;
 
 import java.util.ArrayList;
@@ -29,6 +31,11 @@ public class HomeUserFoodAdapter extends RecyclerView.Adapter<HomeUserFoodAdapte
 
     private ArrayList<CardFoodZone> foodList;
     private Context context;
+    private OnCardFoodClickedListener listener;
+
+    public void setOnCardFoodClickedListener(OnCardFoodClickedListener listener){
+        this.listener = listener;
+    }
 
     public HomeUserFoodAdapter(ArrayList<CardFoodZone> foodList, Context context) {
         this.foodList = foodList;
@@ -47,11 +54,16 @@ public class HomeUserFoodAdapter extends RecyclerView.Adapter<HomeUserFoodAdapte
         final CardFoodZone cardFoodZone = foodList.get(position);
         holder.updateUI(cardFoodZone);
 
+        final ImageView image = holder.foodImage;
+        ViewCompat.setTransitionName(image, String.valueOf(position) + "_food");
+
         MaterialRippleLayout mlr = (MaterialRippleLayout)holder.itemView.findViewById(R.id.food_home_ripple);
         mlr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity)context).openFoodAnnounce(cardFoodZone);
+                //((MainActivity)context).openFoodAnnounce(cardFoodZone);
+                if(listener != null)
+                    listener.onCardClicked(cardFoodZone, image);
             }
         });
     }

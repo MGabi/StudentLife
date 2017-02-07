@@ -17,6 +17,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.activities.MainActivity;
+import com.minimalart.studentlife.interfaces.SwipeAdapter;
 import com.minimalart.studentlife.models.CardFoodZone;
 import com.minimalart.studentlife.models.CardRentAnnounce;
 
@@ -26,7 +27,7 @@ import java.util.ArrayList;
  * Created by ytgab on 11.01.2017.
  */
 
-public class FoodZoneAdapter extends RecyclerView.Adapter<FoodZoneAdapter.FoodZoneViewHolder> {
+public class FoodZoneAdapter extends RecyclerView.Adapter<FoodZoneAdapter.FoodZoneViewHolder> implements SwipeAdapter{
 
     private ArrayList<CardFoodZone> foodList;
     private Context context;
@@ -68,6 +69,11 @@ public class FoodZoneAdapter extends RecyclerView.Adapter<FoodZoneAdapter.FoodZo
     @Override
     public int getItemCount() {
         return foodList.size();
+    }
+
+    public void remove(int position){
+        foodList.remove(position);
+        notifyItemRemoved(position);
     }
 
     public class FoodZoneViewHolder extends RecyclerView.ViewHolder {
