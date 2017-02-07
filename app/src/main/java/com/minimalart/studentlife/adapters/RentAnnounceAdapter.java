@@ -16,6 +16,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.activities.MainActivity;
+import com.minimalart.studentlife.interfaces.OnCardAnnounceClickedListener;
 import com.minimalart.studentlife.interfaces.SwipeAdapter;
 import com.minimalart.studentlife.models.CardRentAnnounce;
 
@@ -31,6 +32,17 @@ public class RentAnnounceAdapter extends RecyclerView.Adapter<RentAnnounceAdapte
     private ArrayList<CardRentAnnounce> cardRentAnnounceArrayList;
     private Context context;
 
+    private OnCardAnnounceClickedListener listener;
+    public View.OnLongClickListener longListener;
+
+    public void setOnLongClickListener(View.OnLongClickListener longListener){
+        this.longListener = longListener;
+    }
+
+    public void setOnCardAnnounceClickedListener ( OnCardAnnounceClickedListener listener ){
+        this.listener = listener;
+    }
+
     public RentAnnounceAdapter(ArrayList<CardRentAnnounce> cardRentAnnounceArrayList, Context context) {
         this.cardRentAnnounceArrayList = cardRentAnnounceArrayList;
         this.context = context;
@@ -44,17 +56,31 @@ public class RentAnnounceAdapter extends RecyclerView.Adapter<RentAnnounceAdapte
     }
 
     @Override
-    public void onBindViewHolder(RentAnnounceViewHolder holder, int position) {
+    public void onBindViewHolder(final RentAnnounceViewHolder holder, final int position) {
 
         final CardRentAnnounce cardRentAnnounce = cardRentAnnounceArrayList.get(position);
         holder.updateUI(cardRentAnnounce);
-        final ImageView image = holder.rentImage;
-        ViewCompat.setTransitionName(image, String.valueOf(position) + "_rent");
+
+        ViewCompat.setTransitionName(holder.rentImage, String.valueOf(position) + "_rent");
         MaterialRippleLayout mlr = (MaterialRippleLayout)holder.itemView.findViewById(R.id.search_ripple);
         mlr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity)context).openRentAnnounceFragment(cardRentAnnounce, image);
+                //((MainActivity)context).openRentAnnounceFragment(cardRentAnnounce, image);
+                if(listener != null){
+                    listener.onCardClicked(cardRentAnnounce, holder.rentImage, holder.getAdapterPosition());
+                }
+            }
+        });
+
+        mlr.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if(longListener != null) {
+                    longListener.onLongClick(v);
+                    return true;
+                }else
+                    return false;
             }
         });
     }

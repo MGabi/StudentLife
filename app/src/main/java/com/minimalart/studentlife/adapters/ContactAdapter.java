@@ -57,7 +57,6 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
                 if(finalContext instanceof MainActivity)
                     switch(pos){
                         case 0:
-                            ((MainActivity)finalContext).openTestFragment(holder.image);
                             break;
                         case 1:
                             ((MainActivity)finalContext).openEMAILSender();

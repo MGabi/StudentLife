@@ -19,6 +19,7 @@ import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.activities.MainActivity;
 import com.minimalart.studentlife.interfaces.OnCardAnnounceClickedListener;
 import com.minimalart.studentlife.interfaces.OnCardFoodClickedListener;
+import com.minimalart.studentlife.interfaces.OnImageReadyListener;
 import com.minimalart.studentlife.models.CardFoodZone;
 
 import java.util.ArrayList;
@@ -32,9 +33,19 @@ public class HomeUserFoodAdapter extends RecyclerView.Adapter<HomeUserFoodAdapte
     private ArrayList<CardFoodZone> foodList;
     private Context context;
     private OnCardFoodClickedListener listener;
+    private OnImageReadyListener imageListener;
+    public View.OnLongClickListener longListener;
+
+    public void setOnLongClickListener(View.OnLongClickListener longListener){
+        this.longListener = longListener;
+    }
 
     public void setOnCardFoodClickedListener(OnCardFoodClickedListener listener){
         this.listener = listener;
+    }
+
+    public void setOnImageReadyListener(OnImageReadyListener imageListener) {
+        this.imageListener = imageListener;
     }
 
     public HomeUserFoodAdapter(ArrayList<CardFoodZone> foodList, Context context) {
@@ -50,20 +61,28 @@ public class HomeUserFoodAdapter extends RecyclerView.Adapter<HomeUserFoodAdapte
     }
 
     @Override
-    public void onBindViewHolder(HomeUserFoodAdapter.HomeUserFoodViewHolder holder, int position) {
+    public void onBindViewHolder(final HomeUserFoodAdapter.HomeUserFoodViewHolder holder, int position) {
         final CardFoodZone cardFoodZone = foodList.get(position);
         holder.updateUI(cardFoodZone);
 
-        final ImageView image = holder.foodImage;
-        ViewCompat.setTransitionName(image, String.valueOf(position) + "_food");
-
+        ViewCompat.setTransitionName(holder.foodImage, String.valueOf(position) + "_food");
         MaterialRippleLayout mlr = (MaterialRippleLayout)holder.itemView.findViewById(R.id.food_home_ripple);
         mlr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //((MainActivity)context).openFoodAnnounce(cardFoodZone);
                 if(listener != null)
-                    listener.onCardClicked(cardFoodZone, image);
+                    listener.onCardClicked(cardFoodZone, holder.foodImage, holder.getAdapterPosition());
+            }
+        });
+
+        mlr.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if(longListener != null) {
+                    longListener.onLongClick(v);
+                    return true;
+                }else
+                    return false;
             }
         });
     }

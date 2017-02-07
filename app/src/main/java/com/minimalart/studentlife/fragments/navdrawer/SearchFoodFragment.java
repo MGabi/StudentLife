@@ -1,6 +1,7 @@
 package com.minimalart.studentlife.fragments.navdrawer;
 
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.v4.app.Fragment;
@@ -9,10 +10,12 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.transition.Slide;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.google.firebase.database.DataSnapshot;
@@ -22,6 +25,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.adapters.FoodZoneAdapter;
+import com.minimalart.studentlife.fragments.OpenFoodAnnounceFragment;
+import com.minimalart.studentlife.interfaces.OnCardFoodClickedListener;
 import com.minimalart.studentlife.models.CardFoodZone;
 import com.minimalart.studentlife.others.SpaceGridItemDecoration;
 import com.minimalart.studentlife.others.Utils;
@@ -32,6 +37,7 @@ import java.util.ArrayList;
 public class SearchFoodFragment extends Fragment {
 
     private static final String REF_FOOD = "food-announces";
+    private static int SLIDE_DURATION = 200;
 
     private RecyclerView foodRecyclerView;
     private FoodZoneAdapter foodZoneAdapter;
@@ -89,6 +95,33 @@ public class SearchFoodFragment extends Fragment {
         foodRecyclerView.setAdapter(foodZoneAdapter);
         swipe.setRefreshing(true);
         getFood();
+
+        foodZoneAdapter.setOnCardFoodClickedListener(new OnCardFoodClickedListener() {
+            @Override
+            public void onCardClicked(CardFoodZone card, ImageView image, int poz) {
+                image.setDrawingCacheEnabled(true);
+                Bitmap bitmap = image.getDrawingCache();
+
+                OpenFoodAnnounceFragment newFragment = OpenFoodAnnounceFragment.newInstanceWithImage(card, bitmap, poz);
+
+                newFragment.setEnterTransition(new Slide().setDuration(SLIDE_DURATION));
+                newFragment.setExitTransition(new Slide().setDuration(SLIDE_DURATION));
+
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_main_without_toolbar, newFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
+        foodZoneAdapter.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Log.v("ONLONGTEST", "ONLONG CLICKED FRAG FOOD");
+                return true;
+            }
+        });
 
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.card_grid_spacing);
         foodRecyclerView.addItemDecoration(new SpaceGridItemDecoration(spacingInPixels));

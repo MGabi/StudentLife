@@ -17,12 +17,15 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.interfaces.OnCardAnnounceClickedListener;
 import com.minimalart.studentlife.interfaces.OnImageReadyListener;
 import com.minimalart.studentlife.models.CardRentAnnounce;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -33,8 +36,9 @@ import java.util.ArrayList;
 public class HomeUserAnnouncesAdapter extends RecyclerView.Adapter<HomeUserAnnouncesAdapter.HomeUserAnnouncesViewHolder>{
 
     public OnCardAnnounceClickedListener listener;
-
     public OnImageReadyListener imageListener;
+    public View.OnLongClickListener longListener;
+
     private ArrayList<CardRentAnnounce> cardRentAnnounceArrayList;
     private Context context;
 
@@ -42,8 +46,12 @@ public class HomeUserAnnouncesAdapter extends RecyclerView.Adapter<HomeUserAnnou
         this.listener = listener;
     }
 
-    public void setOnImageReadyListener(OnImageReadyListener imageListener) {
-        this.imageListener = imageListener;
+    public void setOnImageReadyListener(OnImageReadyListener listener){
+        imageListener = listener;
+    }
+
+    public void setOnLongClickListener(View.OnLongClickListener longListener){
+        this.longListener = longListener;
     }
 
     public HomeUserAnnouncesAdapter(ArrayList<CardRentAnnounce> cardRentAnnounceArrayList, Context context) {
@@ -71,6 +79,17 @@ public class HomeUserAnnouncesAdapter extends RecyclerView.Adapter<HomeUserAnnou
                 if(listener != null){
                     listener.onCardClicked(cardRentAnnounce, holder.rentImage, holder.getAdapterPosition());
                 }
+            }
+        });
+
+        mlr.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if(longListener != null) {
+                    longListener.onLongClick(v);
+                    return true;
+                }else
+                    return false;
             }
         });
     }
@@ -110,16 +129,26 @@ public class HomeUserAnnouncesAdapter extends RecyclerView.Adapter<HomeUserAnnou
         public void getImageURL(String announceID){
             FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
             storageReference = firebaseStorage.getReference().child(REF_RENT_IMAGES).child(announceID);
-            /*rentImage.setImageDrawable(context.getResources().getDrawable(R.drawable.apartment_inside, context.getTheme()));*/
-            Glide.with(context).using(new FirebaseImageLoader()).load(storageReference).into(new GlideDrawableImageViewTarget(rentImage){
+
+            Glide.with(context).using(new FirebaseImageLoader()).load(storageReference).into(rentImage);
+            /*storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
-                public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> animation) {
-                    super.onResourceReady(resource, animation);
-                    Log.v("TRANSITIONTEST", "Image ready");
-                    if(imageListener != null)
-                        imageListener.onImageReady();
+                public void onSuccess(Uri uri) {
+                    Picasso.with(context).load(uri).placeholder(R.drawable.apartment_inside).into(rentImage, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            Log.v("TRANSITIONTEST", "Success");
+                            if(imageListener != null)
+                                imageListener.onImageReady();
+                        }
+
+                        @Override
+                        public void onError() {
+
+                        }
+                    });
                 }
-            });
+            });*/
         }
 
         public ImageView getRentImage(){

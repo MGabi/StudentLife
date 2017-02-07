@@ -1,6 +1,7 @@
 package com.minimalart.studentlife.fragments.navdrawer;
 
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.v4.app.Fragment;
@@ -8,10 +9,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Slide;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.google.firebase.database.DataSnapshot;
@@ -21,6 +24,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.adapters.RentAnnounceAdapter;
+import com.minimalart.studentlife.fragments.OpenRentAnnounceFragment;
+import com.minimalart.studentlife.interfaces.OnCardAnnounceClickedListener;
 import com.minimalart.studentlife.models.CardRentAnnounce;
 import com.minimalart.studentlife.others.Utils;
 
@@ -35,7 +40,7 @@ public class SearchRentFragment extends Fragment {
     private ArrayList<CardRentAnnounce> fullList;
 
     private static final String REF_RENT = "rent-announces";
-
+    private static final int SLIDE_DURATION = 200;
     @ColorInt int colorPrimary;
     @ColorInt int colorPrimaryDark;
     @ColorInt int colorAccent;
@@ -85,6 +90,33 @@ public class SearchRentFragment extends Fragment {
         swipe.setRefreshing(true);
         getRentAnnounces();
         rentRecyclerView.addItemDecoration(new DividerItemDecoration(rentRecyclerView.getContext(), llm.getOrientation()));
+
+        rentAnnounceAdapter.setOnCardAnnounceClickedListener(new OnCardAnnounceClickedListener() {
+            @Override
+            public void onCardClicked(CardRentAnnounce card, ImageView imageView, int poz) {
+                imageView.setDrawingCacheEnabled(true);
+                Bitmap bitmap = imageView.getDrawingCache();
+
+                OpenRentAnnounceFragment newFragment = OpenRentAnnounceFragment.newInstanceWithImage(card, bitmap, poz);
+
+                newFragment.setEnterTransition(new Slide().setDuration(SLIDE_DURATION));
+                newFragment.setExitTransition(new Slide().setDuration(SLIDE_DURATION));
+
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_main_without_toolbar, newFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
+        rentAnnounceAdapter.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Log.v("ONLONGTEST", "ONLONG CLICKED FRAG RENT");
+                return true;
+            }
+        });
 
         colorPrimary = Utils.getInstance().getColorPrimary(getContext());
         colorPrimaryDark = Utils.getInstance().getColorPrimaryDark(getContext());

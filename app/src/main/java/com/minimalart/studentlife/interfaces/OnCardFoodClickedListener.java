@@ -2,6 +2,7 @@ package com.minimalart.studentlife.interfaces;
 
 import android.widget.ImageView;
 
+import com.minimalart.studentlife.adapters.HomeUserFoodAdapter;
 import com.minimalart.studentlife.models.CardFoodZone;
 
 /**
@@ -10,6 +11,6 @@ import com.minimalart.studentlife.models.CardFoodZone;
 
 public interface OnCardFoodClickedListener {
 
-    void onCardClicked(CardFoodZone card, ImageView image);
+    void onCardClicked(CardFoodZone card, ImageView image, int poz);
 
 }

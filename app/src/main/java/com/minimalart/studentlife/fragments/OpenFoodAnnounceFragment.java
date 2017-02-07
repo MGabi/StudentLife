@@ -2,6 +2,7 @@ package com.minimalart.studentlife.fragments;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -43,6 +44,9 @@ public class OpenFoodAnnounceFragment extends Fragment {
 
     private static final String FOOD_PARAM = "parameter_food";
     private static final String REF_FOOD_IMAGES = "food-images";
+    private static final String TRANS_ID_PARAM = "parameter_image_transition_name";
+    private static final String TRANS_POZ_PARAM = "parameter_position";
+
     private CardFoodZone currentFood;
     private ImageView foodImg;
     private TextView description;
@@ -58,10 +62,22 @@ public class OpenFoodAnnounceFragment extends Fragment {
     private Button email;
     private Button phone;
     private View rootView;
+    private Bitmap currentImageBitmap;
+    private int pozition;
 
 
     public OpenFoodAnnounceFragment() {
         // Required empty public constructor
+    }
+
+    public static OpenFoodAnnounceFragment newInstanceWithImage(CardFoodZone currentFood, Bitmap bitmap, int poz){
+        OpenFoodAnnounceFragment fragment = new OpenFoodAnnounceFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(FOOD_PARAM, currentFood);
+        args.putParcelable(TRANS_ID_PARAM, bitmap);
+        args.putInt(TRANS_POZ_PARAM, poz);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     public static OpenFoodAnnounceFragment newInstance(CardFoodZone card) {
@@ -77,6 +93,9 @@ public class OpenFoodAnnounceFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             this.currentFood = (CardFoodZone)getArguments().getSerializable(FOOD_PARAM);
+            this.currentImageBitmap = getArguments().getParcelable(TRANS_ID_PARAM);
+            this.pozition = getArguments().getInt(TRANS_POZ_PARAM);
+
         }
     }
 
@@ -85,6 +104,9 @@ public class OpenFoodAnnounceFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_open_food_announce, container, false);
         rootView = v;
+        foodImg = (ImageView)v.findViewById(R.id.food_detailed_image);
+        foodImg.setImageBitmap(currentImageBitmap);
+        foodImg.setTransitionName(String.valueOf(pozition) + "_food");
         initViews(v);
         setViews();
         return v;
@@ -100,7 +122,6 @@ public class OpenFoodAnnounceFragment extends Fragment {
         price = (TextView)v.findViewById(R.id.food_detailed_price);
         location = (TextView)v.findViewById(R.id.food_detailed_location);
         seller = (TextView)v.findViewById(R.id.food_detailed_seller);
-        foodImg = (ImageView)v.findViewById(R.id.food_detailed_image);
         discount = (TextView)v.findViewById(R.id.food_detailed_discount);
         backBtn = (ImageButton)v.findViewById(R.id.food_detailed_back_btn);
         email = (Button)v.findViewById(R.id.food_detailed_contact_user_email);
@@ -137,31 +158,6 @@ public class OpenFoodAnnounceFragment extends Fragment {
         });
 
         fab.setOnClickListener(new View.OnClickListener() {
-            final View view = rootView;
-            @Override
-            public void onClick(View v) {
-                DatabaseReference ref = FirebaseDatabase.getInstance()
-                        .getReference()
-                        .child("users-details")
-                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .child("food-favorites")
-                        .child(currentFood.getFoodID());
-
-                ref.setValue(currentFood.getFoodID()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Snackbar.make(view, getResources().getString(R.string.fav_added), Snackbar.LENGTH_LONG).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Snackbar.make(view, getResources().getString(R.string.fav_error), Snackbar.LENGTH_LONG).show();
-                    }
-                });
-            }
-        });
-
-        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final View view = rootView;
@@ -186,7 +182,7 @@ public class OpenFoodAnnounceFragment extends Fragment {
             }
         });
 
-        setImage(currentFood.getFoodID());
+        //setImage(currentFood.getFoodID());
         downloadSellerCredentials(currentFood.getUserUID());
 
         StyleSpan bold = new StyleSpan(android.graphics.Typeface.BOLD);

@@ -2,6 +2,7 @@ package com.minimalart.studentlife.fragments.navdrawer;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.design.widget.Snackbar;
@@ -11,6 +12,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Fade;
+import android.transition.Slide;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,6 +67,8 @@ public class HomeFragment extends Fragment {
 
     private static final String REF_RENT = "rent-announces";
     private static final String REF_FOOD = "food-announces";
+    private static final int SLIDE_DURATION = 200;
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -227,8 +231,12 @@ public class HomeFragment extends Fragment {
         homeUserAnnouncesAdapter.setOnImageReadyListener(new OnImageReadyListener() {
             @Override
             public void onImageReady() {
-                startPostponedEnterTransition();
-                homeUserAnnouncesAdapter.setOnImageReadyListener(null);
+                /**
+                 * Not done dealing with fragment shared element transition
+                 * this is a callback for when image is completely loaded from
+                 * storage with Glide/Picasso
+                 * */
+                /*getActivity().supportStartPostponedEnterTransition();*/
             }
         });
 
@@ -240,42 +248,59 @@ public class HomeFragment extends Fragment {
 
                 imageView.setDrawingCacheEnabled(true);
                 Bitmap bitmap = imageView.getDrawingCache();
-
+                /**
+                 * TODO: HAVE TO FIGURE OUT A WAY TO MAKE SHARED ELEMENT TRANSITION
+                 * TODO: TO WORK IN FRAGMENTS WITH ASYNC DOWNLOADED DATA !!!!!!!!
+                 */
                 OpenRentAnnounceFragment newFragment = OpenRentAnnounceFragment.newInstanceWithImage(card, bitmap, poz);
 
-                newFragment.setSharedElementEnterTransition(new DetailsTransition());
-                newFragment.setEnterTransition(new Fade());
-                newFragment.setExitTransition(new Fade());
-                newFragment.setSharedElementReturnTransition(new DetailsTransition());
+                newFragment.setEnterTransition(new Slide().setDuration(SLIDE_DURATION));
+                newFragment.setExitTransition(new Slide().setDuration(SLIDE_DURATION));
 
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
-                        .addSharedElement(imageView, imageView.getTransitionName())
+                        .replace(R.id.content_main_without_toolbar, newFragment)
+                        .addToBackStack(null)
+                        .commit();
+
+            }
+        });
+
+        homeUserAnnouncesAdapter.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Log.v("ONLONGTEST", "ONLONG CLICKED HOME RENT");
+                return true;
+            }
+        });
+
+        homeUserFoodAdapter.setOnCardFoodClickedListener(new OnCardFoodClickedListener() {
+            @Override
+            public void onCardClicked(CardFoodZone card, ImageView image, int poz) {
+                Log.v("TRANSITIONTEST", "CLICKED FROM HOME FRAGMENT --- FOOD");
+                Log.v("TRANSITIONTEST", "in onClick: " + image.getTransitionName());
+
+                image.setDrawingCacheEnabled(true);
+                Bitmap bitmap = image.getDrawingCache();
+
+                OpenFoodAnnounceFragment newFragment = OpenFoodAnnounceFragment.newInstanceWithImage(card, bitmap, poz);
+
+                newFragment.setEnterTransition(new Slide().setDuration(SLIDE_DURATION));
+                newFragment.setExitTransition(new Slide().setDuration(SLIDE_DURATION));
+
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
                         .replace(R.id.content_main_without_toolbar, newFragment)
                         .addToBackStack(null)
                         .commit();
             }
         });
 
-        homeUserFoodAdapter.setOnCardFoodClickedListener(new OnCardFoodClickedListener() {
+        homeUserFoodAdapter.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onCardClicked(CardFoodZone card, ImageView image) {
-                Log.v("TRANSITIONTEST", "CLICKED FROM HOME FRAGMENT --- FOOD");
-                Log.v("TRANSITIONTEST", image.getTransitionName());
-
-                OpenFoodAnnounceFragment newFragment = OpenFoodAnnounceFragment.newInstance(card);
-
-                newFragment.setSharedElementEnterTransition(new DetailsTransition());
-                newFragment.setEnterTransition(new Fade());
-                newFragment.setExitTransition(new Fade());
-                newFragment.setSharedElementReturnTransition(new DetailsTransition());
-
-                getActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .addSharedElement(image, image.getTransitionName())
-                        .replace(R.id.content_main_without_toolbar, newFragment)
-                        .addToBackStack(null)
-                        .commit();
+            public boolean onLongClick(View v) {
+                Log.v("ONLONGTEST", "ONLONG CLICKED HOME FOOD");
+                return true;
             }
         });
 

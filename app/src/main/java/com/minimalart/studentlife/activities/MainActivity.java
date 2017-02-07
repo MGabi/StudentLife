@@ -17,10 +17,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.transition.Explode;
-import android.transition.Fade;
 import android.transition.Slide;
-import android.transition.Transition;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,11 +37,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.minimalart.studentlife.R;
-import com.minimalart.studentlife.adapters.HomeUserAnnouncesAdapter;
-import com.minimalart.studentlife.adapters.HomeUserFoodAdapter;
 import com.minimalart.studentlife.fragments.OpenFoodAnnounceFragment;
 import com.minimalart.studentlife.fragments.OpenRentAnnounceFragment;
-import com.minimalart.studentlife.fragments.TestFragment;
 import com.minimalart.studentlife.fragments.navdrawer.AboutFragment;
 import com.minimalart.studentlife.fragments.navdrawer.AddRentFragment;
 import com.minimalart.studentlife.fragments.navdrawer.ContactFragment;
@@ -58,7 +52,6 @@ import com.minimalart.studentlife.models.CardFoodZone;
 import com.minimalart.studentlife.models.CardRentAnnounce;
 import com.minimalart.studentlife.models.User;
 import com.minimalart.studentlife.others.Utils;
-import com.minimalart.studentlife.transitions.DetailsTransition;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, HelperInterface {
@@ -109,6 +102,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        supportPostponeEnterTransition();
         preferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         String theme = preferences.getString(COLOR_KEY, "red");
         switch(theme){
@@ -547,22 +541,5 @@ public class MainActivity extends AppCompatActivity
                 .replace(R.id.content_main_without_toolbar, viewFoodDetailedFragment)
                 .addToBackStack(null)
                 .commit();
-    }
-
-    public void openTestFragment(ImageView image){
-        TestFragment fragment = TestFragment.newInstance();
-        fragment.setPoz(0);
-        fragment.setSharedElementEnterTransition(new DetailsTransition());
-        fragment.setSharedElementReturnTransition(new DetailsTransition());
-        fragment.setEnterTransition(new Slide());
-        fragment.setExitTransition(new Slide());
-
-
-        fragmentManager.beginTransaction()
-                .addSharedElement(image, image.getTransitionName())
-                .replace(R.id.content_main, fragment)
-                .addToBackStack(null)
-                .commit();
-
     }
 }
