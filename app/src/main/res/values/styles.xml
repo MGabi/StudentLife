@@ -26,7 +26,7 @@
         <item name="colorPrimaryDark">@color/blue_dark</item>
         <item name="colorAccent">@color/accent_pink</item>
     </style>
-<!--                       new                        -->
+    <!--                       new                        -->
     <style name="AppTheme.LightBlue" parent="AppTheme">
         <item name="colorPrimary">@color/light_blue</item>
         <item name="colorPrimaryDark">@color/light_blue_dark</item>
@@ -64,7 +64,6 @@
     </style>
 
 
-
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="drawerArrowStyle">@style/drawerWhite</item>
         <item name="android:navigationBarColor">?attr/colorPrimaryDark</item>
@@ -75,8 +74,12 @@
         <item name="color">@color/white</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.ActionBar"/>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme.Red.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.Red.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

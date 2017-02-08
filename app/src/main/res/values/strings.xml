@@ -243,8 +243,9 @@ limitations under the License.
     <string name="no_food_user_posted">Momentan nu ai nicio alertă postată!</string>
 
     <string name="no_rent_queried">Nu există niciun rezultat pentru această căutare!</string>
+    <string name="title_activity_application">Application</string>
 
-
+    <string name="toast_crash">Application crashed</string>
 
 
 </resources>

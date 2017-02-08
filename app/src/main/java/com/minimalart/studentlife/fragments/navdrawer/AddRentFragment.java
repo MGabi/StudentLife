@@ -147,11 +147,13 @@ public class AddRentFragment extends Fragment {
         Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
         getIntent.setType("image/*");
 
-        Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent pickIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         pickIntent.setType("image/*");
 
+        //Intent takePhoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
         Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
-        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent/*, takePhoto*/});
 
         startActivityForResult(chooserIntent, PICK_IMAGE);
     }
@@ -172,7 +174,6 @@ public class AddRentFragment extends Fragment {
             Uri uri = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
-
                 final int standardWIDTH = 1080;
                 float reduceBy;
 
@@ -187,7 +188,7 @@ public class AddRentFragment extends Fragment {
                 finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 finalIMGByte = baos.toByteArray();
                 addImageBtn.setBackgroundColor(getResources().getColor(R.color.green_alpha, getActivity().getTheme()));
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }else{

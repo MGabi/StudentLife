@@ -256,10 +256,12 @@ public class OpenRentAnnounceFragment extends Fragment {
         phone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(phoneNumber.length() == 10) {
-                    Intent intent = new Intent(Intent.ACTION_DIAL);
-                    intent.setData(Uri.parse("tel:" + phoneNumber));
-                    startActivity(intent);
+                if(phoneNumber != null) {
+                    if (phoneNumber.length() == 10) {
+                        Intent intent = new Intent(Intent.ACTION_DIAL);
+                        intent.setData(Uri.parse("tel:" + phoneNumber));
+                        startActivity(intent);
+                    }
                 }else{
                     Snackbar.make(view, getResources().getString(R.string.error_bad_phone), Snackbar.LENGTH_INDEFINITE)
                             .setAction(android.R.string.ok, new View.OnClickListener() {

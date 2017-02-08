@@ -12,7 +12,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.Red">
+        android:theme="@style/AppTheme.Red"
+        android:name=".application.ApplicationMain">
         <activity
             android:name=".activities.LoginActivity"
             android:label="@string/app_name">
@@ -29,7 +30,7 @@
         <activity
             android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@style/AppTheme.Red"/>
+            android:theme="@style/AppTheme.Red" />
     </application>
 
 </manifest>

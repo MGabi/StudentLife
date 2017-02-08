@@ -54,6 +54,8 @@ import com.minimalart.studentlife.models.CardRentAnnounce;
 import com.minimalart.studentlife.models.User;
 import com.minimalart.studentlife.others.Utils;
 
+import org.acra.annotation.ReportsCrashes;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, HelperInterface {
 
