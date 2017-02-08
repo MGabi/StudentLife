@@ -16,6 +16,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.activities.MainActivity;
+import com.minimalart.studentlife.interfaces.OnAnnounceReported;
 import com.minimalart.studentlife.interfaces.OnCardAnnounceClickedListener;
 import com.minimalart.studentlife.interfaces.SwipeAdapter;
 import com.minimalart.studentlife.models.CardRentAnnounce;
@@ -33,9 +34,9 @@ public class RentAnnounceAdapter extends RecyclerView.Adapter<RentAnnounceAdapte
     private Context context;
 
     private OnCardAnnounceClickedListener listener;
-    public View.OnLongClickListener longListener;
+    public OnAnnounceReported longListener;
 
-    public void setOnLongClickListener(View.OnLongClickListener longListener){
+    public void setOnAnnounceReportedListener(OnAnnounceReported longListener){
         this.longListener = longListener;
     }
 
@@ -77,7 +78,7 @@ public class RentAnnounceAdapter extends RecyclerView.Adapter<RentAnnounceAdapte
             @Override
             public boolean onLongClick(View v) {
                 if(longListener != null) {
-                    longListener.onLongClick(v);
+                    longListener.onAnnounceReported(cardRentAnnounce.getAnnounceID());
                     return true;
                 }else
                     return false;

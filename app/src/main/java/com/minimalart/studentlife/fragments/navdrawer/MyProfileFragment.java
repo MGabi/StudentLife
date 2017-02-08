@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,8 @@ public class MyProfileFragment extends Fragment implements AppBarLayout.OnOffset
     private ImageButton editPhoto;
     private ImageButton editRents;
     private ImageButton editFood;
+    private TextView ageText;
+    private String phone;
     private TextView rentNr;
     private TextView foodNr;
     private CircleImageView mainImage;
@@ -82,12 +85,13 @@ public class MyProfileFragment extends Fragment implements AppBarLayout.OnOffset
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_my_profile, container, false);
-
+        phone = "07";
         toolbar = (Toolbar) view.findViewById(R.id.myprofile_toolbar);
         title = (TextView) view.findViewById(R.id.myprofile_textview_title);
         appBarLayout = (AppBarLayout) view.findViewById(R.id.myprofile_appbar);
         mainImage = (CircleImageView)view.findViewById(R.id.myprofile_main_image);
         backButton = (ImageButton) view.findViewById(R.id.my_profile_back);
+        ageText = (TextView) view.findViewById(R.id.myprofile_textview_age);
         appBarLayout.addOnOffsetChangedListener(this);
         rentNr = (TextView)view.findViewById(R.id.myprofile_rentnumber);
         foodNr = (TextView)view.findViewById(R.id.myprofile_foodnumber);
@@ -186,6 +190,29 @@ public class MyProfileFragment extends Fragment implements AppBarLayout.OnOffset
 
                     }
                 });
+        DatabaseReference refPhoneNr = FirebaseDatabase.getInstance().getReference();
+        refPhoneNr.child("users-details")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("phone")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot != null){
+                            setPhoneNumber(dataSnapshot.getValue(String.class));
+                        }else{
+                            setPhoneNumber("07");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+    public void setPhoneNumber(String phone){
+        this.phone = phone;
     }
 
     public void getImageURLandSetToImageView(String imageID){
@@ -216,7 +243,7 @@ public class MyProfileFragment extends Fragment implements AppBarLayout.OnOffset
         editPhoto = (ImageButton)view.findViewById(R.id.myprofile_editphoto);
         editRents = (ImageButton)view.findViewById(R.id.myprofile_editrents);
         editFood = (ImageButton)view.findViewById(R.id.myprofile_editfood);
-
+        ageText.setText(user.getAge());
         editName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -236,7 +263,7 @@ public class MyProfileFragment extends Fragment implements AppBarLayout.OnOffset
         editPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SavePhoneDialog dialog = new SavePhoneDialog("0749838460", view);
+                SavePhoneDialog dialog = new SavePhoneDialog(phone, view);
                 dialog.show(getActivity().getSupportFragmentManager(), "DIAG_CHANGE_PHONE");
             }
         });

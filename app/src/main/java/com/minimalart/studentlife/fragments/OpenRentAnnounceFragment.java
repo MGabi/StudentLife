@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -149,10 +150,12 @@ public class OpenRentAnnounceFragment extends Fragment {
             seller.setText(getResources().getString(R.string.open_rent_seller, "error"));
 
             if (currentAnnounce.isChecked()) {
-                discount.setTextColor(getResources().getColor(R.color.cyan_accent_dark, getActivity().getTheme()));
+                //discount.setTextColor(getResources().getColor(R.color.cyan_accent_dark, getActivity().getTheme()));
+                discount.setTextColor(ContextCompat.getColor(getContext(), R.color.cyan_accent_dark));
                 discount.setText(getResources().getString(R.string.open_rent_discount_checked));
             } else {
-                discount.setTextColor(getResources().getColor(R.color.blueDark, getActivity().getTheme()));
+                //discount.setTextColor(getResources().getColor(R.color.blueDark, getActivity().getTheme()));
+                discount.setTextColor(ContextCompat.getColor(getContext(), R.color.blueDark));
                 discount.setText(getResources().getString(R.string.open_rent_discount_unchecked));
             }
         }
@@ -280,8 +283,8 @@ public class OpenRentAnnounceFragment extends Fragment {
             seller.setText(getResources().getString(R.string.open_rent_seller, sellerUser.getName() + " " + sellerUser.getSecName()));
 
             StyleSpan bold = new StyleSpan(android.graphics.Typeface.BOLD);
-            ForegroundColorSpan colorAcc = new ForegroundColorSpan(getResources().getColor(R.color.cyan_accent_second, getActivity().getTheme()));
-            ForegroundColorSpan colorPrimary = new ForegroundColorSpan(getResources().getColor(R.color.blueDark, getActivity().getTheme()));
+            ForegroundColorSpan colorAcc = new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.cyan_accent_second));
+            ForegroundColorSpan colorPrimary = new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.blueDark));
             SpannableStringBuilder sp = new SpannableStringBuilder(seller.getText().toString().replace(":", ""));
             int index = seller.getText().toString().indexOf(":");
             sp.setSpan(colorAcc, index, seller.getText().length() - 1, Spanned.SPAN_INCLUSIVE_INCLUSIVE);

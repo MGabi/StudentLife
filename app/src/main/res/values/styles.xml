@@ -67,6 +67,7 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="drawerArrowStyle">@style/drawerWhite</item>
+        <item name="android:navigationBarColor">?attr/colorPrimaryDark</item>
     </style>
 
     <style name="drawerWhite" parent="@style/Widget.AppCompat.DrawerArrowToggle">

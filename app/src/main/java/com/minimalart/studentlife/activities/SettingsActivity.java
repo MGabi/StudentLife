@@ -13,6 +13,7 @@ import android.view.MenuItem;
 
 import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.fragments.SettingsFragment;
+import com.minimalart.studentlife.others.Utils;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -62,6 +63,7 @@ public class SettingsActivity extends AppCompatActivity {
                 setTheme(R.style.AppTheme_Red);
                 break;
         }
+        //getWindow().setNavigationBarColor(Utils.getInstance().getColorPrimaryDark(getBaseContext()));
         setContentView(R.layout.activity_settings);
         setupActionBar((Toolbar)findViewById(R.id.toolbar_settings_activity));
         getFragmentManager().beginTransaction()

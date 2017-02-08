@@ -21,13 +21,45 @@
             android:id="@+id/frag_search_swipe_layout"
             android:layout_below="@id/back_view_search_rent">
 
-            <android.support.v7.widget.RecyclerView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/frag_search_rent_recyclerview"
-                android:paddingBottom="@dimen/standard_padding">
+                android:layout_height="match_parent">
 
-            </android.support.v7.widget.RecyclerView>
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/frag_search_rent_recyclerview"
+                    android:paddingBottom="@dimen/standard_padding">
+
+                </android.support.v7.widget.RecyclerView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="171dp"
+                    android:textSize="22sp"
+                    android:id="@+id/frag_rent_no_rents"
+                    android:textColor="@color/textDisabled"
+                    android:text="@string/no_rent_posted"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:paddingBottom="24dp"
+                    android:paddingLeft="@dimen/standard_padding"
+                    android:paddingRight="@dimen/standard_padding"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="171dp"
+                    android:textSize="22sp"
+                    android:id="@+id/frag_rent_query"
+                    android:textColor="@color/textDisabled"
+                    android:text="@string/no_rent_queried"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:paddingBottom="24dp"
+                    android:paddingLeft="@dimen/standard_padding"
+                    android:paddingRight="@dimen/standard_padding"/>
+
+            </RelativeLayout>
 
         </android.support.v4.widget.SwipeRefreshLayout>
 

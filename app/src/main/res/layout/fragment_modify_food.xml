@@ -40,6 +40,19 @@
             </android.support.v7.widget.RecyclerView>
 
         </android.support.v4.widget.SwipeRefreshLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="171dp"
+            android:textSize="22sp"
+            android:id="@+id/frag_modify_no_food"
+            android:textColor="@color/textDisabled"
+            android:text="@string/no_food_user_posted"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:paddingBottom="24dp"
+            android:paddingLeft="@dimen/standard_padding"
+            android:paddingRight="@dimen/standard_padding"/>
     </RelativeLayout>
 
 </FrameLayout>

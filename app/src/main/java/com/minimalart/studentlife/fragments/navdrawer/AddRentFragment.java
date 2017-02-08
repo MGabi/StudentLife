@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -41,6 +42,8 @@ public class AddRentFragment extends Fragment {
     private Button postOffertBtn;
     private ImageButton exitBtn;
     private byte[] finalIMGByte;
+    private View rootView;
+
     public AddRentFragment() {
         // Required empty public constructor
     }
@@ -62,7 +65,7 @@ public class AddRentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_rent, container, false);
-
+        rootView = view;
         initializeViews(view);
         setClickListeners();
 
@@ -107,12 +110,13 @@ public class AddRentFragment extends Fragment {
                                     location.getText().toString(),
                                     description.getText().toString(),
                                     check), finalIMGByte);
-                    Toast.makeText(getContext(), R.string.rent_added_success, Toast.LENGTH_LONG).show();
+                    Snackbar.make(rootView, R.string.rent_added_success, Snackbar.LENGTH_LONG).show();
+                    getActivity().getSupportFragmentManager().popBackStack();
                 }else {
                     if(!networkState)
-                        Toast.makeText(getContext(), R.string.error_no_network_connection, Toast.LENGTH_LONG).show();
+                        Snackbar.make(rootView, R.string.error_no_network_connection, Snackbar.LENGTH_LONG).show();
                     if(!isImageAdded()){
-                        Toast.makeText(getContext(), R.string.error_no_image, Toast.LENGTH_LONG).show();
+                        Snackbar.make(rootView, R.string.error_no_image, Snackbar.LENGTH_LONG).show();
                         addImageBtn.setBackgroundColor(getResources().getColor(R.color.red_alpha, getActivity().getTheme()));
                     }
                 }

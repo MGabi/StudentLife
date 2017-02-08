@@ -66,6 +66,7 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             android:scrollbars="none"
+            android:paddingBottom="?attr/actionBarSize"
             app:behavior_overlapTop="30dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 

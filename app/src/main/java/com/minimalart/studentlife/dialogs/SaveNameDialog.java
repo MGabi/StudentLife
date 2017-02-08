@@ -1,5 +1,6 @@
 package com.minimalart.studentlife.dialogs;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -22,7 +23,7 @@ import com.minimalart.studentlife.others.Utils;
 /**
  * Created by ytgab on 02.02.2017.
  */
-
+@SuppressLint("ValidFragment")
 public class SaveNameDialog extends DialogFragment {
 
     private Button closeBtn;
@@ -30,6 +31,10 @@ public class SaveNameDialog extends DialogFragment {
     private String n1;
     private String n2;
     private View snackView;
+
+    public SaveNameDialog(){
+
+    }
 
     public SaveNameDialog(String name1, String name2, View v) {
         this.n1 = name1;

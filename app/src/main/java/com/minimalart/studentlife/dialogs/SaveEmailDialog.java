@@ -1,5 +1,6 @@
 package com.minimalart.studentlife.dialogs;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,12 +23,17 @@ import com.minimalart.studentlife.others.Utils;
  * Created by ytgab on 02.02.2017.
  */
 
+@SuppressLint("ValidFragment")
 public class SaveEmailDialog extends DialogFragment {
 
     private Button saveBtn;
     private Button closeBtn;
     private String s;
     private View snackView;
+
+    public SaveEmailDialog(){
+
+    }
 
     public SaveEmailDialog(String s, View v){
         this.s = s;

@@ -27,6 +27,7 @@ import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.fragments.LoginFragment;
 import com.minimalart.studentlife.fragments.SignUpFragment;
 import com.minimalart.studentlife.models.User;
+import com.minimalart.studentlife.others.Utils;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -99,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
                 setTheme(R.style.AppTheme_Red);
                 break;
         }
-
+        //getWindow().setNavigationBarColor(Utils.getInstance().getColorPrimaryDark(getBaseContext()));
         setContentView(R.layout.activity_login);
 
         if (getIntent().getBooleanExtra("EXIT", false)) {

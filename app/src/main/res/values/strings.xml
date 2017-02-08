@@ -7,6 +7,8 @@
     <string name="prompt_secondname">Prenume</string>
     <string name="prompt_age">Vârstă</string>
     <string name="prompt_phone">Telefon</string>
+    <string name="your_phone">Numărul tău de telefon</string>
+    <string name="your_age">Vârsta ta</string>
     <string name="error_invalid_email">Email invalid</string>
     <string name="error_invalid_password">Parola este prea scurtă</string>
     <string name="error_incorrect_password">Parola este incorectă</string>
@@ -42,6 +44,7 @@
     <string name="nav_action_add_food">Alertă masă ieftină</string>
     <string name="nav_item_about">Despre</string>
     <string name="nav_item_contact">Contact</string>
+    <string name="nav_item_faq">FAQ</string>
     <string name="nav_item_logout">Ieșire</string>
     <string name="rent_added_success">Anunț adăugat cu succes</string>
     <string name="food_added_success">Ofertă adăugată cu succes</string>
@@ -184,5 +187,64 @@ limitations under the License.
     <string name="title_about">Despre</string>
     <string name="title_contact">Contact</string>
     <string name="title_settings">Setări</string>
+    <string name="title_faq">FAQ</string>
+
+    <string name="desc_dialog_delete_rent">Ești sigur că vrei să ștergi acest anunț de la favorite?</string>
+    <string name="desc_dialog_delete_food">Ești sigur că vrei să ștergi această masă de la favorite?</string>
+    <string name="desc_delete_r">Ești sigur că vrei să ștergi anunțul?</string>
+    <string name="desc_delele_f">Ești sigur că vrei să ștergi alerta?</string>
+    <string name="dialog_yes">Da</string>
+    <string name="dialog_no">Nu</string>
+
+    <string name="desc_dialog_report_rent">Reportează acest anunț ca și: </string>
+    <string name="desc_dialog_report_food">Reportează această masă ca și: </string>
+
+    <string name="check_abuse">Abuz</string>
+    <string name="check_uncorrespondent">Necorespunzător</string>
+    <string name="check_bad_details">Detalii incomplete / exagerate</string>
+    <string name="check_duplicate">Duplicat</string>
+
+    <string name="check_offer_expired">Ofertă expirată</string>
+    <string name="check_offer_false">Ofertă falsă</string>
+
+    <string name="q1">Cum adaug un anunț imobiliar?</string>
+    <string name="a1">Pentru a adăuga un anunț imobiliar, accesează secțiunea „Adaugă anunț chirie” și urmează pașii necesari.</string>
+
+    <string name="q2">Cum adaug o alertă de masă?</string>
+    <string name="a2">Pentru a adăuga o alertă de masă, accesează secțiunea „Adaugă masă ieftină” și urmează pașii necesari.</string>
+
+    <string name="q3">Cum adaug un anunț/o alertă de masă la favorite?</string>
+    <string name="a3">Pentru a adăuga un anunț/o alertă de masă la favorite, deschide anunțul/alerta dorită din secțiunea Rent-zone/Food-zone și apasă pe butonul
+    în formă de inimă. Vei fi notificat dacă adăugarea la favorite a avut succes.</string>
+
+    <string name="q4">Cum șterg un anunț/o alertă de la favorite?</string>
+    <string name="a4">Pentru a șterge un anunț/o alertă de la favorite, navighează în secțiunea „Acasă” și ține apăsat pe anunțul/alerta pe care vrei să o elimini.</string>
+
+    <string name="q5">Odată adăugat un anunț/o alertă, cum o pot șterge?</string>
+    <string name="a5">Pentru a șterge un anunț/o alertă din baza de date, navighează la secțiunea „Profilul tău”, deschide secțiunea „Anunțurile/Alertele tale”
+    și glisează anunțul spre stânga sau spre dreapta pentru a-l șterge. Atenție, acțiunea este definitivă!</string>
+
+    <string name="q6">Cum modific numele/email-ul/numărul de telefon/poza de profil?</string>
+    <string name="a6">Pentru a modifica unul dintre aceste atribute ale contului tău, vizitează secțiunea „Profilul meu”.</string>
+
+    <string name="q7">Cum intru în contact cu dezvoltatorul aplicației?</string>
+    <string name="a7">Pentru a intra în contact cu dezvoltatorul aplicației, navighează spre secțiunea „Contact” și alege metoda dorită de contact.</string>
+
+    <string name="q8">Cum schimb tema aplicației?</string>
+    <string name="a8">Pentru a schimba tema aplicației, navighează la secțiunea „Setări” și alege culoarea dorită!</string>
+
+    <string name="no_fav_rents">Nu ai niciun anunț la favorite !</string>
+    <string name="no_fav_foods">Nu ai nicio masă la favorite !</string>
+
+    <string name="no_rent_posted">Momentan nu este niciun anunț imobiliar postat! \nNe pare rău.</string>
+    <string name="no_food_posted">Momentan nu este nicio alertă de masă postată ! \nÎncearcă să nu mori de foame până apare una.\nNe pare rău.</string>
+
+    <string name="no_rent_user_posted">Momentan nu ai niciun anunț postat!</string>
+    <string name="no_food_user_posted">Momentan nu ai nicio alertă postată!</string>
+
+    <string name="no_rent_queried">Nu există niciun rezultat pentru această căutare!</string>
+
+
+
 
 </resources>

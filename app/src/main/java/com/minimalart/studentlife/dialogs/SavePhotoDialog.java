@@ -1,5 +1,6 @@
 package com.minimalart.studentlife.dialogs;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,7 +34,7 @@ import java.io.IOException;
 /**
  * Created by ytgab on 04.02.2017.
  */
-
+@SuppressLint("ValidFragment")
 public class SavePhotoDialog extends DialogFragment {
 
     private static final int PICK_IMAGE = 131;
@@ -46,6 +47,10 @@ public class SavePhotoDialog extends DialogFragment {
     private Drawable userPic;
     private byte[] finalIMGByte;
     private DialogInterface.OnDismissListener listener;
+
+    public SavePhotoDialog(){
+
+    }
 
     public SavePhotoDialog(View v, Drawable d){
         this.snackView = v;

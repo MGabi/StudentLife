@@ -73,9 +73,10 @@ public class LoginFragment extends Fragment{
         signUpTextView = (TextView)view.findViewById(R.id.sign_up_text);
         signUpRipple = (MaterialRippleLayout)view.findViewById(R.id.ripple_signup_text);
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            if(!PERMISSION_MODE)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!PERMISSION_MODE)
                 checkForPermissions();
+        }
         else
             setupViews();
 

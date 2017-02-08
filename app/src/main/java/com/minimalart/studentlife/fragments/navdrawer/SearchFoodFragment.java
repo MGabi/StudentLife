@@ -1,23 +1,28 @@
 package com.minimalart.studentlife.fragments.navdrawer;
 
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.transition.Slide;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.arlib.floatingsearchview.FloatingSearchView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,17 +31,18 @@ import com.google.firebase.database.ValueEventListener;
 import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.adapters.FoodZoneAdapter;
 import com.minimalart.studentlife.fragments.OpenFoodAnnounceFragment;
+import com.minimalart.studentlife.interfaces.OnAnnounceReported;
 import com.minimalart.studentlife.interfaces.OnCardFoodClickedListener;
 import com.minimalart.studentlife.models.CardFoodZone;
 import com.minimalart.studentlife.others.SpaceGridItemDecoration;
 import com.minimalart.studentlife.others.Utils;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class SearchFoodFragment extends Fragment {
 
     private static final String REF_FOOD = "food-announces";
+    private static final String DEV_TITLE = "STUDENTLIFE report TIP : ";
     private static int SLIDE_DURATION = 200;
 
     private RecyclerView foodRecyclerView;
@@ -44,6 +50,10 @@ public class SearchFoodFragment extends Fragment {
     private SwipeRefreshLayout swipe;
     private FloatingSearchView searchView;
     private ArrayList<CardFoodZone> fullList;
+    private TextView noFoodAdded;
+    private TextView noQueryResult;
+    private View rootView;
+
     @ColorInt int colorPrimary;
     @ColorInt int colorPrimaryDark;
     @ColorInt int colorAccent;
@@ -69,6 +79,7 @@ public class SearchFoodFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_food_zone, container, false);
+        rootView = view;
 
         initializeViews(view);
         setOnClickListeners();
@@ -84,12 +95,18 @@ public class SearchFoodFragment extends Fragment {
         foodRecyclerView = (RecyclerView)view.findViewById(R.id.frag_food_zone_recyclerview);
         swipe = (SwipeRefreshLayout) view.findViewById(R.id.frag_search_food_swipe);
         searchView = (FloatingSearchView) view.findViewById(R.id.search_food_searchview);
+        noFoodAdded = (TextView) view.findViewById(R.id.frag_food_no_foods);
+        noQueryResult = (TextView) view.findViewById(R.id.frag_food_query);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         gridLayoutManager.setSpanCount(2);
         foodRecyclerView.setLayoutManager(gridLayoutManager);
         foodRecyclerView.setHasFixedSize(true);
+        hideRecycler();
+        showText(noFoodAdded);
+        hideText(noQueryResult);
+
 
         foodZoneAdapter = new FoodZoneAdapter(new ArrayList<CardFoodZone>(), getContext());
         foodRecyclerView.setAdapter(foodZoneAdapter);
@@ -114,12 +131,30 @@ public class SearchFoodFragment extends Fragment {
                         .commit();
             }
         });
-
-        foodZoneAdapter.setOnLongClickListener(new View.OnLongClickListener() {
+        final View rootView = view;
+        foodZoneAdapter.setOnAnnounceReportedListener(new OnAnnounceReported() {
             @Override
-            public boolean onLongClick(View v) {
-                Log.v("ONLONGTEST", "ONLONG CLICKED FRAG FOOD");
-                return true;
+            public void onAnnounceReported(final String ID) {
+                new AlertDialog.Builder(getContext())
+                        .setTitle(getResources().getString(R.string.desc_dialog_report_food))
+                        .setSingleChoiceItems(getResources().getStringArray(R.array.array_checkbox_food), 0, null)
+                        .setPositiveButton(getResources().getString(R.string.dialog_yes), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                if(Utils.getInstance().isConnectedToNetwork(getContext())){
+                                    String[] list = getResources().getStringArray(R.array.array_checkbox_food);
+                                    int poz = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
+                                    composeEmail(list[poz], ID);
+                                }else{
+                                    Snackbar.make(rootView, getResources().getString(R.string.error_no_network_connection), Snackbar.LENGTH_LONG).show();
+                                }
+                            }
+                        })
+                        .setNegativeButton(getResources().getString(R.string.dialog_no), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.v("ONLONGTEST", "OH NOOOOOOO");
+                            }
+                        })
+                        .show();
             }
         });
 
@@ -132,35 +167,74 @@ public class SearchFoodFragment extends Fragment {
         swipe.setColorSchemeColors(colorPrimary, colorAccent, colorPrimaryDark);
     }
 
+    public void hideText(TextView text){
+        text.setVisibility(View.GONE);
+    }
+
+    public void showText(TextView text){
+        text.setVisibility(View.VISIBLE);
+    }
+
+    public void hideRecycler(){
+        foodRecyclerView.setVisibility(View.GONE);
+    }
+
+    public void showRecycler(){
+        foodRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    public void composeEmail(String extra, String ID){
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        final String body = "ID-ul anuntului: " + ID + ".\nTip: " + extra + ".\nRaport trimis de catre utilizatorul: " + FirebaseAuth.getInstance().getCurrentUser().getUid();
+        emailIntent.setType("plain/text");
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"ytgabi98@gmail.com"});
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, DEV_TITLE + extra + ", ID: " + ID);
+        emailIntent.putExtra(Intent.EXTRA_TEXT, body);
+        Intent chooser = Intent.createChooser(emailIntent, getResources().getString(R.string.email_intent));
+        startActivity(chooser);
+    }
+
     /**
      * Downloading food announces from firebase database
      * @return a list with current foods in database
      */
     @SuppressWarnings("unchecked")
     public void getFood(){
-        final ArrayList<CardFoodZone> cardFoodZones = new ArrayList<>();
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child(REF_FOOD);
-        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot != null){
-                    for (DataSnapshot ds : dataSnapshot.getChildren()){
-                        CardFoodZone card = ds.getValue(CardFoodZone.class);
-                        card.setFoodID(ds.getKey());
-                        cardFoodZones.add(card);
+        if(Utils.getInstance().isConnectedToNetwork(getContext())) {
+            final ArrayList<CardFoodZone> cardFoodZones = new ArrayList<>();
+            DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child(REF_FOOD);
+            dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot != null) {
+                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                            CardFoodZone card = ds.getValue(CardFoodZone.class);
+                            card.setFoodID(ds.getKey());
+                            cardFoodZones.add(card);
+                        }
+                        foodZoneAdapter.loadNewData(cardFoodZones);
+                        foodZoneAdapter.notifyDataSetChanged();
+                        fullList = cardFoodZones;
+                        swipe.setRefreshing(false);
+                        if (foodZoneAdapter.getItemCount() == 0) {
+                            hideRecycler();
+                            showText(noFoodAdded);
+                        } else {
+                            showRecycler();
+                            hideText(noFoodAdded);
+                        }
                     }
-                    foodZoneAdapter.loadNewData(cardFoodZones);
-                    foodZoneAdapter.notifyDataSetChanged();
-                    fullList = cardFoodZones;
-                    swipe.setRefreshing(false);
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }else{
+            Snackbar.make(rootView, getResources().getString(R.string.error_no_network_connection), Snackbar.LENGTH_LONG).show();
+            swipe.setRefreshing(false);
+        }
     }
 
     /**
@@ -188,6 +262,12 @@ public class SearchFoodFragment extends Fragment {
                 }
                 foodZoneAdapter.loadNewData(newList);
                 foodZoneAdapter.notifyDataSetChanged();
+
+                if(foodZoneAdapter.getItemCount() == 0){
+                    showText(noQueryResult);
+                }else{
+                    hideText(noQueryResult);
+                }
             }
         });
     }

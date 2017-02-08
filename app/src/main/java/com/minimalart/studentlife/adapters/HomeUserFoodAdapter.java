@@ -19,6 +19,7 @@ import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.activities.MainActivity;
 import com.minimalart.studentlife.interfaces.OnCardAnnounceClickedListener;
 import com.minimalart.studentlife.interfaces.OnCardFoodClickedListener;
+import com.minimalart.studentlife.interfaces.OnFavRemoved;
 import com.minimalart.studentlife.interfaces.OnImageReadyListener;
 import com.minimalart.studentlife.models.CardFoodZone;
 
@@ -34,9 +35,9 @@ public class HomeUserFoodAdapter extends RecyclerView.Adapter<HomeUserFoodAdapte
     private Context context;
     private OnCardFoodClickedListener listener;
     private OnImageReadyListener imageListener;
-    public View.OnLongClickListener longListener;
+    public OnFavRemoved longListener;
 
-    public void setOnLongClickListener(View.OnLongClickListener longListener){
+    public void setOnFavRemovedListener(OnFavRemoved longListener){
         this.longListener = longListener;
     }
 
@@ -79,7 +80,7 @@ public class HomeUserFoodAdapter extends RecyclerView.Adapter<HomeUserFoodAdapte
             @Override
             public boolean onLongClick(View v) {
                 if(longListener != null) {
-                    longListener.onLongClick(v);
+                    longListener.onFavRemoved(cardFoodZone.getFoodID(), holder.getAdapterPosition());
                     return true;
                 }else
                     return false;
@@ -89,6 +90,11 @@ public class HomeUserFoodAdapter extends RecyclerView.Adapter<HomeUserFoodAdapte
 
     public void loadNewData(ArrayList<CardFoodZone> list){
         foodList = list;
+    }
+
+    public void remove(int poz){
+        foodList.remove(poz);
+        notifyItemRemoved(poz);
     }
 
     @Override

@@ -1,23 +1,21 @@
 package com.minimalart.studentlife.fragments.navdrawer;
 
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.transition.Fade;
 import android.transition.Slide;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,20 +27,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.minimalart.studentlife.R;
-import com.minimalart.studentlife.activities.MainActivity;
 import com.minimalart.studentlife.adapters.HomeUserAnnouncesAdapter;
 import com.minimalart.studentlife.adapters.HomeUserFoodAdapter;
 import com.minimalart.studentlife.fragments.OpenFoodAnnounceFragment;
 import com.minimalart.studentlife.fragments.OpenRentAnnounceFragment;
 import com.minimalart.studentlife.interfaces.OnCardAnnounceClickedListener;
 import com.minimalart.studentlife.interfaces.OnCardFoodClickedListener;
+import com.minimalart.studentlife.interfaces.OnFavRemoved;
 import com.minimalart.studentlife.interfaces.OnImageReadyListener;
 import com.minimalart.studentlife.models.CardFoodZone;
 import com.minimalart.studentlife.models.CardRentAnnounce;
 import com.minimalart.studentlife.models.User;
 import com.minimalart.studentlife.others.SpaceHorizontalItemDecoration;
 import com.minimalart.studentlife.others.Utils;
-import com.minimalart.studentlife.transitions.DetailsTransition;
 
 import java.util.ArrayList;
 
@@ -52,6 +49,9 @@ public class HomeFragment extends Fragment {
     private User currentUser;
     private String currentUserUID;
     private TextView name;
+    private TextView no_rents;
+    private TextView no_foods;
+    private ImageView networkError;
 
     private RecyclerView homeUserAnnouncesRecyclerView;
     private RecyclerView foodRecyclerView;
@@ -60,6 +60,8 @@ public class HomeFragment extends Fragment {
 
     private CardView cardRent;
     private CardView cardFood;
+
+    private View rootView;
 
     @ColorInt int colorPrimary;
     @ColorInt int colorPrimaryDark;
@@ -90,20 +92,21 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        rootView = view;
+        networkError = (ImageView) view.findViewById(R.id.image_network_error);
         initializeViews(view);
         if(Utils.getInstance().isConnectedToNetwork(getContext())) {
+            networkError.setVisibility(View.GONE);
             showRefreshLayout(swipe);
             getUserDataFromFirebase();
         }
         else{
-            Snackbar.make(view, getResources().getString(R.string.error_network_connection), Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Log.v("NETWORKTEST", "MAIN");
-                        }}).show();
+            networkError.setVisibility(View.VISIBLE);
+            Snackbar.make(rootView, getResources().getString(R.string.error_network_connection), Snackbar.LENGTH_INDEFINITE)
+                    .setAction(android.R.string.ok, null).show();
             stopRefreshLayout(swipe);
         }
+
         return view;
     }
 
@@ -142,49 +145,54 @@ public class HomeFragment extends Fragment {
     }
 
     public void prepareFavLists(){
-        DatabaseReference favRent = FirebaseDatabase.getInstance().getReference()
-                .child("users-details")
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .child("rent-favorites");
-        favRent.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot != null){
-                    ArrayList<String> favoriteRents = new ArrayList<>();
-                    for(DataSnapshot data : dataSnapshot.getChildren()){
-                        favoriteRents.add(data.getKey());
+        if(Utils.getInstance().isConnectedToNetwork(getContext())) {
+            DatabaseReference favRent = FirebaseDatabase.getInstance().getReference()
+                    .child("users-details")
+                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .child("rent-favorites");
+            favRent.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot != null) {
+                        ArrayList<String> favoriteRents = new ArrayList<>();
+                        for (DataSnapshot data : dataSnapshot.getChildren()) {
+                            favoriteRents.add(data.getKey());
+                        }
+                        setUserAnnounces(favoriteRents);
                     }
-                    setUserAnnounces(favoriteRents);
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
 
-        DatabaseReference favFood = FirebaseDatabase.getInstance().getReference()
-                .child("users-details")
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .child("food-favorites");
-        favFood.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot != null){
-                    ArrayList<String> favoriteFoods = new ArrayList<>();
-                    for(DataSnapshot data : dataSnapshot.getChildren()){
-                        favoriteFoods.add(data.getKey());
+            DatabaseReference favFood = FirebaseDatabase.getInstance().getReference()
+                    .child("users-details")
+                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .child("food-favorites");
+            favFood.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot != null) {
+                        ArrayList<String> favoriteFoods = new ArrayList<>();
+                        for (DataSnapshot data : dataSnapshot.getChildren()) {
+                            favoriteFoods.add(data.getKey());
+                        }
+                        setUserFood(favoriteFoods);
                     }
-                    setUserFood(favoriteFoods);
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }else{
+            Snackbar.make(rootView, getResources().getString(R.string.error_no_network_connection), Snackbar.LENGTH_LONG).show();
+            stopRefreshLayout(swipe);
+        }
         /*setUserAnnounces();
         setUserFood();*/
     }
@@ -198,6 +206,8 @@ public class HomeFragment extends Fragment {
         swipe = (SwipeRefreshLayout) view.findViewById(R.id.swipeLayoutHome);
         cardFood = (CardView) view.findViewById(R.id.card_show_food);
         cardRent = (CardView) view.findViewById(R.id.card_show_rents);
+        no_rents = (TextView) view.findViewById(R.id.text_no_rents);
+        no_foods = (TextView) view.findViewById(R.id.text_no_foods);
 
         colorPrimary = Utils.getInstance().getColorPrimary(getContext());
         colorPrimaryDark = Utils.getInstance().getColorPrimaryDark(getContext());
@@ -213,6 +223,10 @@ public class HomeFragment extends Fragment {
 
         homeUserAnnouncesRecyclerView = (RecyclerView) view.findViewById(R.id.home_my_rents_recyclerview);
         foodRecyclerView = (RecyclerView) view.findViewById(R.id.home_my_food_recyclerview);
+        hideRentRecycler();
+        showText(no_rents);
+        hideFoodRecycler();
+        showText(no_foods);
 
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -262,24 +276,47 @@ public class HomeFragment extends Fragment {
                         .replace(R.id.content_main_without_toolbar, newFragment)
                         .addToBackStack(null)
                         .commit();
-
             }
         });
 
-        homeUserAnnouncesAdapter.setOnLongClickListener(new View.OnLongClickListener() {
+        homeUserAnnouncesAdapter.setOnFavRemovedListener(new OnFavRemoved() {
             @Override
-            public boolean onLongClick(View v) {
+            public void onFavRemoved(final String ID, final int poz) {
                 Log.v("ONLONGTEST", "ONLONG CLICKED HOME RENT");
-                return true;
+                new AlertDialog.Builder(getContext())
+                        .setTitle(getResources().getString(R.string.desc_dialog_delete_rent))
+                        .setPositiveButton(getResources().getString(R.string.dialog_yes), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                if(Utils.getInstance().isConnectedToNetwork(getContext())){
+                                    DatabaseReference ref = FirebaseDatabase.getInstance()
+                                            .getReference()
+                                            .child("users-details")
+                                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                            .child("rent-favorites")
+                                            .child(ID);
+                                    ref.removeValue();
+                                    homeUserAnnouncesAdapter.remove(poz);
+                                    if(homeUserAnnouncesAdapter.getItemCount() == 0){
+                                        hideRentRecycler();
+                                        showText(no_rents);
+                                    }
+                                }else{
+                                    Log.v("ONLONGTEST", "Not connected to network");
+                                }
+                            }
+                        })
+                        .setNegativeButton(getResources().getString(R.string.dialog_no), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.v("ONLONGTEST", "OH NOOOOOOO");
+                            }
+                        })
+                        .show();
             }
         });
 
         homeUserFoodAdapter.setOnCardFoodClickedListener(new OnCardFoodClickedListener() {
             @Override
             public void onCardClicked(CardFoodZone card, ImageView image, int poz) {
-                Log.v("TRANSITIONTEST", "CLICKED FROM HOME FRAGMENT --- FOOD");
-                Log.v("TRANSITIONTEST", "in onClick: " + image.getTransitionName());
-
                 image.setDrawingCacheEnabled(true);
                 Bitmap bitmap = image.getDrawingCache();
 
@@ -296,11 +333,37 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        homeUserFoodAdapter.setOnLongClickListener(new View.OnLongClickListener() {
+        homeUserFoodAdapter.setOnFavRemovedListener(new OnFavRemoved() {
             @Override
-            public boolean onLongClick(View v) {
-                Log.v("ONLONGTEST", "ONLONG CLICKED HOME FOOD");
-                return true;
+            public void onFavRemoved(final String ID, final int poz) {
+                new AlertDialog.Builder(getContext())
+                        .setTitle(getResources().getString(R.string.desc_dialog_delete_food))
+                        .setPositiveButton(getResources().getString(R.string.dialog_yes), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                if(Utils.getInstance().isConnectedToNetwork(getContext())){
+                                    DatabaseReference ref = FirebaseDatabase.getInstance()
+                                            .getReference()
+                                            .child("users-details")
+                                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                            .child("food-favorites")
+                                            .child(ID);
+                                    ref.removeValue();
+                                    homeUserFoodAdapter.remove(poz);
+                                    if(homeUserFoodAdapter.getItemCount() == 0) {
+                                        hideFoodRecycler();
+                                        showText(no_foods);
+                                    }
+                                }else{
+                                    Log.v("ONLONGTEST", "Not connected to network");
+                                }
+                            }
+                        })
+                        .setNegativeButton(getResources().getString(R.string.dialog_no), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.v("ONLONGTEST", "OH NOOOOOOO");
+                            }
+                        })
+                        .show();
             }
         });
 
@@ -333,6 +396,13 @@ public class HomeFragment extends Fragment {
                         }
                     }
                     updateAdapterRent(cardRentAnnounces);
+                    if(cardRentAnnounces.size() == 0){
+                        hideRentRecycler();
+                        showText(no_rents);
+                    }else{
+                        showRentRecycler();
+                        hideText(no_rents);
+                    }
                 }
             }
 
@@ -342,6 +412,30 @@ public class HomeFragment extends Fragment {
             }
         });
 
+    }
+
+    public void hideText(TextView text){
+        text.setVisibility(View.GONE);
+    }
+
+    public void showText(TextView text){
+        text.setVisibility(View.VISIBLE);
+    }
+
+    public void hideRentRecycler(){
+        homeUserAnnouncesRecyclerView.setVisibility(View.GONE);
+    }
+
+    public void showRentRecycler(){
+        homeUserAnnouncesRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    public void hideFoodRecycler(){
+        foodRecyclerView.setVisibility(View.GONE);
+    }
+
+    public void showFoodRecycler(){
+        foodRecyclerView.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -362,6 +456,13 @@ public class HomeFragment extends Fragment {
                         }
                     }
                     updateAdapterFood(cardFoodZones);
+                    if(cardFoodZones.size() == 0){
+                        hideFoodRecycler();
+                        showText(no_foods);
+                    }else{
+                        showFoodRecycler();
+                        hideText(no_foods);
+                    }
                 }
                 setViews();
             }

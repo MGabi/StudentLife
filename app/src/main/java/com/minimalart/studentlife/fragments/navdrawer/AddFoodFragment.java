@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -26,7 +27,7 @@ import com.minimalart.studentlife.others.Utils;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-public class FoodAlertFragment extends Fragment {
+public class AddFoodFragment extends Fragment {
 
     private TextView title;
     private TextView desc;
@@ -37,18 +38,19 @@ public class FoodAlertFragment extends Fragment {
     private Button postFoodBtn;
     private ImageButton exitBtn;
     private byte[] finalIMGByte;
+    private View rootView;
 
     private static final int PICK_IMAGE = 191;
 
-    public FoodAlertFragment() {
+    public AddFoodFragment() {
         // Required empty public constructor
     }
 
     /**
      * @return a reference to this fragment
      */
-    public static FoodAlertFragment newInstance() {
-        FoodAlertFragment fragment = new FoodAlertFragment();
+    public static AddFoodFragment newInstance() {
+        AddFoodFragment fragment = new AddFoodFragment();
         return fragment;
     }
 
@@ -61,7 +63,7 @@ public class FoodAlertFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_food_alert, container, false);
-
+        rootView = view;
         initializeViews(view);
         setClickListeners();
 
@@ -103,12 +105,13 @@ public class FoodAlertFragment extends Fragment {
                                     desc.getText().toString(),
                                     restaurant.getText().toString(),
                                     check), finalIMGByte);
-                    Toast.makeText(getContext(), R.string.food_added_success, Toast.LENGTH_LONG).show();
+                    Snackbar.make(rootView, R.string.food_added_success, Snackbar.LENGTH_LONG).show();
+                    getActivity().getSupportFragmentManager().popBackStack();
                 }else {
                     if(!networkState)
-                        Toast.makeText(getContext(), R.string.error_no_network_connection, Toast.LENGTH_LONG).show();
+                        Snackbar.make(rootView, R.string.error_no_network_connection, Snackbar.LENGTH_LONG).show();
                     if(!isImageAdded()){
-                        Toast.makeText(getContext(), R.string.error_no_image, Toast.LENGTH_LONG).show();
+                        Snackbar.make(rootView, R.string.error_no_image, Snackbar.LENGTH_LONG).show();
                         addImgBtn.setBackgroundColor(getResources().getColor(R.color.red_alpha, getActivity().getTheme()));
                     }
                 }

@@ -211,7 +211,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:id="@+id/myprofile_textview_phone"
-                                android:text="0749999999"
+                                android:text="@string/your_phone"
                                 android:textSize="16sp"
                                 android:textColor="@color/textSecondary"/>
                         </LinearLayout>
@@ -261,7 +261,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:id="@+id/myprofile_textview_age"
-                                android:text="18"
+                                android:text="@string/your_age"
                                 android:textSize="16sp"
                                 android:textColor="@color/textSecondary"/>
                         </LinearLayout>
@@ -367,7 +367,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:maxEms="12"
-                            android:text="20"
+                            android:text="0"
                             android:id="@+id/myprofile_rentnumber"
                             android:textSize="24sp"
                             android:textColor="?attr/colorAccent" />
@@ -428,7 +428,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:maxEms="12"
-                            android:text="20"
+                            android:text="0"
                             android:id="@+id/myprofile_foodnumber"
                             android:textSize="24sp"
                             android:textColor="?attr/colorAccent" />

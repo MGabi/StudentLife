@@ -22,10 +22,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.interfaces.OnCardAnnounceClickedListener;
+import com.minimalart.studentlife.interfaces.OnFavRemoved;
 import com.minimalart.studentlife.interfaces.OnImageReadyListener;
 import com.minimalart.studentlife.models.CardRentAnnounce;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -37,7 +36,7 @@ public class HomeUserAnnouncesAdapter extends RecyclerView.Adapter<HomeUserAnnou
 
     public OnCardAnnounceClickedListener listener;
     public OnImageReadyListener imageListener;
-    public View.OnLongClickListener longListener;
+    public OnFavRemoved longListener;
 
     private ArrayList<CardRentAnnounce> cardRentAnnounceArrayList;
     private Context context;
@@ -50,13 +49,18 @@ public class HomeUserAnnouncesAdapter extends RecyclerView.Adapter<HomeUserAnnou
         imageListener = listener;
     }
 
-    public void setOnLongClickListener(View.OnLongClickListener longListener){
+    public void setOnFavRemovedListener(OnFavRemoved longListener){
         this.longListener = longListener;
     }
 
     public HomeUserAnnouncesAdapter(ArrayList<CardRentAnnounce> cardRentAnnounceArrayList, Context context) {
         this.cardRentAnnounceArrayList = cardRentAnnounceArrayList;
         this.context = context;
+    }
+
+    public void remove(int poz){
+        cardRentAnnounceArrayList.remove(poz);
+        notifyItemRemoved(poz);
     }
 
     @Override
@@ -86,7 +90,7 @@ public class HomeUserAnnouncesAdapter extends RecyclerView.Adapter<HomeUserAnnou
             @Override
             public boolean onLongClick(View v) {
                 if(longListener != null) {
-                    longListener.onLongClick(v);
+                    longListener.onFavRemoved(cardRentAnnounce.getAnnounceID(), holder.getAdapterPosition());
                     return true;
                 }else
                     return false;

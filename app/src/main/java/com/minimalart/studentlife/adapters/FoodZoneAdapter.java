@@ -18,6 +18,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.minimalart.studentlife.R;
 import com.minimalart.studentlife.activities.MainActivity;
+import com.minimalart.studentlife.interfaces.OnAnnounceReported;
 import com.minimalart.studentlife.interfaces.OnCardFoodClickedListener;
 import com.minimalart.studentlife.interfaces.SwipeAdapter;
 import com.minimalart.studentlife.models.CardFoodZone;
@@ -35,9 +36,9 @@ public class FoodZoneAdapter extends RecyclerView.Adapter<FoodZoneAdapter.FoodZo
     private Context context;
 
     private OnCardFoodClickedListener listener;
-    public View.OnLongClickListener longListener;
+    public OnAnnounceReported longListener;
 
-    public void setOnLongClickListener(View.OnLongClickListener longListener){
+    public void setOnAnnounceReportedListener(OnAnnounceReported longListener){
         this.longListener = longListener;
     }
 
@@ -78,7 +79,7 @@ public class FoodZoneAdapter extends RecyclerView.Adapter<FoodZoneAdapter.FoodZo
             @Override
             public boolean onLongClick(View v) {
                 if(longListener != null){
-                    longListener.onLongClick(v);
+                    longListener.onAnnounceReported(cardFoodZone.getFoodID());
                     return true;
                 }else
                     return false;

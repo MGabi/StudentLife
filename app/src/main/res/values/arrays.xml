@@ -9,6 +9,7 @@
         <item>@string/title_about</item>
         <item>@string/title_contact</item>
         <item>@string/title_settings</item>
+        <item>@string/title_faq</item>
     </string-array>
 
     <string-array name="color_entries">
@@ -35,6 +36,43 @@
         <item>amber</item>
         <item>brown</item>
         <item>gray</item>
+    </string-array>
+
+    <string-array name="array_checkbox_rent">
+        <item>@string/check_abuse</item>
+        <item>@string/check_duplicate</item>
+        <item>@string/check_uncorrespondent</item>
+        <item>@string/check_bad_details</item>
+    </string-array>
+
+    <string-array name="array_checkbox_food">
+        <item>@string/check_offer_expired</item>
+        <item>@string/check_offer_false</item>
+        <item>@string/check_abuse</item>
+        <item>@string/check_duplicate</item>
+        <item>@string/check_bad_details</item>
+    </string-array>
+
+    <string-array name="faq_questions">
+        <item>@string/q1</item>
+        <item>@string/q2</item>
+        <item>@string/q3</item>
+        <item>@string/q4</item>
+        <item>@string/q5</item>
+        <item>@string/q6</item>
+        <item>@string/q7</item>
+        <item>@string/q8</item>
+    </string-array>
+
+    <string-array name="faq_answers">
+        <item>@string/a1</item>
+        <item>@string/a2</item>
+        <item>@string/a3</item>
+        <item>@string/a4</item>
+        <item>@string/a5</item>
+        <item>@string/a6</item>
+        <item>@string/a7</item>
+        <item>@string/a8</item>
     </string-array>
 
 </resources>

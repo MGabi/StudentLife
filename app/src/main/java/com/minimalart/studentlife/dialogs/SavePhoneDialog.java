@@ -1,5 +1,6 @@
 package com.minimalart.studentlife.dialogs;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,12 +22,16 @@ import com.minimalart.studentlife.others.Utils;
 /**
  * Created by ytgab on 02.02.2017.
  */
-
+@SuppressLint("ValidFragment")
 public class SavePhoneDialog extends DialogFragment {
     private Button saveBtn;
     private Button closeBtn;
     private String s;
     private View snackView;
+
+    public SavePhoneDialog(){
+
+    }
 
     public SavePhoneDialog(String s, View v){
         this.s = s;
@@ -43,7 +48,7 @@ public class SavePhoneDialog extends DialogFragment {
         saveBtn = (Button) dialogView.findViewById(R.id.save_btn);
         final EditText phone = (EditText) dialogView.findViewById(R.id.dialog_phone);
 
-        phone.setText("0749838460");
+        phone.setText(s);
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override

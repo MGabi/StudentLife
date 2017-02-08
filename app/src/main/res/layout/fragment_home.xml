@@ -19,86 +19,134 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/home_text_name"
-                        android:padding="@dimen/standard_padding"
-                        android:textSize="20sp"
-                        android:text="Salut, Nume."/>
+                        android:orientation="vertical">
 
-                    <android.support.v7.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/card_show_rents"
-                        card:cardCornerRadius="0dp"
-                        card:cardElevation="@dimen/card_elevation"
-                        android:layout_marginBottom="@dimen/standard_padding">
-
-                        <LinearLayout
+                        <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
+                            android:layout_height="wrap_content"
+                            android:id="@+id/home_text_name"
+                            android:padding="@dimen/standard_padding"
+                            android:textSize="20sp"
+                            android:text="Salut, Nume."/>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="16sp"
-                                android:padding="10dp"
-                                android:text="@string/frag_home_fav_rents"
-                                android:textStyle="bold"
-                                android:textColor="?colorAccent"/>
+                        <android.support.v7.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/card_show_rents"
+                            card:cardCornerRadius="0dp"
+                            card:cardElevation="@dimen/card_elevation"
+                            android:layout_marginBottom="@dimen/standard_padding">
 
-                            <android.support.v7.widget.RecyclerView
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:id="@+id/home_my_rents_recyclerview">
+                                android:orientation="vertical">
 
-                            </android.support.v7.widget.RecyclerView>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="16sp"
+                                    android:padding="10dp"
+                                    android:text="@string/frag_home_fav_rents"
+                                    android:textStyle="bold"
+                                    android:textColor="?colorAccent"/>
 
-                        </LinearLayout>
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
 
-                    </android.support.v7.widget.CardView>
+                                    <android.support.v7.widget.RecyclerView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:id="@+id/home_my_rents_recyclerview">
 
-                    <android.support.v7.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/card_show_food"
-                        android:layout_marginBottom="@dimen/standard_padding"
-                        card:cardElevation="@dimen/card_elevation"
-                        card:cardCornerRadius="0dp">
+                                    </android.support.v7.widget.RecyclerView>
 
-                        <LinearLayout
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="171dp"
+                                        android:textSize="22sp"
+                                        android:id="@+id/text_no_rents"
+                                        android:textColor="@color/textDisabled"
+                                        android:text="@string/no_fav_rents"
+                                        android:layout_centerVertical="true"
+                                        android:gravity="center"
+                                        android:paddingBottom="24dp"/>
+
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+                        </android.support.v7.widget.CardView>
+
+                        <android.support.v7.widget.CardView
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
+                            android:layout_height="wrap_content"
+                            android:id="@+id/card_show_food"
+                            android:layout_marginBottom="@dimen/standard_padding"
+                            card:cardElevation="@dimen/card_elevation"
+                            card:cardCornerRadius="0dp">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="16sp"
-                                android:padding="10dp"
-                                android:text="@string/frag_home_fav_foods"
-                                android:textStyle="bold"
-                                android:textColor="?colorAccent"/>
-
-                            <android.support.v7.widget.RecyclerView
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:id="@+id/home_my_food_recyclerview">
+                                android:orientation="vertical">
 
-                            </android.support.v7.widget.RecyclerView>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="16sp"
+                                    android:padding="10dp"
+                                    android:text="@string/frag_home_fav_foods"
+                                    android:textStyle="bold"
+                                    android:textColor="?colorAccent"/>
 
-                        </LinearLayout>
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
 
-                    </android.support.v7.widget.CardView>
+                                    <android.support.v7.widget.RecyclerView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:id="@+id/home_my_food_recyclerview">
 
-                </LinearLayout>
+                                    </android.support.v7.widget.RecyclerView>
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="171dp"
+                                        android:textSize="22sp"
+                                        android:id="@+id/text_no_foods"
+                                        android:textColor="@color/textDisabled"
+                                        android:text="@string/no_fav_foods"
+                                        android:layout_centerVertical="true"
+                                        android:gravity="center"
+                                        android:paddingBottom="24dp"/>
+
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+                        </android.support.v7.widget.CardView>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_wifi_off"
+                        android:layout_centerInParent="true"
+                        android:id="@+id/image_network_error"
+                        android:paddingTop="128dp"/>
+
+                </RelativeLayout>
 
             </android.support.v4.widget.NestedScrollView>
         </android.support.v4.widget.SwipeRefreshLayout>

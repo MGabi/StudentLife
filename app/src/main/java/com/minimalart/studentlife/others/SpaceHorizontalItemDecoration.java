@@ -23,12 +23,9 @@ public class SpaceHorizontalItemDecoration extends RecyclerView.ItemDecoration {
 
         outRect.top = space;
         outRect.bottom = space + 5;
-        outRect.right = space + 5;
+        outRect.left = space + 5;
 
-        if (position == 0){
-            outRect.left = space + 5;
-        } else{
-            outRect.left = 0;
-        }
+        if(position == parent.getAdapter().getItemCount() - 1)
+            outRect.right = space + 5;
     }
 }

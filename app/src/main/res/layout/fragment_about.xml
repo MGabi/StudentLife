@@ -122,8 +122,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/frag_about_dev_desc"
                                 android:layout_marginTop="5dp"
-                                android:textSize="18sp"
-                                android:id="@+id/card_about_dev"/>
+                                android:textSize="18sp" />
 
                         </LinearLayout>
 
@@ -218,7 +217,6 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/licenses"
                                 android:textSize="30sp"
-                                android:id="@+id/card_about_license"
                                 android:layout_marginBottom="7dp"
                                 android:textColor="?colorAccent"/>
 
@@ -260,8 +258,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/frag_about_picasso_license_txt"
                                 android:layout_marginTop="5dp"
-                                android:textSize="18sp"
-                                android:id="@+id/card_about_material_ripple_txt"/>
+                                android:textSize="18sp" />
 
                         </LinearLayout>
 

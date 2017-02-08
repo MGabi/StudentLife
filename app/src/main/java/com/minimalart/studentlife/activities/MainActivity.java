@@ -42,7 +42,8 @@ import com.minimalart.studentlife.fragments.OpenRentAnnounceFragment;
 import com.minimalart.studentlife.fragments.navdrawer.AboutFragment;
 import com.minimalart.studentlife.fragments.navdrawer.AddRentFragment;
 import com.minimalart.studentlife.fragments.navdrawer.ContactFragment;
-import com.minimalart.studentlife.fragments.navdrawer.FoodAlertFragment;
+import com.minimalart.studentlife.fragments.navdrawer.FAQFragment;
+import com.minimalart.studentlife.fragments.navdrawer.AddFoodFragment;
 import com.minimalart.studentlife.fragments.navdrawer.SearchFoodFragment;
 import com.minimalart.studentlife.fragments.navdrawer.HomeFragment;
 import com.minimalart.studentlife.fragments.navdrawer.MyProfileFragment;
@@ -140,6 +141,7 @@ public class MainActivity extends AppCompatActivity
                 setTheme(R.style.AppTheme_Red);
                 break;
         }
+        //getWindow().setNavigationBarColor(Utils.getInstance().getColorPrimaryDark(getBaseContext()));
         setContentView(R.layout.activity_main);
         PreferenceManager.setDefaultValues(getBaseContext(), R.xml.settings, false);
 
@@ -305,7 +307,7 @@ public class MainActivity extends AppCompatActivity
                 t = 3;
                 break;
             case R.id.nav_add_food:
-                fragment = FoodAlertFragment.newInstance();
+                fragment = AddFoodFragment.newInstance();
                 TAG = TAG_ADD_FOOD;
                 needToolbar = false;
                 break;
@@ -336,6 +338,11 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_settings:
                 fragment = null;
+                break;
+            case R.id.nav_faq:
+                fragment = FAQFragment.newInstance();
+                t = 8;
+                toolbar.setTitle(TITLES[t]);
                 break;
             default:
                 fragment = HomeFragment.newInstance();
