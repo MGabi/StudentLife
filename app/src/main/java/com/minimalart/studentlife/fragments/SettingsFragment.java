@@ -24,7 +24,6 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     private static final String ACCENT_KEY = "key_accent_preference";
 
     private Preference mainColorPreference;
-    private Preference accentColorPreference;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,6 +54,6 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        Log.v("PREFCHANGER", String.format("onSharedPreferenceChanged(key: %s)", key));
+
     }
 }

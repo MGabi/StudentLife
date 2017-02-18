@@ -140,7 +140,7 @@ public class OpenFoodAnnounceFragment extends Fragment {
             toolbar.setTitle(currentFood.getFoodTitle());
             description.setText(getResources().getString(R.string.open_rent_description, currentFood.getFoodDesc()));
             location.setText(getResources().getString(R.string.open_rent_location, currentFood.getFoodLoc()));
-            price.setText(getResources().getString(R.string.open_rent_price, currentFood.getFoodPrice()));
+            price.setText(getResources().getString(R.string.open_food_price, currentFood.getFoodPrice()));
             seller.setText(getResources().getString(R.string.open_rent_seller, "error"));
 
             if (currentFood.isChecked()) {
@@ -241,6 +241,10 @@ public class OpenFoodAnnounceFragment extends Fragment {
         });
     }
 
+    /**
+     * setting click listener for phone button
+     * @param phoneNumber : phone number
+     */
     public void setPhone(final String phoneNumber){
         final View view = rootView;
         phone.setOnClickListener(new View.OnClickListener() {

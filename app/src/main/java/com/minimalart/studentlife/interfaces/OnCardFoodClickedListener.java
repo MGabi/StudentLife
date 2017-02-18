@@ -9,6 +9,9 @@ import com.minimalart.studentlife.models.CardFoodZone;
  * Created by ytgab on 07.02.2017.
  */
 
+/**
+ * Interface for click event on food announces
+ */
 public interface OnCardFoodClickedListener {
 
     void onCardClicked(CardFoodZone card, ImageView image, int poz);

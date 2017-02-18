@@ -183,6 +183,11 @@ public class SearchFoodFragment extends Fragment {
         foodRecyclerView.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Intent for creating report-email
+     * @param extra : type of report
+     * @param ID : announce ID
+     */
     public void composeEmail(String extra, String ID){
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
         final String body = "ID-ul anuntului: " + ID + ".\nTip: " + extra + ".\nRaport trimis de catre utilizatorul: " + FirebaseAuth.getInstance().getCurrentUser().getUid();

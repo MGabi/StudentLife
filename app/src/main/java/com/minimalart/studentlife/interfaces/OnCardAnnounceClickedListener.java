@@ -9,6 +9,9 @@ import com.minimalart.studentlife.models.CardRentAnnounce;
  * Created by ytgab on 07.02.2017.
  */
 
+/**
+ * Interface for click event on rent announces
+ */
 public interface OnCardAnnounceClickedListener {
 
     void onCardClicked(CardRentAnnounce card, ImageView imageView, int poz);

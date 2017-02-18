@@ -144,6 +144,9 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    /**
+     * Downloading and setting favorites-list
+     */
     public void prepareFavLists(){
         if(Utils.getInstance().isConnectedToNetwork(getContext())) {
             DatabaseReference favRent = FirebaseDatabase.getInstance().getReference()
@@ -193,8 +196,6 @@ public class HomeFragment extends Fragment {
             Snackbar.make(rootView, getResources().getString(R.string.error_no_network_connection), Snackbar.LENGTH_LONG).show();
             stopRefreshLayout(swipe);
         }
-        /*setUserAnnounces();
-        setUserFood();*/
     }
 
     /**

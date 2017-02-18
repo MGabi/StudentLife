@@ -86,17 +86,17 @@
     <string name="frag_home_fav_foods">Mâncăruri favorite</string>
 
     <string name="frag_about_app">Despre aplicație</string>
-    <string name="frag_about_app_desc">\t\t\tIt has survived not only five centuries, but also the leap into electronic typesetting,
-        remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
-        Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</string>
+    <string name="frag_about_app_desc">\t\t\tStudent Life este o aplicație menită să ajute studenții care vin la studiu în orașul Baia Mare,
+    oferindu-le ocazia de a-și afla cu ușuritate un loc unde să stea de-alungul cursurilor și de a alege din multitudinea de oferte de masă
+    în momentele în care au nevoie de o masă caldă și nu au timp să gătească sau pur și simplu vor să încerce lucruri noi.</string>
 
     <string name="frag_about_dev">Dezvoltator</string>
-    <string name="frag_about_dev_desc">\t\t\tLorem Ipsum is simply dummy text of the printing and typesetting industry.
-        Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley
-        of type and scrambled it to make a type specimen book.</string>
+    <string name="frag_about_dev_desc">\t\t\tMatko Gabriel, dezvoltatorul acestei aplicații, este student în clasa a 12-a la Colegiul Național
+    Gheorghe Șincai din Baia Mare, profil intensiv informatică. Programarea este unul dintre lucrurile pe care le face cu plăcere, dezvoltând această aplicație fără să aștepte
+    vreo răsplată, ci doar din simplul fapt că îi place să descopere și să învețe lucruri noi.</string>
 
     <string name="frag_about_version">Versiune aplicație</string>
-    <string name="frag_about_app_version">1.0b</string>
+    <string name="frag_about_app_version">1.3b</string>
 
     <string name="licenses">Licențe Open-Source</string>
     <string name="frag_about_material_ripple_license">Material Ripple Layout</string>
@@ -113,9 +113,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
     </string>
 
-    <string name="frag_about_picasso">Picasso</string>
-    <string name="frag_about_picasso_license_txt">
-        \t\tCopyright (&#169;) 2013 Square, Inc.\n\n
+    <string name="frag_about_circleimage">Circle Image View</string>
+    <string name="frag_about_circleimage_license_txt">
+        \t\tCopyright (&#169;) 2014 - 2017 Henning Dodenhof\n\n
 \tLicensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at\n\n\t\t\thttp://www.apache.org/licenses/LICENSE-2.0
@@ -128,12 +128,36 @@ limitations under the License.
     </string>
     <string name="frag_search_rent_hint">Caută...</string>
 
+    <string name="frag_about_floatingsearchview">Floating SearchView</string>
+    <string name="frag_about_floatingsearchview_license_txt">
+        \t\tCopyright (&#169;) 2015 Ari C.\n\n
+\tLicensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at\n\n\t\t\thttp://www.apache.org/licenses/LICENSE-2.0
+
+\tUnless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+    </string>
+
+    <string name="frag_about_acra">ACRA</string>
+    <string name="frag_about_acra_license_txt">
+        \t\tACRA is a library enabling Android Application to automatically post their
+        crash reports to a report server. It is targeted to android applications developers
+        to help them get data from their applications when they crash or behave erroneously.
+
+        \n\n\t\tMore on GITHUB page :\n
+        \t\t\thttps://github.com/ACRA/acra
+    </string>
+
     <string name="choose_browser">Alege rowserul</string>
 
 
     <string name="open_rent_description">Descriere: %1$s</string>
     <string name="open_rent_title">Titlu: %1$s</string>
-    <string name="open_rent_price">Preț: %1$s lei \\ lună</string>
+    <string name="open_rent_price">Preț: %1$s lei / lună</string>
     <string name="open_rent_rooms">Număr camere: %1$s</string>
     <string name="open_rent_location">Locație: %1$s</string>
     <string name="open_rent_seller">Acest anunț a fost postat de către utilizatorul: %1$s</string>
@@ -233,6 +257,11 @@ limitations under the License.
     <string name="q8">Cum schimb tema aplicației?</string>
     <string name="a8">Pentru a schimba tema aplicației, navighează la secțiunea „Setări” și alege culoarea dorită!</string>
 
+    <string name="q9">Cum reportez un anunț / alertă de masă?</string>
+    <string name="a9">Pentru a raporta un anunț sau o alertă de masă, navighează în zona de căutare, ține apăsat pe anunțul dorit și
+    trimite mail-ul care va fi generat automat în funcție de criteriul pe care îl alegi. Raportul va fi analizat și în cazul în care încalcă
+    unele condiții va fi șters.</string>
+
     <string name="no_fav_rents">Nu ai niciun anunț la favorite !</string>
     <string name="no_fav_foods">Nu ai nicio masă la favorite !</string>
 
@@ -244,6 +273,8 @@ limitations under the License.
 
     <string name="no_rent_queried">Nu există niciun rezultat pentru această căutare!</string>
     <string name="title_activity_application">Application</string>
+
+    <string name="logged_out">Ai fost delogat !</string>
 
     <string name="toast_crash">Application crashed</string>
 

@@ -251,6 +251,10 @@ public class OpenRentAnnounceFragment extends Fragment {
         });
     }
 
+    /**
+     * setting click listener for phone button
+     * @param phoneNumber : phone number
+     */
     public void setPhone(final String phoneNumber){
         final View view = rootView;
         phone.setOnClickListener(new View.OnClickListener() {

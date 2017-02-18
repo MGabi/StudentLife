@@ -14,6 +14,10 @@ import org.acra.annotation.ReportsCrashes;
 /**
  * Created by ytgab on 08.02.2017.
  */
+
+/**
+ * Setting up ACRA for sending email crash reports
+ */
 @ReportsCrashes(mailTo = "ytgabi98@gmail.com",
         customReportContent = { ReportField.APP_VERSION_CODE, ReportField.APP_VERSION_NAME, ReportField.ANDROID_VERSION, ReportField.PHONE_MODEL, ReportField.CUSTOM_DATA, ReportField.STACK_TRACE, ReportField.LOGCAT },
         mode = ReportingInteractionMode.TOAST,
@@ -24,13 +28,12 @@ public class ApplicationMain extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.v("TESTASD", "in APPLICATION MAIN");
     }
 
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        Log.v("TESTASD", "in AttachBaseContext");
+        //Initializing ACRA
         ACRA.init(this);
     }
 }

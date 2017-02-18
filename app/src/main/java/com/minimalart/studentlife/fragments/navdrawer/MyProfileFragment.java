@@ -110,6 +110,10 @@ public class MyProfileFragment extends Fragment implements AppBarLayout.OnOffset
         return view;
     }
 
+    /**
+     * Downloading user data from firebase
+     * @param v : view to initialize child-views
+     */
     public void getUserDataFromFirebase(final View v){
         if(Utils.getInstance().isConnectedToNetwork(getContext())){
             getImageURLandSetToImageView(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -153,6 +157,9 @@ public class MyProfileFragment extends Fragment implements AppBarLayout.OnOffset
         }
     }
 
+    /**
+     * Getting rent count and food count of user announces
+     */
     public void getNumbers(){
         DatabaseReference refR = FirebaseDatabase.getInstance().getReference();
         refR.child("users-details")
@@ -211,10 +218,18 @@ public class MyProfileFragment extends Fragment implements AppBarLayout.OnOffset
                 });
     }
 
+    /**
+     * Setting phone number
+     * @param phone
+     */
     public void setPhoneNumber(String phone){
         this.phone = phone;
     }
 
+    /**
+     * Downloading image from storage and setting it into imageview
+     * @param imageID : imageID to be downloaded
+     */
     public void getImageURLandSetToImageView(String imageID){
         StorageReference storageReference = FirebaseStorage.getInstance().getReference().child(REF_USER_IMAGES).child(imageID);
         Glide.with(getContext())
@@ -235,6 +250,10 @@ public class MyProfileFragment extends Fragment implements AppBarLayout.OnOffset
         return user;
     }
 
+    /**
+     * Initializing views
+     * @param view
+     */
     public void initViews(final View view){
         upTitle = (TextView) view.findViewById(R.id.myprofile_textview_title_dissapearing);
         editName = (ImageButton)view.findViewById(R.id.myprofile_editname);
@@ -310,6 +329,11 @@ public class MyProfileFragment extends Fragment implements AppBarLayout.OnOffset
         upTitle.setText(user.getName() + " " + user.getSecName());
     }
 
+    /**
+     * Callback for changing the offset of appbar
+     * @param appBarLayout
+     * @param offset
+     */
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
         int maxScroll = appBarLayout.getTotalScrollRange();
@@ -318,6 +342,10 @@ public class MyProfileFragment extends Fragment implements AppBarLayout.OnOffset
         handleToolbarTitleVisibility(percentage);
     }
 
+    /**
+     * Showing and hiding the title
+     * @param percentage
+     */
     private void handleToolbarTitleVisibility(float percentage) {
         if (percentage >= PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR) {
 
@@ -335,6 +363,12 @@ public class MyProfileFragment extends Fragment implements AppBarLayout.OnOffset
         }
     }
 
+    /**
+     * animating the hiding of the title
+     * @param v : view to be hided
+     * @param duration : duration of animation
+     * @param visibility : type of visibility
+     */
     public static void startAlphaAnimation (View v, long duration, int visibility) {
         AlphaAnimation alphaAnimation = (visibility == View.VISIBLE)
                 ? new AlphaAnimation(0f, 1f)

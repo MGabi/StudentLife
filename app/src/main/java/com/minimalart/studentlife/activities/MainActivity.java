@@ -189,6 +189,9 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Opening first fragment, HOMEFRAGMENT
+     */
     public void openFirstFragment(){
         fragment = fragmentManager.findFragmentById(R.id.content_main);
         if (fragment == null) {
@@ -198,6 +201,9 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Downloading user data from Firebase
+     */
     public void getUserDataFromFirebase(){
         DatabaseReference dbRef;
         try {
@@ -234,16 +240,8 @@ public class MainActivity extends AppCompatActivity
         this.currentLoggedUser = user;
     }
 
-    public User getCurrentLoggedUser(){
-        return currentLoggedUser;
-    }
-
     public void setCurrentUserUID(String s){
         this.currentLoggedUserUID =  s;
-    }
-
-    public String getCurrentUserUID(){
-        return currentLoggedUserUID;
     }
 
     /**
@@ -307,6 +305,7 @@ public class MainActivity extends AppCompatActivity
                 fragment = SearchFoodFragment.newInstance();
                 TAG = TAG_SEARCH_FOOD;
                 t = 3;
+                toolbar.setTitle(TITLES[t]);
                 break;
             case R.id.nav_add_food:
                 fragment = AddFoodFragment.newInstance();
@@ -326,12 +325,15 @@ public class MainActivity extends AppCompatActivity
                 toolbar.setTitle(TITLES[t]);
                 break;
             case R.id.nav_logout:
-                Toast.makeText(getBaseContext(), "Should be logged out", Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), getResources().getString(R.string.logged_out), Toast.LENGTH_SHORT).show();
                 FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
                 firebaseAuth.signOut();
-                Intent i = getBaseContext().getPackageManager()
+                /*Intent i = getBaseContext().getPackageManager()
                         .getLaunchIntentForPackage(getBaseContext().getPackageName());
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);*/
+                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
                 startActivity(i);
                 break;
             case R.id.nav_my_profile:
@@ -378,8 +380,6 @@ public class MainActivity extends AppCompatActivity
         }
 
     }
-
-
 
     /**
      * Listener for navigation items
@@ -432,19 +432,14 @@ public class MainActivity extends AppCompatActivity
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.v("FBSTORAGE", "RENT Failure");
+
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Log.v("FBSTORAGE", "RENT Success");
+
             }
         });
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-
     }
 
     /**
@@ -483,12 +478,12 @@ public class MainActivity extends AppCompatActivity
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.v("FBSTORAGE", "FOOD Failure");
+
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Log.v("FBSTORAGE", "FOOD Success");
+
             }
         });
     }

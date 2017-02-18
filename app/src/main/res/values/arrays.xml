@@ -62,6 +62,7 @@
         <item>@string/q6</item>
         <item>@string/q7</item>
         <item>@string/q8</item>
+        <item>@string/q9</item>
     </string-array>
 
     <string-array name="faq_answers">
@@ -73,6 +74,7 @@
         <item>@string/a6</item>
         <item>@string/a7</item>
         <item>@string/a8</item>
+        <item>@string/a9</item>
     </string-array>
 
 </resources>

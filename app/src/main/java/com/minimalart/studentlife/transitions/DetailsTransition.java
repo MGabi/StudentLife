@@ -12,6 +12,9 @@ import android.util.AttributeSet;
  * Created by ytgab on 06.02.2017.
  */
 
+/**
+ * Shared element transition for fragments
+ */
 public class DetailsTransition extends TransitionSet{
 
     public DetailsTransition() {

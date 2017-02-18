@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -100,8 +101,8 @@ public class LoginActivity extends AppCompatActivity {
                 setTheme(R.style.AppTheme_Red);
                 break;
         }
-        //getWindow().setNavigationBarColor(Utils.getInstance().getColorPrimaryDark(getBaseContext()));
         setContentView(R.layout.activity_login);
+        Log.v("THEMESSS", "asd");
 
         if (getIntent().getBooleanExtra("EXIT", false)) {
             finish();
@@ -137,11 +138,17 @@ public class LoginActivity extends AppCompatActivity {
         fragmentManager.beginTransaction().replace(R.id.activity_main_content, fragmentSignUp).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).addToBackStack(null).commit();
     }
 
+    /**
+     * Enabling back button
+     */
     public void enableBackButton(){
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(getResources().getDrawable(R.drawable.ic_arrow_back, getTheme()));
     }
 
+    /**
+     * Disabling back button
+     */
     public void disableBackButton(){
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
@@ -205,6 +212,11 @@ public class LoginActivity extends AppCompatActivity {
         startActivityForResult(intent, reqCODE);
     }
 
+    /**
+     * Handling menu items
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

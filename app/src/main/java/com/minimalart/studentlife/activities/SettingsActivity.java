@@ -5,9 +5,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -18,7 +20,6 @@ import com.minimalart.studentlife.others.Utils;
 public class SettingsActivity extends AppCompatActivity {
 
     private static final String COLOR_KEY = "key_color_preference";
-    private static final String ACCENT_KEY = "key_accent_preference";
 
     SharedPreferences preferences;
 
@@ -63,7 +64,6 @@ public class SettingsActivity extends AppCompatActivity {
                 setTheme(R.style.AppTheme_Red);
                 break;
         }
-        //getWindow().setNavigationBarColor(Utils.getInstance().getColorPrimaryDark(getBaseContext()));
         setContentView(R.layout.activity_settings);
         setupActionBar((Toolbar)findViewById(R.id.toolbar_settings_activity));
         getFragmentManager().beginTransaction()
@@ -78,6 +78,7 @@ public class SettingsActivity extends AppCompatActivity {
      */
     private void setupActionBar(@Nullable Toolbar toolbar) {
         toolbar.setTitleTextColor(Color.parseColor("#FAFAFA"));
+        toolbar.setTitle(getResources().getString(R.string.title_settings));
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();

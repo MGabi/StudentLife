@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -112,7 +113,7 @@ public class AddFoodFragment extends Fragment {
                         Snackbar.make(rootView, R.string.error_no_network_connection, Snackbar.LENGTH_LONG).show();
                     if(!isImageAdded()){
                         Snackbar.make(rootView, R.string.error_no_image, Snackbar.LENGTH_LONG).show();
-                        addImgBtn.setBackgroundColor(getResources().getColor(R.color.red_alpha, getActivity().getTheme()));
+                        addImgBtn.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.red_alpha));
                     }
                 }
             }
@@ -182,12 +183,12 @@ public class AddFoodFragment extends Fragment {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 finalIMGByte = baos.toByteArray();
-                addImgBtn.setBackgroundColor(getResources().getColor(R.color.green_alpha, getActivity().getTheme()));
+                addImgBtn.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.green_alpha));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }else{
-            addImgBtn.setBackgroundColor(getResources().getColor(R.color.red_alpha, getActivity().getTheme()));
+            addImgBtn.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.red_alpha));
             finalIMGByte = null;
         }
     }
@@ -213,8 +214,8 @@ public class AddFoodFragment extends Fragment {
         if(!checkDescription())
             fieldsGood = false;
 
-        //return fieldsGood;
-        return true;
+        return fieldsGood;
+
     }
 
     /**

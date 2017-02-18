@@ -75,6 +75,11 @@ public class SaveNameDialog extends DialogFragment {
         return builder.create();
     }
 
+    /**
+     * Saving data to firebase
+     * @param s1 : name to be saved
+     * @param s2 : secName to be saved
+     */
     public void saveData(String s1, String s2){
         if(Utils.getInstance().isConnectedToNetwork(getContext())){
             DatabaseReference dbRef = FirebaseDatabase

@@ -71,6 +71,10 @@ public class SaveEmailDialog extends DialogFragment {
         return builder.create();
     }
 
+    /**
+     * Saving data to firebase
+     * @param s1 : email to be saved
+     */
     public void saveData(String s1){
         if(Utils.getInstance().isConnectedToNetwork(getContext())){
             DatabaseReference dbRef = FirebaseDatabase

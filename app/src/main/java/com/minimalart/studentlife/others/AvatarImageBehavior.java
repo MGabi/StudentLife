@@ -15,6 +15,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by ytgab on 01.02.2017.
  */
 
+/**
+ * Defines the behavior of imageview on myprofile fragment
+ */
 @SuppressWarnings("unused")
 public class AvatarImageBehavior extends CoordinatorLayout.Behavior<CircleImageView> {
 
@@ -65,15 +68,24 @@ public class AvatarImageBehavior extends CoordinatorLayout.Behavior<CircleImageV
         bindDimensions();
     }
 
+    /**
+     * Setting max size of the image
+     */
     private void bindDimensions() {
         avatarMaxSize = context.getResources().getDimension(R.dimen.image_width);
     }
 
+    /**
+     * Checking if view is an instance of toolbar
+     */
     @Override
     public boolean layoutDependsOn(CoordinatorLayout parent, CircleImageView child, View dependency) {
         return dependency instanceof Toolbar;
     }
 
+    /**
+     * Moving the image as needed
+     */
     @Override
     public boolean onDependentViewChanged(CoordinatorLayout parent, CircleImageView child, View dependency) {
         maybeInitProperties(child, dependency);
@@ -113,6 +125,9 @@ public class AvatarImageBehavior extends CoordinatorLayout.Behavior<CircleImageV
         return true;
     }
 
+    /**
+     * Initializing positions
+     */
     private void maybeInitProperties(CircleImageView child, View dependency) {
         if (startYPosition == 0)
             startYPosition = (int) (dependency.getY());
@@ -137,6 +152,9 @@ public class AvatarImageBehavior extends CoordinatorLayout.Behavior<CircleImageV
         }
     }
 
+    /**
+     * @return the height of status bar
+     */
     public int getStatusBarHeight() {
         int result = 0;
         int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");

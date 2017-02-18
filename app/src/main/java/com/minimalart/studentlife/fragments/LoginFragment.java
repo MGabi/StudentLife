@@ -73,14 +73,21 @@ public class LoginFragment extends Fragment{
         signUpTextView = (TextView)view.findViewById(R.id.sign_up_text);
         signUpRipple = (MaterialRippleLayout)view.findViewById(R.id.ripple_signup_text);
 
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!PERMISSION_MODE)
+            if (!PERMISSION_MODE) {
                 checkForPermissions();
+            }else{
+                setupViews();
+            }
         }
         else
             setupViews();
-
-        return view;
     }
 
     /**
@@ -111,7 +118,7 @@ public class LoginFragment extends Fragment{
                             .setAction(android.R.string.ok, new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    Log.v("NETWORKTEST", "LOGIN");
+
                                 }}).show();
                 }
             }
@@ -221,7 +228,6 @@ public class LoginFragment extends Fragment{
         if((ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) ||
                 (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) ||
                 (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)) {
-
             requestPermissions( new String[]{
                     Manifest.permission.READ_EXTERNAL_STORAGE,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,

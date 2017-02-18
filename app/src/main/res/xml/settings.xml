@@ -7,7 +7,7 @@
         <ListPreference
             android:key="key_color_preference"
             android:title="@string/settings_title_color"
-            android:defaultValue="purple"
+            android:defaultValue="red"
             android:summary="@string/settings_title_color_summary"
             android:entryValues="@array/color_entries_values"
             android:entries="@array/color_entries"/>

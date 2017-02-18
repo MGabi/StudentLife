@@ -115,6 +115,7 @@ public class ModifyRentsFragment extends Fragment{
             @Override
             public void onCardClicked(CardRentAnnounce card, ImageView imageView, int poz) {
                 /**
+                 * ERROR ------
                  * Canvas: trying to use a recycled bitmap android exception thrown at runtine
                  * have to solve this
                  */
@@ -148,6 +149,10 @@ public class ModifyRentsFragment extends Fragment{
         return view;
     }
 
+    /**
+     * Enabling dismiss behavior in
+     * order to delete food announces
+     */
     public void addDismissBehavior(){
         CardSwipeItemTouchHelper callback = new CardSwipeItemTouchHelper(adapter);
         callback.setOnCardDismissedListener(new OnCardDismissedListener() {
@@ -242,6 +247,9 @@ public class ModifyRentsFragment extends Fragment{
         helper.attachToRecyclerView(rents);
     }
 
+    /**
+     * Downloading user rent announces
+     */
     @SuppressWarnings("unchecked")
     public void downloadAnnounces() {
         if(Utils.getInstance().isConnectedToNetwork(getContext())) {

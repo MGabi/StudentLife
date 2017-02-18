@@ -118,6 +118,10 @@ public class SavePhotoDialog extends DialogFragment {
         return builder.create();
     }
 
+    /**
+     * Uploading image to firebase
+     * @param image : byte-type image
+     */
     public void uploadImage(byte[] image){
         final StorageReference storageReference = FirebaseStorage.getInstance()
                 .getReference()
@@ -148,6 +152,9 @@ public class SavePhotoDialog extends DialogFragment {
         });
     }
 
+    /**
+     * Choosing image from phone
+     */
     public void chooseImage(){
         Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
         getIntent.setType("image/*");
@@ -161,6 +168,10 @@ public class SavePhotoDialog extends DialogFragment {
         startActivityForResult(chooserIntent, PICK_IMAGE);
     }
 
+    /**
+     * Callback for onDismiss
+     * @param dialog
+     */
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
@@ -169,6 +180,12 @@ public class SavePhotoDialog extends DialogFragment {
         }
     }
 
+    /**
+     * Callback after getting image from phone
+     * @param requestCode : code of request
+     * @param resultCode : status of action
+     * @param data : image as Intent
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

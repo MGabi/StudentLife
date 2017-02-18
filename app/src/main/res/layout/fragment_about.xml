@@ -18,7 +18,7 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_marginTop="@dimen/standard_padding"
-                android:src="@drawable/video_downloader"/>
+                android:src="@drawable/studentlife720"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -164,7 +164,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/frag_about_version"
                                 android:textSize="30sp"
-                                android:id="@+id/card_about_app_version"
+                                android:id="@+id/card_aboutapp_ver_sion"
                                 android:layout_marginBottom="7dp"
                                 android:textColor="?colorAccent"/>
 
@@ -225,6 +225,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/frag_about_material_ripple_license"
                                 android:textSize="24sp"
+                                android:textColor="@color/textPrincipal"
                                 android:id="@+id/card_about_material_ripple"
                                 android:layout_marginBottom="7dp"/>
 
@@ -237,6 +238,31 @@
                                 android:id="@+id/card_about_material_ripple_txt"/>
 
                             <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?colorAccent"
+                            android:layout_marginTop="12dp">
+
+                        </RelativeLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/frag_about_circleimage"
+                                android:layout_marginTop="8dp"
+                                android:textColor="@color/textPrincipal"
+                                android:textSize="24sp"
+                                android:id="@+id/card_about_picasso"
+                                android:layout_marginBottom="7dp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/frag_about_circleimage_license_txt"
+                                android:layout_marginTop="5dp"
+                                android:textSize="18sp" />
+
+                            <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
                                 android:background="?colorAccent"
@@ -247,16 +273,42 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/frag_about_picasso"
+                                android:text="@string/frag_about_floatingsearchview"
                                 android:layout_marginTop="8dp"
+                                android:textColor="@color/textPrincipal"
                                 android:textSize="24sp"
-                                android:id="@+id/card_about_picasso"
+                                android:id="@+id/card_about_fsv"
                                 android:layout_marginBottom="7dp"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/frag_about_picasso_license_txt"
+                                android:text="@string/frag_about_floatingsearchview_license_txt"
+                                android:layout_marginTop="5dp"
+                                android:textSize="18sp" />
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="?colorAccent"
+                                android:layout_marginTop="12dp">
+
+                            </RelativeLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/frag_about_acra"
+                                android:layout_marginTop="8dp"
+                                android:textColor="@color/textPrincipal"
+                                android:textSize="24sp"
+                                android:id="@+id/card_about_acra"
+                                android:layout_marginBottom="7dp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/frag_about_acra_license_txt"
                                 android:layout_marginTop="5dp"
                                 android:textSize="18sp" />
 
