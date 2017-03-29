@@ -223,7 +223,32 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:text="@string/frag_about_license_student_life"
+                                android:textSize="24sp"
+                                android:textColor="@color/textPrincipal"
+                                android:id="@+id/card_about_student_life_lic_title"
+                                android:layout_marginBottom="7dp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/license_student_life"
+                                android:layout_marginTop="5dp"
+                                android:textSize="18sp"
+                                android:id="@+id/card_about_student_life_lic_txt"/>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="?colorAccent"
+                                android:layout_marginTop="12dp">
+                            </RelativeLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:text="@string/frag_about_material_ripple_license"
+                                android:layout_marginTop="8dp"
                                 android:textSize="24sp"
                                 android:textColor="@color/textPrincipal"
                                 android:id="@+id/card_about_material_ripple"
@@ -242,8 +267,7 @@
                             android:layout_height="1dp"
                             android:background="?colorAccent"
                             android:layout_marginTop="12dp">
-
-                        </RelativeLayout>
+                            </RelativeLayout>
 
                             <TextView
                                 android:layout_width="wrap_content"
